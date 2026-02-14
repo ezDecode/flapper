@@ -1,0 +1,1658 @@
+OMNIPLUG
+
+Multi-Platform Social Media Scheduler + Auto-Plug Engine
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AI-Coding Blueprint • Complete Technical Reference • v2.0 • 2025
+
+⚡ Every detail in this document is written for AI code generation.
+
+Feed each section directly into your AI assistant to generate
+production-ready code.
+
+SECTION 01 PROJECT OVERVIEW
+
+What we are building and why it works
+
+1. Product Overview
+
+OmniPlug is a TypeScript-first, full-stack SaaS application that solves
+one problem: creators and indie hackers miss sales because they cannot
+manually plug their product every time a post goes viral. OmniPlug
+automates this entirely.
+
+1.1 Core Value Proposition
+
+-   Schedule posts across Twitter/X, LinkedIn, Instagram, and Bluesky
+    from one dashboard.
+
+-   Configure an Auto-Plug: a reply/comment that fires automatically
+    when a post crosses a like/engagement threshold.
+
+-   Never manually self-promote again — if anything goes viral, your CTA
+    fires on its own.
+
+1.2 Proven Validation
+
+  ✅ TIP: The founder used Typeful (a competitor) to schedule one post
+  on Twitter. When it crossed 100 likes, an auto-plug fired promoting
+  the A20i Pro product. This generated 3–4 direct sales in one day from
+  a single post with zero manual effort.
+
+1.3 AI Coding Context — Read This First
+
+  ⚠️ WARNING: This document is written so that every section can be
+  copy-pasted into an AI coding assistant (Claude, Cursor, GPT-4,
+  Copilot) to generate production code. Each section includes: exact
+  file paths, exact package names with versions, exact DB schema SQL,
+  exact API endpoint shapes, and exact env var names. Do NOT deviate
+  from the names and structures defined here — consistency across the
+  codebase is critical.
+
+SECTION 02 REPOSITORY STRUCTURE
+
+Exact folder and file layout for the monorepo
+
+2. Monorepo Structure
+
+The project is a pnpm monorepo with three packages: web (Next.js
+frontend), api (Fastify backend), and worker (background job processor).
+All three share a common packages/db package for Prisma types.
+
+2.1 Top-Level Directory Layout
+
+  ℹ️ NOTE: AI PROMPT: When setting up the project, create this exact
+  folder structure. Use pnpm workspaces. Run: pnpm init, then create
+  pnpm-workspace.yaml with packages: ['apps/*', 'packages/*']
+
+  omniplug/
+
+  ├── apps/
+
+  │ ├── web/ # Next.js 14 App Router frontend
+
+  │ ├── api/ # Fastify REST API server
+
+  │ └── worker/ # BullMQ job processor (background service)
+
+  ├── packages/
+
+  │ ├── db/ # Prisma schema + generated client (shared)
+
+  │ ├── types/ # Shared TypeScript interfaces
+
+  │ └── utils/ # Shared utility functions
+
+  ├── pnpm-workspace.yaml
+
+  ├── turbo.json # Turborepo build pipeline
+
+  ├── .env.example # ALL env vars listed here
+
+  └── docker-compose.yml # Local Postgres + Redis
+
+2.2 apps/web/ Structure (Next.js)
+
+  apps/web/
+
+  ├── app/
+
+  │ ├── (auth)/ # Auth pages: /login, /register
+
+  │ ├── (dashboard)/ # Protected pages: /dashboard, /compose, /schedule
+
+  │ │ ├── dashboard/page.tsx
+
+  │ │ ├── compose/page.tsx
+
+  │ │ ├── schedule/page.tsx
+
+  │ │ └── analytics/page.tsx
+
+  │ ├── api/auth/[...nextauth]/route.ts # NextAuth handler
+
+  │ └── layout.tsx
+
+  ├── components/
+
+  │ ├── ui/ # shadcn/ui components
+
+  │ ├── PostComposer.tsx
+
+  │ ├── ScheduleCalendar.tsx
+
+  │ ├── AutoPlugConfig.tsx
+
+  │ ├── PlatformConnector.tsx
+
+  │ └── AnalyticsDashboard.tsx
+
+  ├── lib/
+
+  │ ├── auth.ts # NextAuth config
+
+  │ ├── api-client.ts # Typed fetch wrapper for Fastify API
+
+  │ └── constants.ts # Platform names, limits, etc.
+
+  └── next.config.ts
+
+2.3 apps/api/ Structure (Fastify)
+
+  apps/api/
+
+  ├── src/
+
+  │ ├── index.ts # Server entry point
+
+  │ ├── plugins/
+
+  │ │ ├── auth.ts # JWT verification plugin
+
+  │ │ ├── cors.ts
+
+  │ │ └── rateLimit.ts
+
+  │ ├── routes/
+
+  │ │ ├── posts.ts # CRUD for posts
+
+  │ │ ├── platforms.ts # Connect/disconnect platform accounts
+
+  │ │ ├── plugs.ts # Auto-plug configuration
+
+  │ │ └── analytics.ts # Engagement stats
+
+  │ ├── services/
+
+  │ │ ├── twitter.service.ts
+
+  │ │ ├── linkedin.service.ts
+
+  │ │ ├── bluesky.service.ts
+
+  │ │ ├── instagram.service.ts
+
+  │ │ ├── token.service.ts # Encrypt/decrypt OAuth tokens
+
+  │ │ └── queue.service.ts # BullMQ job creation
+
+  │ └── schemas/ # Zod schemas for all request/response shapes
+
+  └── tsconfig.json
+
+2.4 apps/worker/ Structure (BullMQ Worker)
+
+  apps/worker/
+
+  ├── src/
+
+  │ ├── index.ts # Register all workers + cron jobs
+
+  │ ├── workers/
+
+  │ │ ├── publish.worker.ts # Handles PUBLISH_POST jobs
+
+  │ │ ├── poll.worker.ts # Handles POLL_ENGAGEMENT jobs
+
+  │ │ └── plug.worker.ts # Handles FIRE_PLUG jobs
+
+  │ ├── cron/
+
+  │ │ └── engagementPoller.cron.ts # Every 5 min: check all live posts
+
+  │ └── lib/
+
+  │ └── platforms/ # Same platform service files as api (shared via
+  packages/)
+
+SECTION 03 COMPLETE TECH STACK
+
+Every package, version, and exact reason for its inclusion
+
+3. Complete Tech Stack with Exact Versions
+
+  ⚠️ WARNING: AI PROMPT: When installing packages, use the EXACT package
+  names and versions listed below. Do not substitute alternatives unless
+  explicitly noted. Always install with pnpm add.
+
+3.1 Frontend — apps/web/
+
+  -------------------------------------------------------------------------------------
+  Package                 Version   Install Command         Purpose
+  ----------------------- --------- ----------------------- ---------------------------
+  next                    14.2.x    pnpm add next           React framework with App
+                                                            Router + server actions
+
+  react                   18.3.x    pnpm add react          UI rendering
+                                    react-dom               
+
+  typescript              5.4.x     pnpm add -D typescript  Type safety throughout
+
+  tailwindcss             3.4.x     pnpm add -D tailwindcss Utility CSS framework
+
+  @shadcn/ui              latest    npx shadcn-ui@latest    Prebuilt accessible UI
+                                    init                    components
+
+  next-auth               4.24.x    pnpm add next-auth      OAuth 2.0 flows for all 4
+                                                            platforms
+
+  zustand                 4.5.x     pnpm add zustand        Lightweight global state
+                                                            (no Redux)
+
+  @tanstack/react-query   5.x       pnpm add                Server state, caching,
+                                    @tanstack/react-query   background refetch
+
+  react-big-calendar      1.11.x    pnpm add                Drag-and-drop schedule
+                                    react-big-calendar      calendar UI
+
+  @tiptap/react           2.4.x     pnpm add @tiptap/react  Rich text post composer
+                                    @tiptap/pm              
+                                    @tiptap/starter-kit     
+
+  date-fns                3.x       pnpm add date-fns       Date manipulation for
+                                                            scheduling
+
+  zod                     3.23.x    pnpm add zod            Runtime validation of form
+                                                            inputs
+
+  react-hook-form         7.51.x    pnpm add                Form state + Zod
+                                    react-hook-form         integration
+                                    @hookform/resolvers     
+
+  recharts                2.12.x    pnpm add recharts       Analytics charts dashboard
+
+  lucide-react            0.379.x   pnpm add lucide-react   Icon library
+
+  @vercel/analytics       1.x       pnpm add                Page view tracking on
+                                    @vercel/analytics       Vercel
+  -------------------------------------------------------------------------------------
+
+3.2 Backend — apps/api/
+
+  --------------------------------------------------------------------------------
+  Package               Version   Install Command       Purpose
+  --------------------- --------- --------------------- --------------------------
+  fastify               4.27.x    pnpm add fastify      HTTP server — 2x faster
+                                                        than Express
+
+  @fastify/cors         9.x       pnpm add              CORS headers for web app
+                                  @fastify/cors         requests
+
+  @fastify/jwt          8.x       pnpm add @fastify/jwt JWT auth middleware
+
+  @fastify/rate-limit   9.x       pnpm add              Rate limit per IP / per
+                                  @fastify/rate-limit   user
+
+  @fastify/multipart    8.x       pnpm add              Handle media file uploads
+                                  @fastify/multipart    
+
+  fastify-zod           1.x       pnpm add fastify-zod  Zod schema validation for
+                                                        routes
+
+  bullmq                5.x       pnpm add bullmq       Job queue built on Redis
+
+  ioredis               5.3.x     pnpm add ioredis      Redis client (used by
+                                                        BullMQ)
+
+  bottleneck            2.19.x    pnpm add bottleneck   API rate limiter —
+                                                        prevents hitting platform
+                                                        limits
+
+  axios                 1.7.x     pnpm add axios        HTTP client for platform
+                                                        API calls
+
+  twitter-api-v2        1.17.x    pnpm add              Official Twitter/X SDK
+                                  twitter-api-v2        
+
+  linkedin-api-client   0.5.x     pnpm add              LinkedIn REST API wrapper
+                                  linkedin-api-client   
+
+  @atproto/api          0.12.x    pnpm add @atproto/api Bluesky AT Protocol SDK
+
+  node-cron             3.0.x     pnpm add node-cron    Cron scheduler (engagement
+                                                        polling every 5 min)
+
+  crypto-js             4.2.x     pnpm add crypto-js    AES-256 encryption for
+                                  @types/crypto-js      OAuth tokens at rest
+
+  @aws-sdk/client-s3    3.x       pnpm add              S3-compatible client for
+                                  @aws-sdk/client-s3    Cloudflare R2 media
+                                                        uploads
+
+  zod                   3.23.x    pnpm add zod          Request/response schema
+                                                        validation
+
+  pino                  9.x       pnpm add pino         Structured JSON logging
+                                  pino-pretty           
+  --------------------------------------------------------------------------------
+
+3.3 Worker Service — apps/worker/
+
+  --------------------------------------------------------------------------
+  Package          Version   Purpose
+  ---------------- --------- -----------------------------------------------
+  bullmq           5.x       Process PUBLISH, POLL, FIRE_PLUG jobs from
+                             Redis queues
+
+  node-cron        3.0.x     Schedule the engagement polling loop (every 5
+                             minutes)
+
+  ioredis          5.3.x     Connect worker to Redis for BullMQ
+
+  @prisma/client   5.14.x    Read/write post status and plug state to
+                             Postgres
+
+  twitter-api-v2   1.17.x    Publish tweets + read engagement from Twitter
+                             API
+
+  @atproto/api     0.12.x    Publish + reply on Bluesky
+
+  axios            1.7.x     LinkedIn + Instagram API calls
+
+  pino             9.x       Structured logging for worker events
+  --------------------------------------------------------------------------
+
+3.4 Shared Database Package — packages/db/
+
+  -------------------------------------------------------------------------
+  Package          Version    Purpose
+  ---------------- ---------- ---------------------------------------------
+  prisma           5.14.x     ORM — schema migrations, type generation
+
+  @prisma/client   5.14.x     Generated typed DB client
+
+  @types/node      20.x       Node.js type definitions
+  -------------------------------------------------------------------------
+
+3.5 Infrastructure & Services
+
+  -------------------------------------------------------------------------
+  Service      Product       Tier         Cost      What It Does
+  ------------ ------------- ------------ --------- -----------------------
+  Frontend     Vercel        Hobby (free) $0/mo     Auto-deploy Next.js on
+  Hosting                                           every git push
+
+  API + Worker Railway.app   Starter      $5/mo     Docker containers for
+  Hosting                                           Fastify + Worker
+
+  Primary      Supabase      Free tier    $0/mo     PostgreSQL 15,
+  Database     (Postgres)                           connection pooling via
+                                                    PgBouncer
+
+  Cache +      Upstash Redis Free (10K    $0/mo     BullMQ jobs, session
+  Queue Store                cmd/day)               data, rate limit
+                                                    counters
+
+  Media        Cloudflare R2 Free         $0/mo     User-uploaded
+  Storage                    (10GB/mo)              images/videos for posts
+                                                    (S3 compatible)
+
+  Email        Resend        Free (3K/mo) $0/mo     Transactional emails
+                                                    (welcome, failed post
+                                                    alerts)
+
+  Payments     Stripe        Pay as you   2.9% +    Subscription billing —
+                             go           30¢       Free / Pro / Agency
+                                                    tiers
+
+  Error        Sentry        Free (5K     $0/mo     Catch and alert on
+  Tracking                   errors/mo)             runtime errors
+
+  Analytics    PostHog       Free (1M     $0/mo     User behavior, feature
+                             events/mo)             flags, funnels
+
+  Secrets      Doppler       Free         $0/mo     Inject env vars into
+  Management                                        all apps in all
+                                                    environments
+  -------------------------------------------------------------------------
+
+SECTION 04 ENVIRONMENT VARIABLES
+
+Every single env var the project needs — exact names
+
+4. Environment Variables (Complete List)
+
+  ⚠️ WARNING: AI PROMPT: Create a .env.example file at the repo root
+  with ALL variables below. Never hardcode any value. Use Doppler to
+  inject these into each app. Each app reads only the vars it needs via
+  process.env.
+
+4.1 Database & Cache
+
+  -------------------------------------------------------------------------------------------------------
+  Variable Name    Example Value                                         Used By      Notes
+  ---------------- ----------------------------------------------------- ------------ -------------------
+  DATABASE_URL     postgresql://user:pass@db.supabase.co:5432/omniplug   api, worker, Supabase direct
+                                                                         db           connection string
+
+  DIRECT_URL       postgresql://user:pass@db.supabase.co:5432/omniplug   db (Prisma   Prisma migrations
+                                                                         only)        use DIRECT_URL
+
+  REDIS_URL        rediss://default:token@url.upstash.io:6380            api, worker  Upstash Redis TLS
+                                                                                      URL
+  -------------------------------------------------------------------------------------------------------
+
+4.2 Auth & Security
+
+  ---------------------------------------------------------------------------------
+  Variable Name          Example Value          Used By   Notes
+  ---------------------- ---------------------- --------- -------------------------
+  NEXTAUTH_URL           https://omniplug.app   web       Full production URL
+
+  NEXTAUTH_SECRET        openssl rand -base64   web, api  32-byte random secret for
+                         32 output                        JWT signing
+
+  JWT_SECRET             openssl rand -base64   api       Fastify JWT plugin secret
+                         32 output                        
+
+  TOKEN_ENCRYPTION_KEY   openssl rand -hex 32   api,      AES-256 key for
+                         output                 worker    encrypting OAuth tokens
+                                                          in DB
+  ---------------------------------------------------------------------------------
+
+4.3 Twitter / X API
+
+  ------------------------------------------------------------------------------
+  Variable Name           Where to Get It                   Used By
+  ----------------------- --------------------------------- --------------------
+  TWITTER_CLIENT_ID       developer.twitter.com → App →     web (NextAuth), api
+                          Keys & Tokens                     
+
+  TWITTER_CLIENT_SECRET   developer.twitter.com → App →     web (NextAuth), api
+                          Keys & Tokens                     
+
+  TWITTER_BEARER_TOKEN    developer.twitter.com → App →     api, worker
+                          Keys & Tokens                     (read-only calls)
+
+  TWITTER_API_KEY         developer.twitter.com → App →     api, worker (v1.1
+                          Keys & Tokens                     fallback)
+
+  TWITTER_API_SECRET      developer.twitter.com → App →     api, worker (v1.1
+                          Keys & Tokens                     fallback)
+  ------------------------------------------------------------------------------
+
+4.4 LinkedIn API
+
+  -------------------------------------------------------------------------------
+  Variable Name            Where to Get It                   Used By
+  ------------------------ --------------------------------- --------------------
+  LINKEDIN_CLIENT_ID       developer.linkedin.com → My Apps  web (NextAuth), api
+                           → Auth                            
+
+  LINKEDIN_CLIENT_SECRET   developer.linkedin.com → My Apps  web (NextAuth), api
+                           → Auth                            
+  -------------------------------------------------------------------------------
+
+4.5 Instagram / Meta API
+
+  ------------------------------------------------------------------------
+  Variable Name     Where to Get It                   Used By
+  ----------------- --------------------------------- --------------------
+  META_APP_ID       developers.facebook.com → My Apps web (NextAuth), api
+
+  META_APP_SECRET   developers.facebook.com → My Apps web (NextAuth), api
+  ------------------------------------------------------------------------
+
+4.6 Bluesky
+
+  -----------------------------------------------------------------------------
+  Variable Name      Value                 Notes
+  ------------------ --------------------- ------------------------------------
+  BSKY_SERVICE_URL   https://bsky.social   AT Protocol PDS endpoint — do not
+                                           change
+
+  -----------------------------------------------------------------------------
+
+  ℹ️ NOTE: Bluesky does not use OAuth. Users connect by providing their
+  handle + app password directly in the UI. Store the app password
+  encrypted in DB using TOKEN_ENCRYPTION_KEY.
+
+4.7 Storage, Payments & Services
+
+  ---------------------------------------------------------------------------------
+  Variable Name             Service      Notes
+  ------------------------- ------------ ------------------------------------------
+  R2_ACCOUNT_ID             Cloudflare   Found in Cloudflare dashboard
+                            R2           
+
+  R2_ACCESS_KEY_ID          Cloudflare   R2 API token — create in R2 settings
+                            R2           
+
+  R2_SECRET_ACCESS_KEY      Cloudflare   Secret for above token
+                            R2           
+
+  R2_BUCKET_NAME            Cloudflare   Name your bucket: omniplug-media
+                            R2           
+
+  R2_PUBLIC_URL             Cloudflare   Public URL prefix for uploaded files
+                            R2           
+
+  STRIPE_SECRET_KEY         Stripe       sk_live_... or sk_test_... for dev
+
+  STRIPE_WEBHOOK_SECRET     Stripe       whsec_... from Stripe webhook settings
+
+  RESEND_API_KEY            Resend       re_... from resend.com dashboard
+
+  SENTRY_DSN                Sentry       Found in Sentry project settings
+
+  NEXT_PUBLIC_POSTHOG_KEY   PostHog      Prefixed with NEXT_PUBLIC_ — exposed to
+                                         browser
+  ---------------------------------------------------------------------------------
+
+SECTION 05 DATABASE SCHEMA
+
+Complete Prisma schema — copy this directly into schema.prisma
+
+5. Database Schema (Prisma)
+
+  ℹ️ NOTE: AI PROMPT: Create the file packages/db/prisma/schema.prisma
+  with the content below EXACTLY. Then run: npx prisma generate && npx
+  prisma migrate dev --name init
+
+5.1 schema.prisma
+
+  generator client {
+
+  provider = "prisma-client-js"
+
+  }
+
+  datasource db {
+
+  provider = "postgresql"
+
+  url = env("DATABASE_URL")
+
+  directUrl = env("DIRECT_URL")
+
+  }
+
+  enum Platform { TWITTER LINKEDIN INSTAGRAM BLUESKY }
+
+  enum PostStatus { DRAFT SCHEDULED PUBLISHING PUBLISHED FAILED }
+
+  enum PlugStatus { PENDING FIRED SKIPPED FAILED }
+
+  enum TriggerType { LIKES COMMENTS REPOSTS TIME_AFTER_PUBLISH }
+
+  enum JobType { PUBLISH_POST POLL_ENGAGEMENT FIRE_PLUG }
+
+  enum JobStatus { PENDING PROCESSING DONE FAILED }
+
+  enum Plan { FREE PRO AGENCY }
+
+  model User {
+
+  id String @id @default(cuid())
+
+  email String @unique
+
+  name String?
+
+  avatarUrl String?
+
+  plan Plan @default(FREE)
+
+  stripeCustomerId String? @unique
+
+  stripeSubscriptionId String? @unique
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  platformConnections PlatformConnection[]
+
+  posts Post[]
+
+  }
+
+  model PlatformConnection {
+
+  id String @id @default(cuid())
+
+  userId String
+
+  platform Platform
+
+  platformUserId String // e.g. Twitter user ID, LinkedIn URN
+
+  platformHandle String // e.g. @handle or display name
+
+  accessToken String // AES-256 encrypted
+
+  refreshToken String? // AES-256 encrypted (nullable for Bluesky)
+
+  tokenExpiresAt DateTime?
+
+  scopes String[] // OAuth scopes granted
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete:
+  Cascade)
+
+  @@unique([userId, platform])
+
+  }
+
+  model Post {
+
+  id String @id @default(cuid())
+
+  userId String
+
+  content String // Text content of the post
+
+  mediaUrls String[] // R2 URLs for attached images/videos
+
+  status PostStatus @default(DRAFT)
+
+  scheduledAt DateTime? // When to publish
+
+  publishedAt DateTime? // When actually published
+
+  failReason String? // Error message if FAILED
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete:
+  Cascade)
+
+  targets PostTarget[]
+
+  autoPlugs AutoPlug[]
+
+  jobs Job[]
+
+  }
+
+  model PostTarget {
+
+  id String @id @default(cuid())
+
+  postId String
+
+  platform Platform
+
+  platformPostId String? // ID returned by platform after publishing
+
+  platformPostUrl String? // URL to the published post
+
+  likesCount Int @default(0)
+
+  commentsCount Int @default(0)
+
+  repostsCount Int @default(0)
+
+  impressionsCount Int @default(0)
+
+  lastPolledAt DateTime?
+
+  publishedAt DateTime?
+
+  failReason String?
+
+  post Post @relation(fields: [postId], references: [id], onDelete:
+  Cascade)
+
+  @@unique([postId, platform])
+
+  }
+
+  model AutoPlug {
+
+  id String @id @default(cuid())
+
+  postId String
+
+  platform Platform
+
+  plugContent String // The reply/comment text
+
+  triggerType TriggerType @default(LIKES)
+
+  triggerValue Int // e.g. 100 (fire when likes >= 100)
+
+  status PlugStatus @default(PENDING)
+
+  firedAt DateTime?
+
+  plugPostId String? // Platform ID of the reply/comment
+
+  failReason String?
+
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete:
+  Cascade)
+
+  @@unique([postId, platform]) // One plug per platform per post
+
+  }
+
+  model Job {
+
+  id String @id @default(cuid())
+
+  postId String
+
+  bullmqJobId String? @unique
+
+  type JobType
+
+  status JobStatus @default(PENDING)
+
+  attempts Int @default(0)
+
+  maxAttempts Int @default(3)
+
+  payload Json // Job-specific data
+
+  lastRunAt DateTime?
+
+  completedAt DateTime?
+
+  error String?
+
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete:
+  Cascade)
+
+  }
+
+SECTION 06 API ROUTES
+
+Every Fastify endpoint with request and response shapes
+
+6. API Routes (Fastify) — Complete Specification
+
+  ℹ️ NOTE: AI PROMPT: Implement each route in apps/api/src/routes/. All
+  routes use Zod for validation via fastify-zod. All routes except
+  /auth/* require a valid JWT in the Authorization header. Return errors
+  as { error: string, code: string }.
+
+6.1 Authentication Routes — /api/auth
+
+  --------------------------------------------------------------------------------
+  Method   Path                 Body / Params    Response     Notes
+  -------- -------------------- ---------------- ------------ --------------------
+  POST     /api/auth/register   { email,         { user,      Hash password with
+                                password, name } token }      bcrypt, issue JWT
+
+  POST     /api/auth/login      { email,         { user,      Validate password,
+                                password }       token }      issue JWT
+
+  POST     /api/auth/refresh    { refreshToken } { token }    Issue new access
+                                                              token
+
+  POST     /api/auth/logout     Bearer token     { success }  Invalidate token in
+                                                              Redis
+  --------------------------------------------------------------------------------
+
+6.2 Platform Connection Routes — /api/platforms
+
+  --------------------------------------------------------------------------------------------------------
+  Method   Path                             Body / Params       Response               Notes
+  -------- -------------------------------- ------------------- ---------------------- -------------------
+  GET      /api/platforms                   Bearer token        PlatformConnection[]   List all connected
+                                                                                       platforms for
+                                                                                       current user
+
+  POST     /api/platforms/connect           { platform, code,   PlatformConnection     Exchange OAuth code
+                                            redirectUri }                              for tokens, save
+                                                                                       encrypted
+
+  DELETE   /api/platforms/:platform         Bearer token        { success }            Disconnect a
+                                                                                       platform, delete
+                                                                                       tokens from DB
+
+  POST     /api/platforms/bluesky           { handle,           PlatformConnection     Bluesky-specific:
+                                            appPassword }                              verify
+                                                                                       credentials + save
+
+  GET      /api/platforms/oauth/:platform   Bearer token        { authUrl }            Returns OAuth
+                                                                                       redirect URL for
+                                                                                       frontend to open
+  --------------------------------------------------------------------------------------------------------
+
+6.3 Post Routes — /api/posts
+
+  ----------------------------------------------------------------------------------------------------
+  Method   Path                     Body / Params                       Response      Notes
+  -------- ------------------------ ----------------------------------- ------------- ----------------
+  GET      /api/posts               ?status=SCHEDULED&page=1&limit=20   { posts[],    List posts with
+                                                                        total, page } pagination and
+                                                                                      filter by status
+
+  GET      /api/posts/:id           Bearer token                        Post with     Full post detail
+                                                                        targets +     including
+                                                                        plugs         platform targets
+
+  POST     /api/posts               See Post Create Body below          Post          Create new post
+                                                                                      (DRAFT or
+                                                                                      SCHEDULED)
+
+  PUT      /api/posts/:id           { content?, scheduledAt?, targets?, Post          Update post —
+                                    plugs? }                                          only allowed if
+                                                                                      status is DRAFT
+
+  DELETE   /api/posts/:id           Bearer token                        { success }   Delete post +
+                                                                                      cancel BullMQ
+                                                                                      job if scheduled
+
+  POST     /api/posts/:id/publish   Bearer token                        Post          Immediately
+                                                                                      publish a DRAFT
+                                                                                      post
+
+  POST     /api/posts/media         multipart/form-data file            { url }       Upload
+                                                                                      image/video to
+                                                                                      Cloudflare R2
+  ----------------------------------------------------------------------------------------------------
+
+Post Create Body Shape:
+
+  // POST /api/posts — Request Body
+
+  {
+
+  content: string, // Post text
+
+  mediaUrls: string[], // R2 URLs from media upload
+
+  scheduledAt: string | null, // ISO 8601 datetime, null = save as DRAFT
+
+  targets: [ // Which platforms to post on
+
+  { platform: "TWITTER" | "LINKEDIN" | "INSTAGRAM" | "BLUESKY" }
+
+  ],
+
+  plugs: [ // Optional: auto-plug per platform
+
+  {
+
+  platform: string, // must match a target platform
+
+  plugContent: string, // the reply/comment text
+
+  triggerType: "LIKES" | "COMMENTS" | "REPOSTS" | "TIME_AFTER_PUBLISH",
+
+  triggerValue: number // e.g. 100 for 100 likes
+
+  }
+
+  ]
+
+  }
+
+6.4 Analytics Routes — /api/analytics
+
+  -------------------------------------------------------------------------------------------
+  Method   Path                        Query Params        Response              Notes
+  -------- --------------------------- ------------------- --------------------- ------------
+  GET      /api/analytics/overview     ?days=30            { totalPosts,         Summary
+                                                           totalPlugsFired,      stats
+                                                           totalEngagement }     
+
+  GET      /api/analytics/posts/:id    Bearer token        { targets[]: {        Per-post
+                                                           platform, likes,      engagement
+                                                           comments, reposts }}  breakdown
+
+  GET      /api/analytics/best-times   ?platform=TWITTER   { dayOfWeek, hour,    Best times
+                                                           avgEngagement }[]     to post per
+                                                                                 platform
+  -------------------------------------------------------------------------------------------
+
+SECTION 07 WORKER & QUEUE SYSTEM
+
+BullMQ queue names, job payloads, and auto-plug engine logic
+
+7. Worker Service & Queue System
+
+  ⚠️ WARNING: AI PROMPT: Implement the workers in
+  apps/worker/src/workers/. Use BullMQ version 5. Connect to Redis using
+  the REDIS_URL env var via ioredis. Each worker must: handle retries
+  (maxAttempts: 3), log every job start/end/fail with pino, and update
+  the Job table in Postgres.
+
+7.1 BullMQ Queue Names (Constants)
+
+  ℹ️ NOTE: Use these exact queue names throughout the codebase. Define
+  them in packages/utils/src/constants.ts.
+
+  export const QUEUES = {
+
+  PUBLISH_POST: 'publish-post',
+
+  POLL_ENGAGEMENT: 'poll-engagement',
+
+  FIRE_PLUG: 'fire-plug',
+
+  } as const;
+
+7.2 Job Payload Types
+
+  // PUBLISH_POST job payload
+
+  interface PublishPostPayload {
+
+  postId: string; // Prisma Post.id
+
+  userId: string; // Post owner
+
+  platform: Platform; // Which platform to publish on
+
+  }
+
+  // POLL_ENGAGEMENT job payload
+
+  interface PollEngagementPayload {
+
+  postTargetId: string; // Prisma PostTarget.id
+
+  postId: string;
+
+  platform: Platform;
+
+  platformPostId: string; // ID from the platform (e.g. tweet ID)
+
+  }
+
+  // FIRE_PLUG job payload
+
+  interface FirePlugPayload {
+
+  autoPlugId: string; // Prisma AutoPlug.id
+
+  postId: string;
+
+  platform: Platform;
+
+  platformPostId: string; // The post to reply to
+
+  plugContent: string; // The reply text
+
+  userId: string;
+
+  }
+
+7.3 Auto-Plug Engine — Full Logic Flow
+
+  ⚠️ WARNING: AI PROMPT: Implement this exact flow in
+  apps/worker/src/cron/engagementPoller.cron.ts using node-cron. This is
+  the most critical piece of the product.
+
+  -------------------------------------------------------------------------
+  Step   Action           Implementation Detail
+  ------ ---------------- -------------------------------------------------
+  1      Cron triggers    node-cron schedule: '*/5 * * * *'
+         every 5 minutes  
+
+  2      Query all        prisma.autoPlug.findMany({ where: { status:
+         PENDING          'PENDING' }, include: { post: { include: {
+         auto-plugs from  targets: true } } } })
+         DB               
+
+  3      For each         Match autoPlug.platform === postTarget.platform,
+         auto-plug, find  ensure postTarget.platformPostId is set
+         its PostTarget   
+
+  4      Fetch live       Call twitter.getTweetMetrics() /
+         engagement from  linkedin.getPostStats() / bluesky.getPostLikes()
+         platform API     
+
+  5      Update           prisma.postTarget.update({ where: { id }, data: {
+         PostTarget with  likesCount, lastPolledAt: new Date() } })
+         fresh counts     
+
+  6      Check if trigger if (postTarget.likesCount >=
+         condition is met autoPlug.triggerValue && autoPlug.status ===
+                          'PENDING')
+
+  7      Create FIRE_PLUG Queue.add('fire-plug', FirePlugPayload, {
+         BullMQ job       attempts: 3, backoff: { type: 'exponential',
+                          delay: 5000 } })
+
+  8      Optimistically   prisma.autoPlug.update({ where: { id }, data: {
+         mark plug as     status: 'PENDING' } }) — worker updates to FIRED
+         processing       on success
+
+  9      Worker fires the Call reply/comment API on the platform using the
+         plug             user's stored tokens
+
+  10     Mark plug as     prisma.autoPlug.update({ data: { status: 'FIRED',
+         FIRED on success firedAt: new Date(), plugPostId: platformReplyId
+                          } })
+
+  11     Handle failure   After 3 retries: update status to FAILED, log
+                          error, send email via Resend
+  -------------------------------------------------------------------------
+
+  ✅ TIP: DUPLICATE PREVENTION: The DB has @@unique([postId, platform])
+  on AutoPlug. The FIRE_PLUG BullMQ job uses jobId: autoPlugId as a
+  deduplication key. Even if the cron fires multiple times, only one
+  plug fires per post per platform.
+
+7.4 Post Publishing Worker Logic
+
+  // publish.worker.ts — Worker for PUBLISH_POST queue
+
+  // 1. Fetch Post from DB including targets and user's platform tokens
+
+  // 2. Decrypt the user's access token for that platform
+  (TOKEN_ENCRYPTION_KEY)
+
+  // 3. Check if token is expired → auto-refresh if needed
+
+  // 4. Call the platform's publish API with post content + media
+
+  // 5. On success: update PostTarget.platformPostId + platformPostUrl +
+  publishedAt
+
+  // 6. On success: update Post.status = PUBLISHED (if all targets
+  published)
+
+  // 7. Create POLL_ENGAGEMENT jobs for each target (start 10 min after
+  publish)
+
+  // 8. On failure: update Post.status = FAILED, PostTarget.failReason =
+  error.message
+
+  // 9. On failure after 3 attempts: send failure email to user via
+  Resend
+
+SECTION 08 PLATFORM API SPECS
+
+Exact endpoints, SDK methods, and token scopes per platform
+
+8. Platform API Specifications
+
+  ℹ️ NOTE: AI PROMPT: Implement one service file per platform in
+  apps/api/src/services/ AND apps/worker/src/lib/platforms/. Each
+  service class must accept an accessToken in its constructor and
+  expose: publish(content, mediaUrls), getEngagement(platformPostId),
+  reply(platformPostId, content), refreshToken(refreshToken).
+
+8.1 Twitter / X — twitter.service.ts
+
+  ℹ️ NOTE: SDK: Use 'twitter-api-v2' package. Always use TwitterApi
+  class with OAuth 2.0 user context for write operations. Use app-only
+  bearer token for read operations to save user rate limits.
+
+  ---------------------------------------------------------------------------------------------
+  Operation     SDK Method                                Required Scope   Rate Limit (Basic
+                                                                           tier)
+  ------------- ----------------------------------------- ---------------- --------------------
+  Publish Tweet client.v2.tweet({ text, media: {          tweet.write      50 writes / 15 min
+                media_ids } })                                             
+
+  Get Tweet     client.v2.singleTweet(id, {               tweet.read       15 requests / 15 min
+  Metrics       'tweet.fields': 'public_metrics' })                        (user auth)
+
+  Reply to      client.v2.tweet({ text, reply: {          tweet.write      50 writes / 15 min
+  Tweet         in_reply_to_tweet_id: id } })                              
+
+  Upload Media  client.v1.uploadMedia(buffer, { mimeType  tweet.write      30 uploads / 30 min
+                })                                        media.write      
+
+  Refresh Token client.refreshOAuth2Token(refreshToken)   offline.access   n/a
+  ---------------------------------------------------------------------------------------------
+
+  // Token fields to store in PlatformConnection:
+
+  // accessToken → client.accessToken (expires in 2 hours)
+
+  // refreshToken → client.refreshToken (valid 6 months)
+
+  // tokenExpiresAt → Date.now() + (expiresIn * 1000)
+
+  // scopes → ['tweet.read', 'tweet.write', 'offline.access',
+  'users.read']
+
+8.2 LinkedIn — linkedin.service.ts
+
+  ⚠️ WARNING: LinkedIn API requires: (1) Apply to LinkedIn Partner
+  Program at developer.linkedin.com for ugcPosts scope. (2) Use OAuth
+  2.0 with PKCE. (3) Access tokens expire in 60 days. (4) Refresh tokens
+  valid for 1 year. Use axios for all LinkedIn calls — no official Node
+  SDK.
+
+  -------------------------------------------------------------------------------------------------------------------
+  Operation       Endpoint                                                        Required Scope          Rate Limit
+  --------------- --------------------------------------------------------------- ----------------------- -----------
+  Get User URN    GET https://api.linkedin.com/v2/me                              r_liteprofile           
+
+  Create Post     POST https://api.linkedin.com/v2/ugcPosts                       w_member_social         100 req/day
+
+  Get Post        GET https://api.linkedin.com/v2/socialActions/{post_urn}        r_organization_social   100 req/day
+  Engagement                                                                                              
+
+  Add Comment     POST                                                            w_member_social         100 req/day
+  (Plug)          https://api.linkedin.com/v2/socialActions/{post_urn}/comments                           
+
+  Refresh Token   POST https://www.linkedin.com/oauth/v2/accessToken              n/a                     
+                  (grant_type=refresh_token)                                                              
+  -------------------------------------------------------------------------------------------------------------------
+
+  // LinkedIn ugcPost body structure:
+
+  // { author: 'urn:li:person:{id}',
+
+  // lifecycleState: 'PUBLISHED',
+
+  // specificContent: { 'com.linkedin.ugc.ShareContent': {
+
+  // shareCommentary: { text: content },
+
+  // shareMediaCategory: 'NONE' } },
+
+  // visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC'
+  } }
+
+8.3 Bluesky — bluesky.service.ts
+
+  ℹ️ NOTE: SDK: Use '@atproto/api'. No traditional OAuth — users provide
+  handle + app password. Store the app password encrypted. The SDK
+  handles session management internally. Re-authenticate on every worker
+  startup using stored credentials.
+
+  ------------------------------------------------------------------------------
+  Operation      SDK Method                      Notes
+  -------------- ------------------------------- -------------------------------
+  Authenticate   agent.login({ identifier:       Call before any write operation
+                 handle, password: appPassword   
+                 })                              
+
+  Create Post    agent.post({ text, createdAt:   Returns { uri, cid }
+                 new Date().toISOString() })     
+
+  Get Post Likes agent.getLikes({ uri: post.uri, Returns { data.total } for like
+                 limit: 1 })                     count
+
+  Reply to Post  agent.post({ text, reply: {     Must pass both root and parent
+  (Plug)         root: { uri, cid }, parent: {   
+                 uri, cid } } })                 
+
+  Upload Image   agent.uploadBlob(imageBuffer, { Returns blob ref to embed in
+                 encoding: 'image/jpeg' })       post
+  ------------------------------------------------------------------------------
+
+8.4 Instagram — instagram.service.ts
+
+  ⚠️ WARNING: Instagram publishing is a 2-step process. Step 1: Create
+  media container. Step 2: Publish container. Requires Instagram
+  Business or Creator account. All calls go through the Meta Graph API.
+  Requires Meta App Review for instagram_manage_comments permission.
+
+  ----------------------------------------------------------------------------------------------------------------------
+  Operation     Endpoint                                                                 Notes
+  ------------- ------------------------------------------------------------------------ -------------------------------
+  Step 1:       POST /{ig-user-id}/media?image_url={url}&caption={text}                  Returns creation_id
+  Create                                                                                 
+  Container                                                                              
+
+  Step 2:       POST /{ig-user-id}/media_publish?creation_id={id}                        Returns media_id of live post
+  Publish                                                                                
+
+  Get Post      GET /{ig-media-id}/insights?metric=likes&period=lifetime                 Requires instagram_basic scope
+  Likes                                                                                  
+
+  Add Comment   POST /{ig-media-id}/comments?message={plugContent}                       Requires
+  (Plug)                                                                                 instagram_manage_comments
+
+  Refresh Token GET                                                                      Long-lived tokens expire in 60
+                /refresh_access_token?grant_type=ig_refresh_token&access_token={token}   days
+  ----------------------------------------------------------------------------------------------------------------------
+
+SECTION 09 FRONTEND AUTH
+
+NextAuth.js config and OAuth provider setup
+
+9. NextAuth.js Configuration
+
+  ⚠️ WARNING: AI PROMPT: Create
+  apps/web/app/api/auth/[...nextauth]/route.ts and apps/web/lib/auth.ts.
+  Use the exact provider configs below. Store the OAuth tokens in the DB
+  via callbacks.signIn, NOT in the NextAuth session/JWT — the session
+  only holds the user ID.
+
+9.1 Providers to Configure
+
+  ----------------------------------------------------------------------------------------------------
+  Platform      Provider Type                     Config Object Key        Scopes to Request
+  ------------- --------------------------------- ------------------------ ---------------------------
+  Twitter/X     TwitterProvider from              clientId:                tweet.read tweet.write
+                next-auth/providers/twitter       TWITTER_CLIENT_ID,       offline.access users.read
+                                                  clientSecret:            
+                                                  TWITTER_CLIENT_SECRET,   
+                                                  version: '2.0'           
+
+  LinkedIn      LinkedInProvider from             clientId:                r_liteprofile
+                next-auth/providers/linkedin      LINKEDIN_CLIENT_ID,      r_emailaddress
+                                                  clientSecret:            w_member_social
+                                                  LINKEDIN_CLIENT_SECRET   
+
+  Instagram     Custom OAuth provider             clientId: META_APP_ID,   instagram_basic
+                (next-auth/providers/oauth)       clientSecret:            instagram_manage_comments
+                                                  META_APP_SECRET          
+
+  Credentials   CredentialsProvider from          email + password via API n/a
+                next-auth/providers/credentials   call to Fastify          
+                                                  /api/auth/login          
+  ----------------------------------------------------------------------------------------------------
+
+9.2 NextAuth Callbacks
+
+  // In authOptions callbacks:
+
+  // signIn callback: called after OAuth success
+
+  // → POST to Fastify /api/platforms/connect with { platform,
+  accessToken, refreshToken, expiresAt, platformUserId }
+
+  // → This saves the encrypted token to the DB
+
+  // session callback:
+
+  // → Only attach user.id to the session — do NOT put tokens in session
+
+  // → { ...session, user: { ...session.user, id: token.sub } }
+
+  // jwt callback:
+
+  // → Attach user.id to the JWT: { ...token, sub: user.id }
+
+SECTION 10 FRONTEND PAGES & COMPONENTS
+
+Every page, component, and its exact data requirements
+
+10. Frontend Pages & Components
+
+  ℹ️ NOTE: AI PROMPT: Use Next.js 14 App Router. All pages inside
+  (dashboard) group are server components by default — use 'use client'
+  only for interactive components (forms, calendars). Fetch data using
+  @tanstack/react-query in client components. Use shadcn/ui components
+  for all UI.
+
+10.1 Page Inventory
+
+  ---------------------------------------------------------------------------------------------------------------
+  Route        File                                 Type     Key Components         Data Fetched From
+  ------------ ------------------------------------ -------- ---------------------- -----------------------------
+  /login       app/(auth)/login/page.tsx            Server   LoginForm (client)     NextAuth signIn()
+
+  /dashboard   app/(dashboard)/dashboard/page.tsx   Server   StatsOverview,         GET /api/analytics/overview,
+                                                             RecentPosts,           GET /api/posts?limit=5
+                                                             PlatformStatus         
+
+  /compose     app/(dashboard)/compose/page.tsx     Server   PostComposer (client), GET /api/platforms
+                                                             PlatformSelector,      
+                                                             MediaUploader,         
+                                                             AutoPlugConfig         
+
+  /schedule    app/(dashboard)/schedule/page.tsx    Server   ScheduleCalendar       GET
+                                                             (client),              /api/posts?status=SCHEDULED
+                                                             PostDetailDrawer       
+
+  /analytics   app/(dashboard)/analytics/page.tsx   Server   EngagementChart,       GET /api/analytics/*
+                                                             PlugConversionStats,   
+                                                             BestTimesChart         
+
+  /settings    app/(dashboard)/settings/page.tsx    Server   PlatformConnector,     GET /api/platforms, Stripe
+                                                             BillingPanel,          portal
+                                                             ProfileForm            
+  ---------------------------------------------------------------------------------------------------------------
+
+10.2 PostComposer Component — Exact Requirements
+
+-   Tiptap rich text editor with character count per platform (280 for
+    Twitter, 3000 for LinkedIn, 2200 for Instagram, 300 for Bluesky).
+
+-   Platform selector checkboxes — only show platforms the user has
+    connected.
+
+-   Media upload area: drag-and-drop, max 4 images or 1 video, preview
+    before upload, POST to /api/posts/media on selection.
+
+-   Date/time picker for scheduling — use date-fns for timezone
+    handling, always store in UTC.
+
+-   AutoPlug configurator per selected platform: plug message textarea +
+    trigger type selector + trigger value number input.
+
+-   Submit button: 'Save as Draft' (no scheduledAt) or 'Schedule Post'
+    (with scheduledAt).
+
+10.3 AutoPlugConfig Component — Exact Requirements
+
+-   Show one AutoPlug config panel per selected platform.
+
+-   Fields: plugContent (textarea, max 280 chars), triggerType (select:
+    Likes / Comments / Reposts), triggerValue (number input, min 1).
+
+-   Show a preview of how the plug will appear as a reply.
+
+-   Show character count remaining for plugContent.
+
+SECTION 11 BILLING & LIMITS
+
+Stripe integration and per-plan usage enforcement
+
+11. Billing & Usage Limits
+
+  ℹ️ NOTE: AI PROMPT: Implement billing in
+  apps/api/src/routes/billing.ts. Use Stripe Checkout for plan upgrades.
+  Use Stripe Customer Portal for plan management. Listen to
+  stripe.checkout.session.completed and customer.subscription.updated
+  webhooks to update user.plan in DB.
+
+11.1 Plan Limits
+
+  ------------------------------------------------------------------------
+  Limit                  FREE          PRO ($19/mo)    AGENCY ($49/mo)
+  ---------------------- ------------- --------------- -------------------
+  Connected Platforms    2             4               4 (multiple
+                                                       accounts)
+
+  Scheduled Posts /      10            100             Unlimited
+  month                                                
+
+  Auto-Plugs / month     5             50              Unlimited
+
+  Media Uploads / month  20            200             Unlimited
+
+  Analytics History      7 days        90 days         1 year
+
+  Team Members           1 (solo)      1 (solo)        5
+
+  Post Templates         3             25              Unlimited
+
+  API Access             No            No              Yes
+  ------------------------------------------------------------------------
+
+11.2 Stripe Products & Price IDs
+
+  ⚠️ WARNING: Create these products in Stripe Dashboard FIRST. Then add
+  their Price IDs to your env vars as STRIPE_PRO_PRICE_ID and
+  STRIPE_AGENCY_PRICE_ID.
+
+  -------------------------------------------------------------------------
+  Plan      Stripe Product  Billing               Env Var Name
+            Name                                  
+  --------- --------------- --------------------- -------------------------
+  PRO       OmniPlug Pro    Monthly recurring —   STRIPE_PRO_PRICE_ID
+                            $19.00/mo             
+
+  AGENCY    OmniPlug Agency Monthly recurring —   STRIPE_AGENCY_PRICE_ID
+                            $49.00/mo             
+  -------------------------------------------------------------------------
+
+11.3 Webhook Events to Handle
+
+  // stripe.checkout.session.completed
+
+  // → Update user.plan in DB
+
+  // → Update user.stripeCustomerId and user.stripeSubscriptionId
+
+  // customer.subscription.updated
+
+  // → If status is 'active': update user.plan
+
+  // → If status is 'canceled' or 'past_due': downgrade user.plan to
+  FREE
+
+  // customer.subscription.deleted
+
+  // → Set user.plan = FREE
+
+SECTION 12 DEPLOYMENT & CI/CD
+
+Exact steps to deploy every app
+
+12. Deployment Setup
+
+  ℹ️ NOTE: AI PROMPT: Create .github/workflows/deploy.yml with the
+  config below. All three apps deploy automatically when code is merged
+  to main branch.
+
+12.1 apps/web — Deploy to Vercel
+
+  -------------------------------------------------------------------------
+  Step   Action           Command / Config
+  ------ ---------------- -------------------------------------------------
+  1      Install Vercel   pnpm add -g vercel
+         CLI              
+
+  2      Link project     vercel link — select omniplug/web
+
+  3      Set environment  Add all NEXT_* and NEXTAUTH_* vars in Vercel
+         variables        project settings
+
+  4      Auto-deploy on   Vercel Git integration — connect GitHub repo, set
+         push             root directory: apps/web
+
+  5      Build command    cd ../.. && pnpm build --filter=web
+
+  6      Output directory apps/web/.next
+  -------------------------------------------------------------------------
+
+12.2 apps/api — Deploy to Railway
+
+  -------------------------------------------------------------------------
+  Step   Action           Command / Config
+  ------ ---------------- -------------------------------------------------
+  1      Create Railway   railway init in project root
+         project          
+
+  2      Add Dockerfile   Create apps/api/Dockerfile — FROM node:20-alpine,
+                          COPY, RUN pnpm install, CMD node dist/index.js
+
+  3      Set environment  railway variables set DATABASE_URL=...
+         variables        REDIS_URL=... etc.
+
+  4      Deploy           railway up — or auto-deploy via GitHub
+                          integration
+
+  5      Health check     GET /health → { status: 'ok', timestamp:
+         endpoint         Date.now() }
+
+  6      Port             Railway auto-assigns PORT env var — use
+                          process.env.PORT in Fastify
+  -------------------------------------------------------------------------
+
+12.3 apps/worker — Deploy to Railway (separate service)
+
+  ⚠️ WARNING: Deploy the worker as a SEPARATE Railway service from the
+  API. Workers should never handle HTTP traffic — they only process
+  queue jobs. Use a Dockerfile for the worker service identical in
+  structure to the API Dockerfile but pointing to apps/worker/.
+
+12.4 GitHub Actions CI/CD
+
+  # .github/workflows/deploy.yml
+
+  on:
+
+  push:
+
+  branches: [main]
+
+  jobs:
+
+  test:
+
+  runs-on: ubuntu-latest
+
+  steps:
+
+  - uses: actions/checkout@v4
+
+  - uses: pnpm/action-setup@v3
+
+  - run: pnpm install --frozen-lockfile
+
+  - run: pnpm typecheck # tsc --noEmit across all apps
+
+  - run: pnpm lint # ESLint
+
+  - run: pnpm test # Vitest unit tests
+
+  deploy-api:
+
+  needs: test
+
+  runs-on: ubuntu-latest
+
+  steps:
+
+  - uses: actions/checkout@v4
+
+  - run: railway up --service api --detach
+
+  env:
+
+  RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+SECTION 13 AI CODING GUIDE
+
+How to feed this document to AI and get production code
+
+13. Guide to Using AI for Code Generation
+
+  ✅ TIP: This section explains exactly how to use Claude, Cursor, or
+  GPT-4 to implement every part of OmniPlug using this document. Follow
+  this order for the most efficient build.
+
+13.1 Recommended Build Order for AI
+
+  ----------------------------------------------------------------------------
+  Order   What to Build    Section     AI Prompt to Use
+                           Reference   
+  ------- ---------------- ----------- ---------------------------------------
+  1       Monorepo         Section 2   Paste Section 2 folder structure and
+          scaffold +                   say: 'Create this exact monorepo
+          package.json                 structure using pnpm workspaces and
+          files                        Turborepo'
+
+  2       Prisma schema +  Section 5   Paste the entire schema.prisma from
+          DB migration                 Section 5 and say: 'Set this up in
+                                       packages/db/, run prisma generate,
+                                       create seed file'
+
+  3       All environment  Section 4   Paste Section 4 tables and say: 'Create
+          variables                    .env.example and a Doppler config.yaml
+                                       with all these variables'
+
+  4       Fastify API      Section 3.2 Paste Section 3.2 backend packages and
+          server                       say: 'Set up Fastify with TypeScript,
+          boilerplate                  all listed plugins, pino logging, and a
+                                       /health endpoint'
+
+  5       Platform service Section 8   Paste each platform section (8.1, 8.2,
+          files                        8.3, 8.4) one at a time and say:
+                                       'Implement this platform service class
+                                       with all listed methods'
+
+  6       OAuth token      Section 4   Say: 'Implement a token.service.ts that
+          storage                      encrypts/decrypts strings using AES-256
+                                       with TOKEN_ENCRYPTION_KEY env var using
+                                       crypto-js'
+
+  7       API routes       Section 6   Paste each route table from Section 6
+                                       and say: 'Implement these Fastify
+                                       routes with Zod validation. Use the
+                                       Prisma schema from Section 5'
+
+  8       BullMQ worker +  Section 7   Paste Section 7 entirely and say:
+          cron                         'Implement the full worker service with
+                                       BullMQ. The auto-plug engine is the
+                                       most important piece'
+
+  9       NextAuth setup   Section 9   Paste Section 9 and say: 'Implement
+                                       NextAuth with these providers. Store
+                                       OAuth tokens in DB via signIn callback'
+
+  10      Frontend pages   Section 10  Paste Section 10 page-by-page and say:
+                                       'Build this Next.js page using
+                                       shadcn/ui, @tanstack/react-query for
+                                       data fetching, and Tailwind'
+
+  11      Stripe billing   Section 11  Paste Section 11 and say: 'Implement
+                                       Stripe Checkout + Customer Portal +
+                                       webhook handler with these exact
+                                       events'
+
+  12      Deployment       Section 12  Paste Section 12 and say: 'Create
+          config                       Dockerfiles for api and worker, and the
+                                       GitHub Actions workflow'
+  ----------------------------------------------------------------------------
+
+13.2 Universal AI Prompt Template
+
+  ✅ TIP: Use this template for EVERY code generation request to get
+  consistent, production-quality code.
+
+  You are building OmniPlug — a multi-platform social media scheduler
+  with an auto-plug
+
+  engine. The project is a TypeScript pnpm monorepo with Next.js 14
+  (web), Fastify 4 (api),
+
+  and BullMQ worker (worker). Prisma 5 + PostgreSQL for DB. Redis
+  (BullMQ + ioredis) for
+
+  queue. All code must be TypeScript strict mode. Use the exact package
+  names and versions
+
+  specified. Use Zod for all validation. Use Prisma client from
+  packages/db. Log with pino.
+
+  [PASTE THE RELEVANT SECTION HERE]
+
+  Now implement: [SPECIFIC TASK]
+
+  Requirements:
+
+  - TypeScript strict mode, no 'any' types
+
+  - Zod validation for all inputs
+
+  - Handle errors with try/catch, return typed errors
+
+  - Add JSDoc comments for all public functions
+
+  - Export all types
+
+13.3 Critical Rules When Using AI
+
+-   Always paste the Prisma schema (Section 5) along with any backend
+    prompt — the AI needs the DB shape.
+
+-   Always paste the queue names and payload types (Section 7.1 and 7.2)
+    with any worker prompt.
+
+-   Always paste the relevant env var names (Section 4) so the AI
+    references them correctly.
+
+-   When building frontend components, paste the API route spec
+    (Section 6) so the AI knows the exact data shapes.
+
+-   Build the database and services BEFORE the routes and workers —
+    never the other way around.
+
+-   After generating each piece, paste the generated code back in
+    context before asking for the next piece. This keeps the AI coherent
+    across files.
+
+Build fast. Ship the MVP. Let OmniPlug plug OmniPlug. 🚀
