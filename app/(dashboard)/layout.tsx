@@ -20,7 +20,7 @@ const nav = [
 
 const planColors: Record<string, string> = {
   FREE: "bg-zinc-700 text-zinc-300",
-  PRO: "bg-[#F76707]/20 text-[#F76707]",
+  PRO: "bg-[#7C3AED]/20 text-[#7C3AED]",
   AGENCY: "bg-purple-500/20 text-purple-400",
 };
 
@@ -73,7 +73,7 @@ export default async function DashboardLayout({
       <aside className="hidden lg:flex lg:w-[240px] lg:flex-col lg:fixed lg:inset-y-0 bg-zinc-950 text-white">
         {/* Logo */}
         <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F76707] text-sm font-bold">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#7C3AED] text-sm font-bold">
             F
           </div>
           <span className="text-lg font-semibold tracking-tight">Flapr</span>
@@ -99,7 +99,7 @@ export default async function DashboardLayout({
         {/* User info */}
         <div className="border-t border-white/10 p-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F76707]/20 text-xs font-semibold text-[#F76707]">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7C3AED]/20 text-xs font-semibold text-[#7C3AED]">
               {initials}
             </div>
             <div className="min-w-0 flex-1">
@@ -118,7 +118,7 @@ export default async function DashboardLayout({
 
       {/* Mobile header */}
       <div className="lg:hidden fixed top-0 inset-x-0 z-50 flex items-center gap-3 border-b border-[#E8E8E4] bg-white px-4 py-3">
-        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#F76707] text-xs font-bold text-white">
+        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#7C3AED] text-xs font-bold text-white">
           F
         </div>
         <span className="text-base font-semibold">Flapr</span>

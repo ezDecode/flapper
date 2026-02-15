@@ -86,24 +86,24 @@ function AuthPage() {
   };
 
   const inputClass =
-    "w-full rounded-lg border px-3 py-2.5 text-sm font-normal outline-none transition-colors focus:border-[#E8590C]";
+    "w-full rounded-lg border px-3 py-2.5 text-sm font-normal outline-none transition-colors focus:border-[#8B5CF6]";
   const inputStyle = {
-    background: "#0B0B0F",
-    borderColor: "#1E1E26",
-    color: "#E8E8EC",
+    background: "#FAF8F5",
+    borderColor: "#E5E0D8",
+    color: "#1A1A2E",
   };
 
   return (
     <div
       className="flex min-h-screen items-center justify-center px-4"
-      style={{ background: "#0B0B0F" }}
+      style={{ background: "#FAF8F5" }}
     >
       <div className="w-full max-w-[420px]">
         <div className="mb-8 text-center">
           <Link
             href="/"
             className="text-lg font-medium tracking-tight"
-            style={{ color: "#E8590C" }}
+            style={{ color: "#8B5CF6" }}
           >
             Flapr
           </Link>
@@ -111,20 +111,20 @@ function AuthPage() {
 
         <div
           className="rounded-xl border p-8"
-          style={{ background: "#141419", borderColor: "#1E1E26" }}
+          style={{ background: "#F2EFE9", borderColor: "#E5E0D8" }}
         >
           {/* Tab switcher */}
           <div
             className="mb-6 flex rounded-lg border p-1"
-            style={{ borderColor: "#1E1E26", background: "#0B0B0F" }}
+            style={{ borderColor: "#E5E0D8", background: "#FAF8F5" }}
           >
             <button
               type="button"
               onClick={() => setTab("login")}
               className="flex-1 rounded-md py-2 text-sm font-medium transition-all"
               style={{
-                background: tab === "login" ? "#1E1E26" : "transparent",
-                color: tab === "login" ? "#E8E8EC" : "#6B6B7B",
+                background: tab === "login" ? "#E5E0D8" : "transparent",
+                color: tab === "login" ? "#1A1A2E" : "#6B6B7B",
               }}
             >
               Log in
@@ -134,8 +134,8 @@ function AuthPage() {
               onClick={() => setTab("register")}
               className="flex-1 rounded-md py-2 text-sm font-medium transition-all"
               style={{
-                background: tab === "register" ? "#1E1E26" : "transparent",
-                color: tab === "register" ? "#E8E8EC" : "#6B6B7B",
+                background: tab === "register" ? "#E5E0D8" : "transparent",
+                color: tab === "register" ? "#1A1A2E" : "#6B6B7B",
               }}
             >
               Register
@@ -147,8 +147,8 @@ function AuthPage() {
             <button
               type="button"
               onClick={() => oauth("twitter")}
-              className="flex w-full items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-normal transition-colors hover:border-[#2A2A34]"
-              style={{ borderColor: "#1E1E26", color: "#C8C8D0" }}
+              className="flex w-full items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-normal transition-colors hover:border-[#D4CFC6]"
+              style={{ borderColor: "#E5E0D8", color: "#3D3D50" }}
             >
               <i className="devicon-twitter-original" />
               Sign in with Twitter
@@ -156,8 +156,8 @@ function AuthPage() {
             <button
               type="button"
               onClick={() => oauth("linkedin_oidc")}
-              className="flex w-full items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-normal transition-colors hover:border-[#2A2A34]"
-              style={{ borderColor: "#1E1E26", color: "#C8C8D0" }}
+              className="flex w-full items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-normal transition-colors hover:border-[#D4CFC6]"
+              style={{ borderColor: "#E5E0D8", color: "#3D3D50" }}
             >
               <i className="devicon-linkedin-plain" />
               Sign in with LinkedIn
@@ -165,11 +165,11 @@ function AuthPage() {
           </div>
 
           <div className="my-6 flex items-center gap-3">
-            <div className="h-px flex-1" style={{ background: "#1E1E26" }} />
+            <div className="h-px flex-1" style={{ background: "#E5E0D8" }} />
             <span className="text-xs font-normal" style={{ color: "#6B6B7B" }}>
               or sign in with email
             </span>
-            <div className="h-px flex-1" style={{ background: "#1E1E26" }} />
+            <div className="h-px flex-1" style={{ background: "#E5E0D8" }} />
           </div>
 
           {/* ── LOGIN FORM ── */}
@@ -222,7 +222,7 @@ function AuthPage() {
                 type="submit"
                 disabled={loginLoading}
                 className="w-full rounded-lg py-2.5 text-sm font-medium text-white transition-all hover:brightness-110 disabled:opacity-60"
-                style={{ background: "#E8590C" }}
+                style={{ background: "#8B5CF6" }}
               >
                 {loginLoading ? "Logging in…" : "Log in"}
               </button>
@@ -337,7 +337,7 @@ function AuthPage() {
                     type="submit"
                     disabled={regLoading}
                     className="w-full rounded-lg py-2.5 text-sm font-medium text-white transition-all hover:brightness-110 disabled:opacity-60"
-                    style={{ background: "#E8590C" }}
+                    style={{ background: "#8B5CF6" }}
                   >
                     {regLoading ? "Creating your account…" : "Create account"}
                   </button>

@@ -51,7 +51,7 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
   return (
     <Flex direction="column" gap="4">
       <Flex alignItems="center" gap="2">
-        <Zap size={16} className="text-[#F76707]" />
+        <Zap size={16} className="text-[#7C3AED]" />
         <Text size="2" weight="4">
           Auto-Plug Configuration
         </Text>
@@ -89,8 +89,8 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
                           }
                           className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
                             config.triggerType === opt.value
-                              ? "border-[#F76707] bg-[#FFF4E6] text-[#E8590C]"
-                              : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#F76707]/40"
+                              ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
+                              : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
                           }`}
                         >
                           {opt.icon}
@@ -117,7 +117,7 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
                           },
                         })
                       }
-                      className="h-8 w-24 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#F76707] focus:outline-none focus:ring-1 focus:ring-[#F76707]"
+                      className="h-8 w-24 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                     />
                   </div>
                 </Flex>
@@ -136,7 +136,7 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
                         [platform]: { ...config, plugContent: e.target.value },
                       })
                     }
-                    className="w-full rounded-lg border border-[#E8E8E4] bg-white px-3 py-2 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#F76707] focus:outline-none focus:ring-1 focus:ring-[#F76707]"
+                    className="w-full rounded-lg border border-[#E8E8E4] bg-white px-3 py-2 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                   />
                 </div>
               </Flex>

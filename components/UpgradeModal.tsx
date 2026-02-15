@@ -22,8 +22,8 @@ export function UpgradeModal({ open, onClose }: Props) {
         <Card.Body>
           <Flex direction="column" gap="4">
             <Flex alignItems="center" gap="3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FFF4E6]">
-                <AlertCircle size={20} className="text-[#F76707]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F0ECFE]">
+                <AlertCircle size={20} className="text-[#7C3AED]" />
               </div>
               <H2>Usage limit reached</H2>
             </Flex>

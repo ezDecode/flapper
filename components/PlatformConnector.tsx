@@ -171,13 +171,13 @@ export function PlatformConnector() {
                     <input
                       value={blueskyHandle}
                       onChange={(e) => setBlueskyHandle(e.target.value)}
-                      className="h-8 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#F76707] focus:outline-none focus:ring-1 focus:ring-[#F76707]"
+                      className="h-8 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                       placeholder="handle.bsky.social"
                     />
                     <input
                       value={blueskyPassword}
                       onChange={(e) => setBlueskyPassword(e.target.value)}
-                      className="h-8 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#F76707] focus:outline-none focus:ring-1 focus:ring-[#F76707]"
+                      className="h-8 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                       placeholder="App password"
                       type="password"
                     />

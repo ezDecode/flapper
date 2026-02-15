@@ -8,7 +8,7 @@ export default function ComposePage() {
   return (
     <Flex direction="column" gap="5">
       <Flex alignItems="center" gap="3">
-        <Send size={24} className="text-[#F76707]" />
+        <Send size={24} className="text-[#7C3AED]" />
         <div>
           <H1>Compose</H1>
           <Text size="2" variant="tertiary">

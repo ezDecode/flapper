@@ -233,7 +233,7 @@ export default function OnboardingPage() {
         {/* Header */}
         <Flex direction="column" alignItems="center" gap="2" className="mb-8">
           <Flex alignItems="center" gap="2">
-            <Sparkles size={20} className="text-[#F76707]" />
+            <Sparkles size={20} className="text-[#7C3AED]" />
             <H1>Welcome to Flapr</H1>
           </Flex>
           <Text size="2" variant="tertiary">
@@ -255,7 +255,7 @@ export default function OnboardingPage() {
                   className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all ${currentStep > step.number
                       ? "border-[#2B8A3E] bg-[#2B8A3E] text-white"
                       : currentStep === step.number
-                        ? "border-[#F76707] bg-[#FFF4E6] text-[#E8590C]"
+                        ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
                         : "border-[#E8E8E4] bg-white text-[#6B6B6B]"
                     }`}
                 >
@@ -292,7 +292,7 @@ export default function OnboardingPage() {
           <Card>
             <Card.Header>
               <Flex alignItems="center" gap="2">
-                <Globe size={18} className="text-[#F76707]" />
+                <Globe size={18} className="text-[#7C3AED]" />
                 <H2>Connect Your Accounts</H2>
               </Flex>
             </Card.Header>
@@ -380,7 +380,7 @@ export default function OnboardingPage() {
           <Card>
             <Card.Header>
               <Flex alignItems="center" gap="2">
-                <Send size={18} className="text-[#F76707]" />
+                <Send size={18} className="text-[#7C3AED]" />
                 <H2>Draft Your First Post</H2>
               </Flex>
             </Card.Header>
@@ -398,7 +398,7 @@ export default function OnboardingPage() {
                     rows={5}
                     required
                     placeholder="What's on your mind?"
-                    className="w-full rounded-xl border border-[#E8E8E4] bg-[#FAFAF8] px-4 py-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#F76707] focus:outline-none focus:ring-1 focus:ring-[#F76707]"
+                    className="w-full rounded-xl border border-[#E8E8E4] bg-[#FAFAF8] px-4 py-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                   />
 
                   <Flex gap="3" wrap="wrap" alignItems="end">
@@ -415,8 +415,8 @@ export default function OnboardingPage() {
                               type="button"
                               onClick={() => setPostPlatform(platform)}
                               className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${postPlatform === platform
-                                  ? "border-[#F76707] bg-[#FFF4E6] text-[#E8590C]"
-                                  : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#F76707]/40"
+                                  ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
+                                  : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
                                 }`}
                             >
                               <span
@@ -444,7 +444,7 @@ export default function OnboardingPage() {
                         type="datetime-local"
                         value={postSchedule}
                         onChange={(e) => setPostSchedule(e.target.value)}
-                        className="h-8 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#F76707] focus:outline-none focus:ring-1 focus:ring-[#F76707]"
+                        className="h-8 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                       />
                     </div>
                   </Flex>
@@ -467,7 +467,7 @@ export default function OnboardingPage() {
           <Card>
             <Card.Header>
               <Flex alignItems="center" gap="2">
-                <Zap size={18} className="text-[#F76707]" />
+                <Zap size={18} className="text-[#7C3AED]" />
                 <H2>Set Up Auto-Plug</H2>
               </Flex>
             </Card.Header>
@@ -481,7 +481,7 @@ export default function OnboardingPage() {
 
                   <div className="flex flex-col gap-1.5">
                     <Flex alignItems="center" gap="2">
-                      <Heart size={14} className="text-[#F76707]" />
+                      <Heart size={14} className="text-[#7C3AED]" />
                       <label className="text-xs font-medium text-[#6B6B6B]">
                         Fire when likes reach
                       </label>
@@ -491,7 +491,7 @@ export default function OnboardingPage() {
                       min={1}
                       value={plugValue}
                       onChange={(e) => setPlugValue(Number(e.target.value))}
-                      className="h-9 w-32 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#F76707] focus:outline-none focus:ring-1 focus:ring-[#F76707]"
+                      className="h-9 w-32 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                     />
                   </div>
 
@@ -505,7 +505,7 @@ export default function OnboardingPage() {
                       rows={4}
                       required
                       placeholder="When this post hits the threshold, reply with…"
-                      className="w-full rounded-xl border border-[#E8E8E4] bg-[#FAFAF8] px-4 py-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#F76707] focus:outline-none focus:ring-1 focus:ring-[#F76707]"
+                      className="w-full rounded-xl border border-[#E8E8E4] bg-[#FAFAF8] px-4 py-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                     />
                   </div>
 

@@ -8,7 +8,7 @@ export default function AnalyticsPage() {
   return (
     <Flex direction="column" gap="5">
       <Flex alignItems="center" gap="3">
-        <Eye size={24} className="text-[#F76707]" />
+        <Eye size={24} className="text-[#7C3AED]" />
         <div>
           <H1>Analytics</H1>
           <Text size="2" variant="tertiary">

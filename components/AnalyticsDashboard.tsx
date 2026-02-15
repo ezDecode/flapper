@@ -105,7 +105,7 @@ export function AnalyticsDashboard() {
           <Card.Body>
             <Flex direction="column" gap="2">
               <Flex alignItems="center" gap="2">
-                <Heart size={16} className="text-[#F76707]" />
+                <Heart size={16} className="text-[#7C3AED]" />
                 <Text size="1" variant="tertiary">
                   Total engagement (7d)
                 </Text>
@@ -121,7 +121,7 @@ export function AnalyticsDashboard() {
           <Card.Body>
             <Flex direction="column" gap="2">
               <Flex alignItems="center" gap="2">
-                <Zap size={16} className="text-[#F76707]" />
+                <Zap size={16} className="text-[#7C3AED]" />
                 <Text size="1" variant="tertiary">
                   Top posts tracked
                 </Text>
@@ -137,7 +137,7 @@ export function AnalyticsDashboard() {
           <Card.Body>
             <Flex direction="column" gap="2">
               <Flex alignItems="center" gap="2">
-                <Globe size={16} className="text-[#F76707]" />
+                <Globe size={16} className="text-[#7C3AED]" />
                 <Text size="1" variant="tertiary">
                   Platforms active
                 </Text>
@@ -243,7 +243,7 @@ export function AnalyticsDashboard() {
                 <Tooltip />
                 <Bar
                   dataKey="likes"
-                  fill="#F76707"
+                  fill="#7C3AED"
                   radius={[6, 6, 0, 0]}
                 />
               </BarChart>

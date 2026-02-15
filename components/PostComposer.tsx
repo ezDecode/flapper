@@ -190,7 +190,7 @@ export function PostComposer() {
           </Flex>
         </Card.Header>
         <Card.Body>
-          <div className="min-h-[160px] rounded-lg border border-[#E8E8E4] bg-[#FAFAF8] p-4 transition-colors focus-within:border-[#F76707] focus-within:ring-1 focus-within:ring-[#F76707]">
+          <div className="min-h-[160px] rounded-lg border border-[#E8E8E4] bg-[#FAFAF8] p-4 transition-colors focus-within:border-[#7C3AED] focus-within:ring-1 focus-within:ring-[#7C3AED]">
             <EditorContent
               editor={editor}
               className="prose prose-sm max-w-none focus:outline-none [&_.ProseMirror]:min-h-[120px] [&_.ProseMirror]:outline-none"
@@ -223,8 +223,8 @@ export function PostComposer() {
                       type="button"
                       onClick={() => togglePlatform(platform)}
                       className={`inline-flex items-center gap-2 rounded-xl border-2 px-4 py-2.5 text-sm font-medium transition-all ${isSelected
-                          ? "border-[#F76707] bg-[#FFF4E6] text-[#E8590C]"
-                          : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#F76707]/40"
+                          ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
+                          : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
                         }`}
                     >
                       <span style={{ color: isSelected ? meta.color : undefined }}>
@@ -250,7 +250,7 @@ export function PostComposer() {
                   type="datetime-local"
                   value={scheduledAt}
                   onChange={(e) => setScheduledAt(e.target.value)}
-                  className="h-9 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#F76707] focus:outline-none focus:ring-1 focus:ring-[#F76707]"
+                  className="h-9 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                 />
               </Flex>
             </div>

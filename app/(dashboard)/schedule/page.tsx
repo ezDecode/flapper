@@ -8,7 +8,7 @@ export default function SchedulePage() {
   return (
     <Flex direction="column" gap="5">
       <Flex alignItems="center" gap="3">
-        <CalendarDays size={24} className="text-[#F76707]" />
+        <CalendarDays size={24} className="text-[#7C3AED]" />
         <div>
           <H1>Schedule</H1>
           <Text size="2" variant="tertiary">
