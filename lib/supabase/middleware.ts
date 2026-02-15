@@ -10,22 +10,21 @@ export async function updateSession(request: NextRequest) {
 
   const supabase = createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
     cookies: {
-      get: (name: string) => request.cookies.get(name)?.value,
-      set: (name: string, value: string, options: Record<string, unknown>) => {
-        request.cookies.set(name, value);
+      getAll: () => request.cookies.getAll(),
+      setAll: (cookiesToSet) => {
+        cookiesToSet.forEach(({ name, value }) =>
+          request.cookies.set(name, value)
+        );
         response = NextResponse.next({ request });
-        response.cookies.set(name, value, options);
+        cookiesToSet.forEach(({ name, value, options }) =>
+          response.cookies.set(name, value, options)
+        );
       },
-      remove: (name: string, options: Record<string, unknown>) => {
-        request.cookies.set(name, "");
-        response = NextResponse.next({ request });
-        response.cookies.set(name, "", { ...options, maxAge: 0 });
-      }
-    }
+    },
   });
 
   const {
-    data: { user }
+    data: { user },
   } = await supabase.auth.getUser();
 
   return { response, user };

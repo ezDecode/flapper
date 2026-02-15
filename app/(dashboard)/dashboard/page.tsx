@@ -20,7 +20,7 @@ const statusStyles: Record<string, string> = {
 };
 
 export default async function DashboardPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
