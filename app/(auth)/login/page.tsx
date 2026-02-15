@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { RaisedButton } from "@/components/ui/raised-button";
 
 export default function AuthPageWrapper() {
   return (
@@ -144,24 +145,24 @@ function AuthPage() {
 
           {/* OAuth buttons — shared */}
           <div className="flex flex-col gap-3">
-            <button
+            <RaisedButton
               type="button"
               onClick={() => oauth("twitter")}
-              className="flex w-full items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-normal transition-colors hover:border-[#D4CFC6]"
-              style={{ borderColor: "#E5E0D8", color: "#3D3D50" }}
+              color="#000000"
+              className="w-full text-white"
             >
               <i className="devicon-twitter-original" />
               Sign in with Twitter
-            </button>
-            <button
+            </RaisedButton>
+            <RaisedButton
               type="button"
               onClick={() => oauth("linkedin_oidc")}
-              className="flex w-full items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-normal transition-colors hover:border-[#D4CFC6]"
-              style={{ borderColor: "#E5E0D8", color: "#3D3D50" }}
+              color="#0077B5"
+              className="w-full text-white"
             >
               <i className="devicon-linkedin-plain" />
               Sign in with LinkedIn
-            </button>
+            </RaisedButton>
           </div>
 
           <div className="my-6 flex items-center gap-3">
@@ -218,14 +219,14 @@ function AuthPage() {
                 </p>
               )}
 
-              <button
+              <RaisedButton
                 type="submit"
                 disabled={loginLoading}
-                className="w-full rounded-lg py-2.5 text-sm font-medium text-white transition-all hover:brightness-110 disabled:opacity-60"
-                style={{ background: "#8B5CF6" }}
+                color="#8B5CF6"
+                className="w-full"
               >
                 {loginLoading ? "Logging in…" : "Log in"}
-              </button>
+              </RaisedButton>
             </form>
           )}
 
@@ -333,14 +334,14 @@ function AuthPage() {
                     </p>
                   )}
 
-                  <button
+                  <RaisedButton
                     type="submit"
                     disabled={regLoading}
-                    className="w-full rounded-lg py-2.5 text-sm font-medium text-white transition-all hover:brightness-110 disabled:opacity-60"
-                    style={{ background: "#8B5CF6" }}
+                    color="#8B5CF6"
+                    className="w-full"
                   >
                     {regLoading ? "Creating your account…" : "Create account"}
-                  </button>
+                  </RaisedButton>
                 </form>
               )}
             </>

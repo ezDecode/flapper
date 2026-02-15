@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import type { Platform } from "@/lib/constants";
+import { RaisedButton } from "@/components/ui/raised-button";
 
 const platformOptions: Platform[] = ["TWITTER", "LINKEDIN", "BLUESKY"];
 
@@ -253,10 +254,10 @@ export default function OnboardingPage() {
               <Flex direction="column" alignItems="center" gap="1">
                 <div
                   className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all ${currentStep > step.number
-                      ? "border-[#2B8A3E] bg-[#2B8A3E] text-white"
-                      : currentStep === step.number
-                        ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
-                        : "border-[#E8E8E4] bg-white text-[#6B6B6B]"
+                    ? "border-[#2B8A3E] bg-[#2B8A3E] text-white"
+                    : currentStep === step.number
+                      ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
+                      : "border-[#E8E8E4] bg-white text-[#6B6B6B]"
                     }`}
                 >
                   {currentStep > step.number ? (
@@ -278,8 +279,8 @@ export default function OnboardingPage() {
               {idx < steps.length - 1 && (
                 <div
                   className={`mx-3 mb-5 h-0.5 w-16 rounded-full ${currentStep > step.number
-                      ? "bg-[#2B8A3E]"
-                      : "bg-[#E8E8E4]"
+                    ? "bg-[#2B8A3E]"
+                    : "bg-[#E8E8E4]"
                     }`}
                 />
               )}
@@ -314,8 +315,8 @@ export default function OnboardingPage() {
                       <div
                         key={platform}
                         className={`flex items-center justify-between rounded-xl border p-4 transition-colors ${isConnected
-                            ? "border-[#2B8A3E]/30 bg-[#EBFBEE]"
-                            : "border-[#E8E8E4] bg-white"
+                          ? "border-[#2B8A3E]/30 bg-[#EBFBEE]"
+                          : "border-[#E8E8E4] bg-white"
                           }`}
                       >
                         <Flex alignItems="center" gap="3">
@@ -362,14 +363,15 @@ export default function OnboardingPage() {
                   })}
                 </Flex>
 
-                <Button
-                  variant="primary"
+                <RaisedButton
                   disabled={connections.length < 1}
                   onClick={() => updateStep(1)}
-                  endIcon={<ChevronDown size={16} className="rotate-[-90deg]" />}
+                  color="#8B5CF6"
+                  className="w-full justify-center"
                 >
                   Continue
-                </Button>
+                  <ChevronDown size={16} className="rotate-[-90deg]" />
+                </RaisedButton>
               </Flex>
             </Card.Body>
           </Card>
@@ -415,8 +417,8 @@ export default function OnboardingPage() {
                               type="button"
                               onClick={() => setPostPlatform(platform)}
                               className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${postPlatform === platform
-                                  ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
-                                  : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
+                                ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
+                                : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
                                 }`}
                             >
                               <span
@@ -449,13 +451,14 @@ export default function OnboardingPage() {
                     </div>
                   </Flex>
 
-                  <Button
-                    variant="primary"
+                  <RaisedButton
                     type="submit"
-                    endIcon={<ChevronDown size={16} className="rotate-[-90deg]" />}
+                    color="#8B5CF6"
+                    className="w-full justify-center"
                   >
                     Save and continue
-                  </Button>
+                    <ChevronDown size={16} className="rotate-[-90deg]" />
+                  </RaisedButton>
                 </Flex>
               </form>
             </Card.Body>
@@ -509,13 +512,14 @@ export default function OnboardingPage() {
                     />
                   </div>
 
-                  <Button
-                    variant="primary"
+                  <RaisedButton
                     type="submit"
-                    startIcon={<Sparkles size={16} />}
+                    color="#8B5CF6"
+                    className="w-full justify-center"
                   >
+                    <Sparkles size={16} />
                     Finish onboarding
-                  </Button>
+                  </RaisedButton>
                 </Flex>
               </form>
             </Card.Body>

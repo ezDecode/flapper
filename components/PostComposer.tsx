@@ -20,6 +20,7 @@ import { PostPreview } from "@/components/PostPreview";
 import { UpgradeModal } from "@/components/UpgradeModal";
 import { PLATFORM_CHAR_LIMITS, type Platform } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/client";
+import { RaisedButton } from "@/components/ui/raised-button";
 
 const platforms = Object.keys(PLATFORM_CHAR_LIMITS) as Platform[];
 
@@ -223,8 +224,8 @@ export function PostComposer() {
                       type="button"
                       onClick={() => togglePlatform(platform)}
                       className={`inline-flex items-center gap-2 rounded-xl border-2 px-4 py-2.5 text-sm font-medium transition-all ${isSelected
-                          ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
-                          : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
+                        ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
+                        : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
                         }`}
                     >
                       <span style={{ color: isSelected ? meta.color : undefined }}>
@@ -270,14 +271,14 @@ export function PostComposer() {
 
       {/* Submit */}
       <Flex alignItems="center" gap="3">
-        <Button
-          variant="primary"
-          startIcon={<Send size={16} />}
+        <RaisedButton
+          color="#8B5CF6"
           onClick={submit}
           disabled={saving}
         >
+          <Send size={16} />
           {saving ? "Scheduling…" : "Schedule Post"}
-        </Button>
+        </RaisedButton>
         {status ? (
           <Flex alignItems="center" gap="1">
             {status.includes("successfully") ? (
