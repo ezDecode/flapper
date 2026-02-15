@@ -12,6 +12,7 @@ coverage
 .DS_Store
 *.tsbuildinfo
 .tmp_docx
+package-lock.json
 
 
 
