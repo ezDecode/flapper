@@ -1,7 +1,9 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
 import { RaisedButton } from "@/components/ui/raised-button";
+import { StaggeredText } from "@/components/ui/staggered-text";
 import { C } from "@/lib/landing-data";
 import { useEffect, useState } from "react";
 
@@ -58,8 +60,8 @@ const PLATFORMS = [
     },
 ];
 
-const CYCLE_DURATION = 2600; // ms per platform
-const BLUR_DURATION = 380;   // ms for in/out transition
+const CYCLE_DURATION = 2600;
+const BLUR_DURATION = 380;
 
 type Phase = "visible" | "blurring-out" | "blurring-in";
 
@@ -96,19 +98,19 @@ export function PlatformCycler() {
     const blurStyle: React.CSSProperties =
         phase === "blurring-out"
             ? {
-                opacity: 0,
-                filter: "blur(12px)",
-                transform: "translateY(-6px) scale(0.96)",
-                transition: `all ${BLUR_DURATION}ms cubic-bezier(0.4,0,0.2,1)`,
-            }
+                  opacity: 0,
+                  filter: "blur(12px)",
+                  transform: "translateY(-6px) scale(0.96)",
+                  transition: `all ${BLUR_DURATION}ms cubic-bezier(0.4,0,0.2,1)`,
+              }
             : phase === "blurring-in"
-                ? {
+              ? {
                     opacity: 0,
                     filter: "blur(12px)",
                     transform: "translateY(6px) scale(0.96)",
                     transition: "none",
                 }
-                : {
+              : {
                     opacity: 1,
                     filter: "blur(0px)",
                     transform: "translateY(0px) scale(1)",
@@ -117,75 +119,132 @@ export function PlatformCycler() {
 
     return (
         <span
-            className="inline-flex items-center gap-2 rounded-xl px-3.5 py-1 text-[0.92em] font-medium align-middle"
+            className="inline-flex items-center justify-center align-middle"
             style={{
                 ...blurStyle,
-                background: platform.bg,
-                border: `1.5px solid ${platform.border}`,
-                color: platform.color,
-                boxShadow: `0 0 18px 0 ${platform.bg}, inset 0 1px 0 rgba(255,255,255,0.06)`,
+                width: "1.1em",
+                height: "1.1em",
                 verticalAlign: "middle",
                 position: "relative",
                 top: "-0.06em",
                 willChange: "opacity, filter, transform",
+                color: platform.color,
             }}
         >
-            <span
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md overflow-hidden"
-                style={{ background: platform.iconBg }}
-            >
-                <platform.Icon className="h-3.5 w-3.5" />
-            </span>
-            <span>{platform.shortName}</span>
+            <platform.Icon className="w-full h-full" />
         </span>
     );
 }
+
+// ─── Sequence timing (ms from page load) ──────────────────────────────────────
+const SEQUENCE = {
+    badge: 200,
+    headingLine1: 500,
+    headingLine2: 900,
+    description: 1400,
+    cta: 1800,
+    features: 2200,
+} as const;
+
+// ─── Fade-up motion variant ───────────────────────────────────────────────────
+const EASE = [0.19, 1, 0.22, 1] as const;
+
+const fadeUp = (delayMs: number) => ({
+    initial: { opacity: 0, y: 20, filter: "blur(6px)" },
+    animate: {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        transition: {
+            duration: 0.6,
+            delay: delayMs / 1000,
+            ease: EASE as unknown as [number, number, number, number],
+        },
+    },
+});
 
 interface HeroProps {
     onOpenAuth: (tab: "login" | "register") => void;
 }
 
 export function Hero({ onOpenAuth }: HeroProps) {
+    const [step, setStep] = useState(0);
+
+    useEffect(() => {
+        const timers = [
+            setTimeout(() => setStep(1), SEQUENCE.badge),
+            setTimeout(() => setStep(2), SEQUENCE.headingLine1),
+            setTimeout(() => setStep(3), SEQUENCE.headingLine2),
+            setTimeout(() => setStep(4), SEQUENCE.description),
+            setTimeout(() => setStep(5), SEQUENCE.cta),
+            setTimeout(() => setStep(6), SEQUENCE.features),
+        ];
+        return () => timers.forEach(clearTimeout);
+    }, []);
+
     return (
         <section className="relative flex flex-col items-center justify-center px-4 pt-40 pb-10 text-center md:px-8 md:pt-52 md:pb-16">
-            <div
-                className="mb-8 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-medium"
+            {/* Badge */}
+            <motion.div
+                {...fadeUp(SEQUENCE.badge)}
+                className="mb-8 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-medium"
                 style={{
                     borderColor: C.border,
                     color: C.textSoft,
                     background: C.surface,
                 }}
             >
-                <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-                </span>
+                <PlatformCycler />
                 Now in public beta
-            </div>
+            </motion.div>
 
+            {/* Heading */}
             <h1 className="max-w-4xl text-[clamp(2.5rem,8vw,5rem)] font-medium tracking-tighter leading-[0.825] md:leading-[0.94]">
-                <span style={{ color: C.text }}>Let your posts work</span>
+                <StaggeredText
+                    text="Engage smarter."
+                    as="span"
+                    segmentBy="chars"
+                    delay={25}
+                    duration={0.5}
+                    direction="top"
+                    blur
+                    easing="anticipate"
+                    startAnimation={step >= 2}
+                    className="!w-auto"
+                />
                 <br />
-                <span
-                    className="inline-flex items-center gap-3 flex-wrap justify-center"
-                    style={{ color: C.textMuted }}
-                >
-                    harder on&nbsp;<PlatformCycler />
+                <span style={{ color: C.textMuted }}>
+                    <StaggeredText
+                        text="Convert on autopilot."
+                        as="span"
+                        segmentBy="chars"
+                        delay={25}
+                        duration={0.5}
+                        direction="top"
+                        blur
+                        easing="anticipate"
+                        startAnimation={step >= 3}
+                        className="!w-auto"
+                    />
                 </span>
-                <br />
-                <span style={{ color: C.textMuted }}>after you log off.</span>
             </h1>
 
-            <p
+            {/* Description */}
+            <motion.p
+                {...fadeUp(SEQUENCE.description)}
                 className="mt-8 max-w-xl text-lg leading-relaxed text-balance font-normal"
                 style={{ color: C.textSoft }}
             >
                 Schedule detailed threads. Set engagement triggers. Flapr replies with
                 your CTA exactly when your post takes off — capturing every opportunity
                 while you sleep.
-            </p>
+            </motion.p>
 
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
+            {/* CTA */}
+            <motion.div
+                {...fadeUp(SEQUENCE.cta)}
+                className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
+            >
                 <RaisedButton
                     onClick={() => onOpenAuth("register")}
                     size="lg"
@@ -195,7 +254,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
                     Start for free
                     <ArrowRight className="h-4 w-4" />
                 </RaisedButton>
-            </div>
+            </motion.div>
         </section>
     );
 }

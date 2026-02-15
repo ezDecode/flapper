@@ -75,10 +75,11 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                             onClick={() => onOpenAuth("register")}
                             color={plan.highlighted ? C.accent : undefined}
                             size="lg"
+                            fullWidth
                             className={cn(
-                                "w-full font-medium h-12",
+                                "font-medium h-12",
                                 !plan.highlighted &&
-                                "bg-transparent border border-white/10 hover:bg-white/5"
+                                "!bg-transparent !border !border-white/10 hover:!bg-white/5 !shadow-none"
                             )}
                         >
                             {plan.cta}

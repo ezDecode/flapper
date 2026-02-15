@@ -367,7 +367,8 @@ export default function OnboardingPage() {
                   disabled={connections.length < 1}
                   onClick={() => updateStep(1)}
                   color="#8B5CF6"
-                  className="w-full justify-center"
+                  fullWidth
+                  className="justify-center"
                 >
                   Continue
                   <ChevronDown size={16} className="rotate-[-90deg]" />
@@ -454,7 +455,8 @@ export default function OnboardingPage() {
                   <RaisedButton
                     type="submit"
                     color="#8B5CF6"
-                    className="w-full justify-center"
+                    fullWidth
+                    className="justify-center"
                   >
                     Save and continue
                     <ChevronDown size={16} className="rotate-[-90deg]" />
@@ -515,7 +517,8 @@ export default function OnboardingPage() {
                   <RaisedButton
                     type="submit"
                     color="#8B5CF6"
-                    className="w-full justify-center"
+                    fullWidth
+                    className="justify-center"
                   >
                     <Sparkles size={16} />
                     Finish onboarding

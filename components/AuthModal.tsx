@@ -142,7 +142,8 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             type="button"
             onClick={() => oauth("twitter")}
             color="#000000"
-            className="w-full text-white"
+            fullWidth
+            className="text-white"
           >
             <TwitterXIcon className="mr-2 h-5 w-5" />
             Sign in with Twitter
@@ -151,7 +152,8 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             type="button"
             onClick={() => oauth("linkedin_oidc")}
             color="#0077B5"
-            className="w-full text-white"
+            fullWidth
+            className="text-white"
           >
             <LinkedInIcon className="mr-2 h-5 w-5" />
             Sign in with LinkedIn
@@ -216,7 +218,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
               type="submit"
               disabled={loginLoading}
               color="#8B5CF6"
-              className="w-full"
+              fullWidth
             >
               {loginLoading ? "Logging in…" : "Log in"}
             </RaisedButton>
@@ -331,7 +333,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                   type="submit"
                   disabled={regLoading}
                   color="#8B5CF6"
-                  className="w-full"
+                  fullWidth
                 >
                   {regLoading ? "Creating your account…" : "Create account"}
                 </RaisedButton>
