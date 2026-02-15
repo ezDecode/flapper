@@ -11,6 +11,8 @@ import {
   Target,
   Shield,
   Play,
+  Plus,
+  Minus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +21,7 @@ import { Suspense, useEffect, useState } from "react";
 
 import AuthModal from "@/components/AuthModal";
 import { RaisedButton } from "@/components/ui/raised-button";
+import { FeatureCard } from "@/components/ui/feature-card";
 
 /* ── Data ─────────────────────────────────────────────── */
 
@@ -173,6 +176,41 @@ const C = {
   accentSoft: "rgba(139, 92, 246, 0.12)",
 };
 
+const FAQItem = ({ q, a }: { q: string; a: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div
+      className={cn(
+        "overflow-hidden rounded-2xl border transition-all duration-300",
+        isOpen ? "bg-white/5 border-white/10" : "bg-transparent border-transparent hover:bg-white/[0.02]"
+      )}
+      style={{ borderColor: isOpen ? C.border : 'transparent' }}
+    >
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex w-full items-center justify-between px-6 py-5 text-left"
+      >
+        <span className="text-lg font-medium" style={{ color: C.text }}>{q}</span>
+        {isOpen ? (
+          <Minus className="h-5 w-5 shrink-0 transition-transform duration-300" style={{ color: C.accent }} />
+        ) : (
+          <Plus className="h-5 w-5 shrink-0 transition-transform duration-300" style={{ color: C.textSoft }} />
+        )}
+      </button>
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-300 ease-in-out px-6",
+          isOpen ? "max-h-40 opacity-100 pb-6" : "max-h-0 opacity-0"
+        )}
+      >
+        <p className="text-base leading-relaxed font-normal" style={{ color: C.textSoft }}>
+          {a}
+        </p>
+      </div>
+    </div>
+  )
+}
+
 /* ── Component ────────────────────────────────────────── */
 
 export default function LandingPage() {
@@ -208,17 +246,17 @@ function LandingPageInner() {
   return (
     <>
       <main
-        className="min-h-screen w-full overflow-x-hidden"
+        className="min-h-screen w-full overflow-x-hidden tracking-tight"
         style={{ background: C.bg, color: C.text }}
       >
-        {/* ─── THE 70% CONTAINER ─── */}
-        <div className="mx-auto w-[70%] min-h-screen border-x border-white/[0.03]">
+        {/* ─── THE RESPONSIVE CONTAINER ─── */}
+        <div className="mx-auto min-h-screen w-full border-x border-white/[0.03] md:w-[90%] lg:w-[80%] xl:w-[70%]">
 
           {/* ─── NAV ─── */}
-          <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/[0.03] bg-[#0C0C0E]/80 px-8 py-5 backdrop-blur-xl">
+          <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/[0.03] bg-[#0C0C0E]/80 px-4 py-5 backdrop-blur-xl md:px-8">
             <Link
               href="/"
-              className="text-xl font-bold tracking-tighter"
+              className="text-xl font-medium tracking-tighter"
               style={{ color: C.text }}
             >
               Flapr
@@ -241,7 +279,7 @@ function LandingPageInner() {
               <RaisedButton
                 onClick={() => openAuth("register")}
                 color={C.accent}
-                className="h-9 px-5 text-sm"
+                className="h-9 px-5 text-sm font-medium"
               >
                 Start free
               </RaisedButton>
@@ -249,7 +287,7 @@ function LandingPageInner() {
           </header>
 
           {/* ─── HERO ─── */}
-          <section className="relative flex flex-col items-center justify-center px-8 py-32 text-center">
+          <section className="relative flex flex-col items-center justify-center px-4 py-20 text-center md:px-8 md:py-32">
             <div
               className="mb-8 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-medium"
               style={{
@@ -265,14 +303,14 @@ function LandingPageInner() {
               Now in public beta
             </div>
 
-            <h1 className="max-w-4xl text-5xl font-bold tracking-tighter sm:text-7xl md:text-8xl lg:leading-[0.9]">
+            <h1 className="max-w-4xl text-[clamp(3rem,9vw,6rem)] font-medium tracking-tighter leading-[0.95] md:leading-[0.9]">
               <span style={{ color: C.text }}>Let your posts work</span>
               <br />
               <span style={{ color: C.textMuted }}>after you log off.</span>
             </h1>
 
             <p
-              className="mt-8 max-w-xl text-lg leading-relaxed text-balance"
+              className="mt-8 max-w-xl text-lg leading-relaxed text-balance font-normal"
               style={{ color: C.textSoft }}
             >
               Schedule detailed threads. Set engagement triggers. Flapr replies with your
@@ -284,7 +322,7 @@ function LandingPageInner() {
                 onClick={() => openAuth("register")}
                 size="lg"
                 color={C.accent}
-                className="h-12 px-8 text-base"
+                className="h-12 px-8 text-base font-medium"
               >
                 Start for free
                 <ArrowRight className="h-4 w-4" />
@@ -301,53 +339,36 @@ function LandingPageInner() {
           </section>
 
           {/* ─── FEATURES (Bento Grid) ─── */}
-          <section id="features" className="px-8 py-24 border-t border-white/[0.03]">
+          <section id="features" className="border-t border-white/[0.03] px-4 py-20 md:px-8 md:py-24">
             <div className="mb-16">
-              <h2 className="text-4xl font-semibold tracking-tight md:text-5xl" style={{ color: C.text }}>
+              <h2 className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-tight" style={{ color: C.text }}>
                 Everything needed to<br />
                 <span style={{ color: C.textMuted }}>convert attention.</span>
               </h2>
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
-              {features.map((f, i) => {
-                const Icon = f.icon;
-                return (
-                  <div
-                    key={i}
-                    className={cn(
-                      "group relative overflow-hidden rounded-3xl border p-8 transition-all hover:border-white/10",
-                      f.className
-                    )}
-                    style={{
-                      background: C.surface,
-                      borderColor: C.border,
-                    }}
-                  >
-                    <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/5 bg-white/5">
-                      <Icon className="h-6 w-6" style={{ color: C.accent }} />
-                    </div>
-                    <h3 className="mb-3 text-xl font-semibold" style={{ color: C.text }}>
-                      {f.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed" style={{ color: C.textSoft }}>
-                      {f.desc}
-                    </p>
-                  </div>
-                )
-              })}
+              {features.map((f, i) => (
+                <FeatureCard
+                  key={i}
+                  icon={f.icon}
+                  title={f.title}
+                  description={f.desc}
+                  className={f.className}
+                />
+              ))}
             </div>
           </section>
 
           {/* ─── HOW IT WORKS ─── */}
-          <section id="how-it-works" className="px-8 py-24 border-t border-white/[0.03]">
+          <section id="how-it-works" className="border-t border-white/[0.03] px-4 py-20 md:px-8 md:py-24">
             <div className="grid gap-16 lg:grid-cols-2">
-              <div className="sticky top-32 self-start">
-                <h2 className="text-4xl font-semibold tracking-tight md:text-5xl" style={{ color: C.text }}>
+              <div className="self-start lg:sticky lg:top-32">
+                <h2 className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-tight" style={{ color: C.text }}>
                   Three steps.<br />
                   <span style={{ color: C.textMuted }}>Zero friction.</span>
                 </h2>
-                <p className="mt-6 text-lg" style={{ color: C.textSoft }}>
+                <p className="mt-6 text-lg font-normal" style={{ color: C.textSoft }}>
                   Stop gluing together Zapier, Buffer, and makeshift scripts.
                   Flapr handles the entire lifecycle of a viral post in one cohesive workflow.
                 </p>
@@ -361,15 +382,15 @@ function LandingPageInner() {
                     style={{ background: C.surface, borderColor: C.border }}
                   >
                     <span
-                      className="mb-4 block text-xs font-bold uppercase tracking-wider"
+                      className="mb-4 block text-xs font-medium uppercase tracking-wider"
                       style={{ color: C.accent }}
                     >
                       Step {step.num}
                     </span>
-                    <h3 className="mb-2 text-2xl font-semibold" style={{ color: C.text }}>
+                    <h3 className="mb-2 text-2xl font-medium" style={{ color: C.text }}>
                       {step.title}
                     </h3>
-                    <p className="text-base" style={{ color: C.textSoft }}>
+                    <p className="text-base font-normal" style={{ color: C.textSoft }}>
                       {step.description}
                     </p>
                   </div>
@@ -379,8 +400,8 @@ function LandingPageInner() {
           </section>
 
           {/* ─── TESTIMONIALS ─── */}
-          <section className="px-8 py-24 border-t border-white/[0.03]">
-            <h2 className="mb-16 text-center text-3xl font-semibold tracking-tight" style={{ color: C.text }}>
+          <section className="border-t border-white/[0.03] px-4 py-20 md:px-8 md:py-24">
+            <h2 className="mb-16 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight" style={{ color: C.text }}>
               Loved by builders who ship.
             </h2>
             <div className="grid gap-6 md:grid-cols-3">
@@ -390,12 +411,12 @@ function LandingPageInner() {
                   className="flex flex-col justify-between rounded-3xl border p-8"
                   style={{ background: C.bgAlt, borderColor: C.border }}
                 >
-                  <p className="text-base leading-relaxed" style={{ color: C.textSoft }}>
+                  <p className="text-base leading-relaxed font-normal" style={{ color: C.textSoft }}>
                     &ldquo;{t.quote}&rdquo;
                   </p>
                   <div className="mt-8">
-                    <p className="font-semibold" style={{ color: C.text }}>{t.name}</p>
-                    <p className="text-xs" style={{ color: C.textMuted }}>{t.role}</p>
+                    <p className="font-medium" style={{ color: C.text }}>{t.name}</p>
+                    <p className="text-xs font-normal" style={{ color: C.textMuted }}>{t.role}</p>
                   </div>
                 </div>
               ))}
@@ -403,12 +424,12 @@ function LandingPageInner() {
           </section>
 
           {/* ─── PRICING ─── */}
-          <section id="pricing" className="px-8 py-24 border-t border-white/[0.03]">
+          <section id="pricing" className="border-t border-white/[0.03] px-4 py-20 md:px-8 md:py-24">
             <div className="mb-16 text-center">
-              <h2 className="text-4xl font-semibold tracking-tight md:text-5xl" style={{ color: C.text }}>
+              <h2 className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight" style={{ color: C.text }}>
                 Simple pricing.
               </h2>
-              <p className="mt-4 text-lg" style={{ color: C.textSoft }}>
+              <p className="mt-4 text-lg font-normal" style={{ color: C.textSoft }}>
                 Start free. Upgrade when it proves its value.
               </p>
             </div>
@@ -417,7 +438,7 @@ function LandingPageInner() {
               {plans.map((plan) => (
                 <div
                   key={plan.name}
-                  className="flex flex-col rounded-3xl border p-8 transition-transform hover:scale-[1.02]"
+                  className="flex flex-col rounded-3xl border p-8"
                   style={{
                     background: plan.highlighted ? C.surfaceHover : C.surface,
                     borderColor: plan.highlighted ? C.accent : C.border,
@@ -425,19 +446,19 @@ function LandingPageInner() {
                   }}
                 >
                   {plan.highlighted && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-500 px-3 py-1 text-xs font-bold text-white shadow-lg shadow-indigo-500/25">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-500 px-3 py-1 text-xs font-medium text-white shadow-lg shadow-indigo-500/25">
                       MOST POPULAR
                     </div>
                   )}
-                  <h3 className="text-xl font-semibold" style={{ color: C.text }}>{plan.name}</h3>
+                  <h3 className="text-xl font-medium" style={{ color: C.text }}>{plan.name}</h3>
                   <div className="mt-4 mb-8 flex items-baseline">
-                    <span className="text-4xl font-bold" style={{ color: C.text }}>{plan.price}</span>
-                    <span className="ml-1 text-sm" style={{ color: C.textMuted }}>{plan.period}</span>
+                    <span className="text-4xl font-medium" style={{ color: C.text }}>{plan.price}</span>
+                    <span className="ml-1 text-sm font-normal" style={{ color: C.textMuted }}>{plan.period}</span>
                   </div>
 
                   <ul className="mb-8 flex-1 space-y-4">
                     {plan.features.map(f => (
-                      <li key={f} className="flex items-start gap-3 text-sm" style={{ color: C.textSoft }}>
+                      <li key={f} className="flex items-start gap-3 text-sm font-normal" style={{ color: C.textSoft }}>
                         <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: C.accent }} />
                         {f}
                       </li>
@@ -447,7 +468,7 @@ function LandingPageInner() {
                   <RaisedButton
                     onClick={() => openAuth("register")}
                     color={plan.highlighted ? C.accent : undefined}
-                    className={cn("w-full", !plan.highlighted && "bg-transparent border border-white/10 hover:bg-white/5")}
+                    className={cn("w-full font-medium", !plan.highlighted && "bg-transparent border border-white/10 hover:bg-white/5")}
                   >
                     {plan.cta}
                   </RaisedButton>
@@ -457,36 +478,29 @@ function LandingPageInner() {
           </section>
 
           {/* ─── FAQ ─── */}
-          <section className="px-8 py-24 border-t border-white/[0.03]">
-            <div className="grid gap-12 md:grid-cols-[1fr_2fr]">
-              <h2 className="text-3xl font-semibold tracking-tight" style={{ color: C.text }}>
-                Common<br />Questions
+          <section className="border-t border-white/[0.03] px-4 py-20 md:px-8 md:py-24">
+            <div className="mx-auto max-w-3xl">
+              <h2 className="mb-12 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight" style={{ color: C.text }}>
+                Common<br className="md:hidden" /> Questions
               </h2>
-              <div className="space-y-8">
+              <div className="space-y-4">
                 {faqs.map((faq, i) => (
-                  <div key={i} className="border-b border-white/[0.05] pb-8 last:border-0 last:pb-0">
-                    <h3 className="text-lg font-medium" style={{ color: C.text }}>
-                      {faq.q}
-                    </h3>
-                    <p className="mt-3 text-base leading-relaxed" style={{ color: C.textSoft }}>
-                      {faq.a}
-                    </p>
-                  </div>
+                  <FAQItem key={i} {...faq} />
                 ))}
               </div>
             </div>
           </section>
 
           {/* ─── FOOTER ─── */}
-          <footer className="border-t border-white/[0.03] px-8 py-12">
+          <footer className="border-t border-white/[0.03] px-4 py-12 md:px-8">
             <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-              <p className="text-sm font-semibold" style={{ color: C.textMuted }}>
+              <p className="text-sm font-medium" style={{ color: C.textMuted }}>
                 &copy; 2026 Flapr Inc.
               </p>
               <div className="flex gap-6">
-                <Link href="/privacy" className="text-sm hover:text-white" style={{ color: C.textMuted }}>Privacy</Link>
-                <Link href="/terms" className="text-sm hover:text-white" style={{ color: C.textMuted }}>Terms</Link>
-                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-sm hover:text-white" style={{ color: C.textMuted }}>Twitter</a>
+                <Link href="/privacy" className="text-sm font-medium hover:text-white" style={{ color: C.textMuted }}>Privacy</Link>
+                <Link href="/terms" className="text-sm font-medium hover:text-white" style={{ color: C.textMuted }}>Terms</Link>
+                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-sm font-medium hover:text-white" style={{ color: C.textMuted }}>Twitter</a>
               </div>
             </div>
           </footer>
