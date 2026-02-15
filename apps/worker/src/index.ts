@@ -27,7 +27,6 @@ const start = async () => {
     logger.info("Worker shutting down");
     poller.stop();
     await Promise.all([publishWorker.close(), pollWorker.close(), plugWorker.close()]);
-    await redisConnection.quit();
     process.exit(0);
   };
 

@@ -1,8 +1,9 @@
+import { SignUp } from "@clerk/nextjs";
+
 export default function RegisterPage() {
   return (
-    <section>
-      <h1>Register</h1>
-      <p>Create your OmniPlug account.</p>
+    <section style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+      <SignUp routing="path" path="/register" signInUrl="/login" />
     </section>
   );
 }

@@ -1,14 +1,30 @@
-import jwt from "@fastify/jwt";
+import { verifyToken } from "@clerk/backend";
 import fp from "fastify-plugin";
 
 export const authPlugin = fp(async (fastify) => {
-  await fastify.register(jwt, {
-    secret: process.env.JWT_SECRET ?? "dev-jwt-secret"
-  });
-
   fastify.decorate("authenticate", async (request, reply) => {
     try {
-      await request.jwtVerify();
+      const authHeader = request.headers.authorization;
+
+      if (!authHeader?.startsWith("Bearer ")) {
+        reply.code(401).send({ error: "Missing or invalid authorization header", code: "UNAUTHORIZED" });
+        return;
+      }
+
+      const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+
+      // Verify the Clerk session token
+      const payload = await verifyToken(token, {
+        secretKey: process.env.CLERK_SECRET_KEY
+      });
+
+      if (!payload.sub) {
+        reply.code(401).send({ error: "Invalid token payload", code: "UNAUTHORIZED" });
+        return;
+      }
+
+      // Attach user ID to request
+      request.user = { id: payload.sub };
     } catch {
       reply.code(401).send({ error: "Unauthorized", code: "UNAUTHORIZED" });
     }

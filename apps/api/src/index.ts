@@ -4,7 +4,6 @@ import { authPlugin } from "./plugins/auth";
 import { corsPlugin } from "./plugins/cors";
 import { rateLimitPlugin } from "./plugins/rateLimit";
 import { analyticsRoutes } from "./routes/analytics";
-import { authRoutes } from "./routes/auth";
 import { billingRoutes } from "./routes/billing";
 import { platformsRoutes } from "./routes/platforms";
 import { plugsRoutes } from "./routes/plugs";
@@ -27,7 +26,6 @@ const buildServer = () => {
     timestamp: Date.now()
   }));
 
-  server.register(authRoutes, { prefix: "/api/auth" });
   server.register(platformsRoutes, { prefix: "/api/platforms" });
   server.register(postsRoutes, { prefix: "/api/posts" });
   server.register(plugsRoutes, { prefix: "/api/plugs" });

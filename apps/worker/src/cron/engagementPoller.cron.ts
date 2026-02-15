@@ -15,7 +15,7 @@ export const startEngagementPoller = () => {
 
     // Placeholder until DB + metrics services are fully implemented.
     await plugQueue.add(
-      QUEUES.FIRE_PLUG,
+      "fire-plug",
       {
         autoPlugId: "stub-autoplug-id",
         postId: "stub-post-id",
