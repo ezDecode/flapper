@@ -11,17 +11,17 @@ import {
 } from "@/lib/utils/colorUtils";
 
 const buttonVariants = cva(
-    "inline-flex items-center justify-center dark:bg-zinc-500 dark:text-white whitespace-nowrap text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative bg-primary text-primary-foreground hover:bg-primary/90 border border-primary/50 shadow-md before:absolute before:inset-0 before:border-t before:border-white/40 before:bg-gradient-to-b before:from-white/20 before:to-transparent cursor-pointer transition-transform duration-200 active:scale-[0.96] subpixel-antialiased gap-2",
+    "inline-flex items-center justify-center dark:bg-zinc-500 dark:text-white whitespace-nowrap text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative bg-primary text-primary-foreground hover:bg-primary/90 border border-primary/50 shadow-md before:absolute before:inset-0 before:border-t before:border-white/40 before:bg-gradient-to-b before:from-white/20 before:to-transparent cursor-pointer transition-transform duration-200 active:scale-[0.96] subpixel-antialiased gap-1.5",
     {
         variants: {
             variant: {
                 default: "",
             },
             size: {
-                default: "h-10 px-4 py-[4px] rounded-xl before:rounded-xl",
-                sm: "h-9 rounded-lg px-3 before:rounded-xl",
-                lg: "h-11 rounded-lg px-8 before:rounded-lg",
-                icon: "h-10 w-10",
+                default: "h-[30px] px-3 py-[3px] rounded-xl before:rounded-xl",
+                sm: "h-[27px] rounded-lg px-[9px] before:rounded-xl",
+                lg: "h-[33px] rounded-lg px-6 before:rounded-lg",
+                icon: "h-[30px] w-[30px]",
             },
         },
         defaultVariants: {

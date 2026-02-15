@@ -16,7 +16,7 @@ export function HowItWorks() {
                         <span style={{ color: C.textMuted }}>Zero friction.</span>
                     </h2>
                     <p
-                        className="mt-6 text-lg font-normal"
+                        className="mt-6 text-lg font-normal leading-relaxed"
                         style={{ color: C.textSoft }}
                     >
                         Stop gluing together Zapier, Buffer, and makeshift scripts. Flapr

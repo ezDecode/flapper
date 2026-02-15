@@ -58,11 +58,10 @@ export function FAQ() {
         <section className="px-4 py-20 md:px-8 md:py-24">
             <div className="mx-auto max-w-3xl">
                 <h2
-                    className="mb-12 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight"
+                    className="mb-12 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight leading-tight"
                     style={{ color: C.text }}
                 >
-                    Common
-                    <br className="md:hidden" /> Questions
+                    Common Questions
                 </h2>
                 <div className="space-y-4">
                     {faqs.map((faq, i) => (

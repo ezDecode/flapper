@@ -8,12 +8,12 @@ export function Features() {
         <section id="features" className="px-4 py-16 md:px-8 md:py-[4.8rem]">
             <div className="mb-[3.2rem]">
                 <h2
-                    className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-[0.94]"
+                    className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-tight md:leading-tight"
                     style={{ color: C.text }}
                 >
-                    Let your posts work
+                    Everything needed to
                     <br />
-                    <span style={{ color: C.textMuted }}>after you log off.</span>
+                    <span style={{ color: C.textMuted }}>build a business.</span>
                 </h2>
             </div>
 

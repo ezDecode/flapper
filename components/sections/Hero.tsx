@@ -27,7 +27,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 Now in public beta
             </div>
 
-            <h1 className="max-w-4xl text-[clamp(2.5rem,8vw,5rem)] font-medium tracking-tighter leading-none md:leading-tight">
+            <h1 className="max-w-4xl text-[clamp(2.5rem,8vw,5rem)] font-medium tracking-tighter leading-[1.1] md:leading-tight">
                 <span style={{ color: C.text }}>Let your posts work</span>
                 <br />
                 <span style={{ color: C.textMuted }}>after you log off.</span>
