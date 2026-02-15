@@ -14,7 +14,10 @@ try {
   execSync("npx next build", {
     stdio: "inherit",
     cwd: root,
-    env: { ...process.env, NEXT_BUILD_DIR: ".next-build" },
+    env: {
+      ...process.env,
+      ...(!process.env.VERCEL && { NEXT_BUILD_DIR: ".next-build" }),
+    },
   });
 } finally {
   // Restore tsconfig.json to prevent the dev server from restarting.
