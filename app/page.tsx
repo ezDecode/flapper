@@ -22,6 +22,7 @@ import { Suspense, useEffect, useState } from "react";
 import AuthModal from "@/components/AuthModal";
 import { RaisedButton } from "@/components/ui/raised-button";
 import { FeatureCard } from "@/components/ui/feature-card";
+import { NavbarWithMenu } from "@/components/ui/navbar-menu";
 import { TwitterXIcon, LinkedInIcon, BlueskyIcon } from "@/components/ui/icons";
 
 /* ── Data ─────────────────────────────────────────────── */
@@ -254,38 +255,42 @@ function LandingPageInner() {
         <div className="mx-auto min-h-screen w-full md:w-[90%] lg:w-[80%] xl:w-[70%]">
 
           {/* ─── NAV ─── */}
-          <header className="sticky top-6 z-50 mx-auto flex w-[95%] max-w-5xl items-center justify-between rounded-xl border border-white/10 bg-[#0C0C0E]/80 px-6 py-3 backdrop-blur-xl md:px-6">
-            <Link
-              href="/"
-              className="text-xl font-medium tracking-tighter"
-              style={{ color: C.text }}
-            >
-              Flapr
-            </Link>
-
-            <nav className="hidden items-center gap-8 md:flex">
-              <a href="#features" className="text-sm font-medium transition-colors hover:text-white" style={{ color: C.textSoft }}>Features</a>
-              <a href="#how-it-works" className="text-sm font-medium transition-colors hover:text-white" style={{ color: C.textSoft }}>How it works</a>
-              <a href="#pricing" className="text-sm font-medium transition-colors hover:text-white" style={{ color: C.textSoft }}>Pricing</a>
-            </nav>
-
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => openAuth("login")}
-                className="text-sm font-medium transition-colors hover:text-white"
-                style={{ color: C.textSoft }}
+          {/* ─── NAV ─── */}
+          <NavbarWithMenu
+            navItems={[
+              { type: "link", label: "Features", href: "#features" },
+              { type: "link", label: "How it works", href: "#how-it-works" },
+              { type: "link", label: "Pricing", href: "#pricing" },
+            ]}
+            sections={[]}
+            logo={
+              <Link
+                href="/"
+                className="text-xl font-medium tracking-tighter"
+                style={{ color: C.text }}
               >
-                Log in
-              </button>
-              <RaisedButton
-                onClick={() => openAuth("register")}
-                color={C.accent}
-                className="h-9 px-5 text-sm font-medium"
-              >
-                Start free
-              </RaisedButton>
-            </div>
-          </header>
+                Flapr
+              </Link>
+            }
+            cta={
+              <>
+                <button
+                  onClick={() => openAuth("login")}
+                  className="text-sm font-medium transition-colors hover:text-white px-3"
+                  style={{ color: C.textSoft }}
+                >
+                  Log in
+                </button>
+                <RaisedButton
+                  onClick={() => openAuth("register")}
+                  color={C.accent}
+                  className="h-9 px-5 text-sm font-medium"
+                >
+                  Start free
+                </RaisedButton>
+              </>
+            }
+          />
 
           {/* ─── HERO ─── */}
           <section className="relative flex flex-col items-center justify-center px-4 py-20 text-center md:px-8 md:py-32">
