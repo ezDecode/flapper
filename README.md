@@ -1,27 +1,26 @@
-# OmniPlug
+# Flapr
 
-TypeScript-first monorepo scaffold for a multi-platform scheduler and auto-plug engine.
+Flapr is a web-only auto-plug engine for creators and indie hackers.
 
-## Workspace Layout
+## Stack
 
-- `apps/web`: Next.js 14 App Router frontend
-- `apps/api`: Fastify REST API
-- `apps/worker`: BullMQ worker + cron service
-- `packages/db`: Prisma schema + shared client
-- `packages/types`: shared TypeScript interfaces
-- `packages/utils`: shared constants/utilities
+- Next.js 14 App Router
+- Supabase (Auth, Postgres, Storage, Edge Functions, Cron)
+- Stripe billing
+- Resend transactional email
 
-## Quick Start
+## Scripts
 
-```bash
-pnpm install
-cp .env.example .env
-docker compose up -d
-pnpm db:generate
-pnpm dev
-```
+- `pnpm dev`
+- `pnpm build`
+- `pnpm typecheck`
+- `pnpm db:push`
+- `pnpm fn:serve`
 
-## Notes
+## Setup
 
-- The scaffold follows the architecture and naming in `Ideation.txt`.
-- Most endpoints/services are wired as typed stubs so implementation can proceed section-by-section.
+1. Copy `.env.example` to `.env.local` and fill values.
+2. Start Supabase locally and run migrations.
+3. Run `pnpm dev`.
+
+Master implementation reference: `FLAPR_MASTER_BUILD.txt`.

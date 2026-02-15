@@ -1,7 +1,0 @@
-export const PLATFORM_CHAR_LIMITS = {
-  TWITTER: 280,
-  LINKEDIN: 3000,
-  INSTAGRAM: 2200,
-  BLUESKY: 300
-} as const;
-

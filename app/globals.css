@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f4f9ff;
+  --fg: #0c1f33;
+  --muted: #5e7388;
+  --card: #ffffff;
+  --line: #d6e4f2;
+  --brand: #0094e6;
+  --brand-dark: #005c97;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  color: var(--fg);
+  background: radial-gradient(circle at 10% -20%, #d7f0ff 0%, #f4f9ff 35%, #eef6ff 100%);
+  font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

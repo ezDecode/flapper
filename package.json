@@ -1,19 +1,47 @@
 {
-  "name": "omniplug",
+  "name": "flapr",
   "private": true,
   "packageManager": "pnpm@9.15.0",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck",
-    "test": "turbo run test",
-    "db:generate": "pnpm --filter @omniplug/db prisma generate",
-    "db:migrate": "pnpm --filter @omniplug/db prisma migrate dev --name init"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "gen:types": "supabase gen types typescript --local > lib/supabase/database.types.ts && node -e \"require('node:fs').copyFileSync('lib/supabase/database.types.ts','supabase/functions/_shared/database.types.ts')\"",
+    "db:push": "supabase db push",
+    "db:reset": "supabase db reset",
+    "fn:serve": "supabase functions serve",
+    "fn:deploy": "supabase functions deploy",
+    "fn:invoke": "supabase functions invoke"
+  },
+  "dependencies": {
+    "@supabase/ssr": "0.3.0",
+    "@supabase/supabase-js": "2.43.4",
+    "@tanstack/react-query": "5.90.21",
+    "@tiptap/extension-character-count": "2.4.0",
+    "@tiptap/react": "2.4.0",
+    "@tiptap/starter-kit": "2.4.0",
+    "@vercel/analytics": "1.6.1",
+    "date-fns": "3.6.0",
+    "lucide-react": "0.379.0",
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-big-calendar": "1.11.0",
+    "react-dom": "18.3.1",
+    "react-hook-form": "7.51.5",
+    "recharts": "2.12.7",
+    "zod": "3.23.8",
+    "zustand": "4.5.2"
   },
   "devDependencies": {
-    "@types/node": "^25.2.3",
-    "turbo": "^2.3.3",
-    "typescript": "^5.9.3"
+    "@types/node": "20.17.0",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "autoprefixer": "10.4.20",
+    "postcss": "8.4.49",
+    "supabase": "2.76.8",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.4.5"
   }
 }
