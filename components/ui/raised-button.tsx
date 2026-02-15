@@ -18,10 +18,10 @@ const buttonVariants = cva(
                 default: "",
             },
             size: {
-                default: "h-[30px] px-3 py-[3px] rounded-xl before:rounded-xl",
-                sm: "h-[27px] rounded-lg px-[9px] before:rounded-xl",
-                lg: "h-[33px] rounded-lg px-6 before:rounded-lg",
-                icon: "h-[30px] w-[30px]",
+                default: "px-3 py-2 rounded-xl before:rounded-xl",
+                sm: "rounded-lg px-[9px] py-2 before:rounded-xl",
+                lg: "rounded-lg px-6 py-2 before:rounded-lg",
+                icon: "p-2",
             },
         },
         defaultVariants: {
