@@ -1,4 +1,5 @@
 import { err, handleCors, json } from "../_shared/cors.ts";
+import { isServiceRoleRequest } from "../_shared/supabase-admin.ts";
 
 type Payload = {
   to: string;
@@ -10,6 +11,7 @@ type Payload = {
 Deno.serve(async (req) => {
   const preflight = handleCors(req);
   if (preflight) return preflight;
+  if (!isServiceRoleRequest(req)) return err("Service role authorization required", 401);
 
   try {
     const { to, subject, html, text } = (await req.json()) as Payload;

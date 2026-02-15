@@ -14,34 +14,17 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const oauth = async (provider: "twitter" | "linkedin_oidc") => {
-    const redirectTo = `${window.location.origin}/auth/callback?next=/onboarding`;
-    await supabase.auth.signInWithOAuth({ provider, options: { redirectTo } });
-  };
-
   const register = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
     setSuccess("");
     setLoading(true);
 
-    const { data: code } = await supabase
-      .from("beta_codes")
-      .select("code, used_by")
-      .eq("code", betaCode.trim())
-      .maybeSingle();
-
-    if (!code || code.used_by) {
-      setLoading(false);
-      setError("Invalid invite code.");
-      return;
-    }
-
-    const { data, error: signUpError } = await supabase.auth.signUp({
+    const { error: signUpError } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { full_name: name },
+        data: { full_name: name, beta_code: betaCode.trim() },
         emailRedirectTo: `${window.location.origin}/auth/callback?next=/onboarding`
       }
     });
@@ -52,14 +35,6 @@ export default function RegisterPage() {
       return;
     }
 
-    if (data.user?.id) {
-      await supabase
-        .from("beta_codes")
-        .update({ used_by: data.user.id, used_at: new Date().toISOString() })
-        .eq("code", betaCode.trim());
-      await supabase.from("users").update({ is_beta_user: true }).eq("id", data.user.id);
-    }
-
     setLoading(false);
     setSuccess("Check your email to confirm your account.");
   };
@@ -68,22 +43,7 @@ export default function RegisterPage() {
     <section className="mx-auto max-w-md space-y-4 rounded-2xl border border-[var(--line)] bg-white p-6">
       <h1 className="text-2xl font-semibold">Create account</h1>
 
-      <div className="space-y-2">
-        <button
-          type="button"
-          className="w-full rounded border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50"
-          onClick={() => oauth("twitter")}
-        >
-          Continue with Twitter
-        </button>
-        <button
-          type="button"
-          className="w-full rounded border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50"
-          onClick={() => oauth("linkedin_oidc")}
-        >
-          Continue with LinkedIn
-        </button>
-      </div>
+      <p className="text-sm text-slate-600">Invite-only signup. Use your invite code to create an account.</p>
 
       <form className="space-y-3" onSubmit={register}>
         <input

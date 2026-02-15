@@ -30,7 +30,8 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
-        Update: Partial<Database["public"]["Tables"]["users"]["Insert"]>;
+        
+        Relationships: [];
       };
       beta_codes: {
         Row: {
@@ -45,7 +46,8 @@ export type Database = {
           used_at?: string | null;
           created_at?: string;
         };
-        Update: Partial<Database["public"]["Tables"]["beta_codes"]["Insert"]>;
+        
+        Relationships: [];
       };
       platform_connections: {
         Row: {
@@ -76,7 +78,8 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
-        Update: Partial<Database["public"]["Tables"]["platform_connections"]["Insert"]>;
+        
+        Relationships: [];
       };
       posts: {
         Row: {
@@ -107,7 +110,8 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
-        Update: Partial<Database["public"]["Tables"]["posts"]["Insert"]>;
+        
+        Relationships: [];
       };
       post_targets: {
         Row: {
@@ -138,7 +142,8 @@ export type Database = {
           published_at?: string | null;
           fail_reason?: string | null;
         };
-        Update: Partial<Database["public"]["Tables"]["post_targets"]["Insert"]>;
+        
+        Relationships: [];
       };
       auto_plugs: {
         Row: {
@@ -167,7 +172,8 @@ export type Database = {
           fail_reason?: string | null;
           created_at?: string;
         };
-        Update: Partial<Database["public"]["Tables"]["auto_plugs"]["Insert"]>;
+        
+        Relationships: [];
       };
       api_rate_tracking: {
         Row: {
@@ -182,7 +188,8 @@ export type Database = {
           window_start: string;
           call_count?: number;
         };
-        Update: Partial<Database["public"]["Tables"]["api_rate_tracking"]["Insert"]>;
+        
+        Relationships: [];
       };
     };
     Views: Record<string, never>;
@@ -202,3 +209,4 @@ export type Database = {
     CompositeTypes: Record<string, never>;
   };
 };
+

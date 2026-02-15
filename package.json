@@ -16,8 +16,8 @@
     "fn:invoke": "supabase functions invoke"
   },
   "dependencies": {
-    "@supabase/ssr": "0.3.0",
-    "@supabase/supabase-js": "2.43.4",
+    "@supabase/ssr": "0.8.0",
+    "@supabase/supabase-js": "2.95.3",
     "@tanstack/react-query": "5.90.21",
     "@tiptap/extension-character-count": "2.4.0",
     "@tiptap/react": "2.4.0",
@@ -25,7 +25,7 @@
     "@vercel/analytics": "1.6.1",
     "date-fns": "3.6.0",
     "lucide-react": "0.379.0",
-    "next": "14.2.35",
+    "next": "15.5.10",
     "react": "18.3.1",
     "react-big-calendar": "1.11.0",
     "react-dom": "18.3.1",
@@ -36,8 +36,8 @@
   },
   "devDependencies": {
     "@types/node": "20.17.0",
-    "@types/react-big-calendar": "1.16.3",
     "@types/react": "18.3.18",
+    "@types/react-big-calendar": "1.16.3",
     "@types/react-dom": "18.3.5",
     "autoprefixer": "10.4.20",
     "postcss": "8.4.49",
