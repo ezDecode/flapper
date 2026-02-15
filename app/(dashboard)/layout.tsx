@@ -46,11 +46,11 @@ export default async function DashboardLayout({
     .single();
   const profile = profileRaw as
     | {
-        plan: "FREE" | "PRO" | "AGENCY";
-        onboarding_step: number;
-        name: string | null;
-        email: string;
-      }
+      plan: "FREE" | "PRO" | "AGENCY";
+      onboarding_step: number;
+      name: string | null;
+      email: string;
+    }
     | null;
 
   if ((profile?.onboarding_step ?? 0) < 3) {
@@ -68,69 +68,69 @@ export default async function DashboardLayout({
 
   return (
     <DesignSystemProvider>
-    <div className="flex min-h-screen bg-[#FAFAF8]">
-      {/* Sidebar */}
-      <aside className="hidden lg:flex lg:w-[240px] lg:flex-col lg:fixed lg:inset-y-0 bg-zinc-950 text-white">
-        {/* Logo */}
-        <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#7C3AED] text-sm font-bold">
+      <div className="flex min-h-screen bg-[#FAFAF8]">
+        {/* Sidebar */}
+        <aside className="hidden lg:flex lg:w-[240px] lg:flex-col lg:fixed lg:inset-y-0 bg-zinc-950 text-white">
+          {/* Logo */}
+          <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#7C3AED] text-sm font-medium">
+              F
+            </div>
+            <span className="text-lg font-medium tracking-tight">Flapr</span>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 px-3 py-4 space-y-1">
+            {nav.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
+                >
+                  <Icon size={18} strokeWidth={1.8} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* User info */}
+          <div className="border-t border-white/10 p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7C3AED]/20 text-xs font-medium text-[#7C3AED]">
+                {initials}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-zinc-200">
+                  {displayName}
+                </p>
+                <span
+                  className={`mt-0.5 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${planColors[plan]}`}
+                >
+                  {plan}
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Mobile header */}
+        <div className="lg:hidden fixed top-0 inset-x-0 z-50 flex items-center gap-3 border-b border-[#E8E8E4] bg-white px-4 py-3">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#7C3AED] text-xs font-medium text-white">
             F
           </div>
-          <span className="text-lg font-semibold tracking-tight">Flapr</span>
+          <span className="text-base font-medium">Flapr</span>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
-          {nav.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
-              >
-                <Icon size={18} strokeWidth={1.8} />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* User info */}
-        <div className="border-t border-white/10 p-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7C3AED]/20 text-xs font-semibold text-[#7C3AED]">
-              {initials}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-zinc-200">
-                {displayName}
-              </p>
-              <span
-                className={`mt-0.5 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${planColors[plan]}`}
-              >
-                {plan}
-              </span>
-            </div>
+        {/* Main content */}
+        <main className="flex-1 lg:pl-[240px]">
+          <div className="mx-auto max-w-6xl px-6 py-8 lg:py-10 mt-14 lg:mt-0">
+            {children}
           </div>
-        </div>
-      </aside>
-
-      {/* Mobile header */}
-      <div className="lg:hidden fixed top-0 inset-x-0 z-50 flex items-center gap-3 border-b border-[#E8E8E4] bg-white px-4 py-3">
-        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#7C3AED] text-xs font-bold text-white">
-          F
-        </div>
-        <span className="text-base font-semibold">Flapr</span>
+        </main>
       </div>
-
-      {/* Main content */}
-      <main className="flex-1 lg:pl-[240px]">
-        <div className="mx-auto max-w-6xl px-6 py-8 lg:py-10 mt-14 lg:mt-0">
-          {children}
-        </div>
-      </main>
-    </div>
     </DesignSystemProvider>
   );
 }

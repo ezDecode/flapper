@@ -58,7 +58,7 @@ export default async function SettingsPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+        <h1 className="text-2xl font-medium tracking-tight text-zinc-900">
           Settings
         </h1>
         <p className="mt-1 text-sm text-[#6B6B6B]">
@@ -70,7 +70,7 @@ export default async function SettingsPage() {
       <section className="rounded-xl border border-[#E8E8E4] bg-white shadow-sm">
         <div className="flex items-center gap-2 border-b border-[#E8E8E4] px-6 py-4">
           <Link2 size={16} className="text-[#6B6B6B]" />
-          <h2 className="text-sm font-semibold text-zinc-900">
+          <h2 className="text-sm font-medium text-zinc-900">
             Connected Platforms
           </h2>
         </div>
@@ -83,7 +83,7 @@ export default async function SettingsPage() {
       <section className="rounded-xl border border-[#E8E8E4] bg-white shadow-sm">
         <div className="flex items-center gap-2 border-b border-[#E8E8E4] px-6 py-4">
           <CreditCard size={16} className="text-[#6B6B6B]" />
-          <h2 className="text-sm font-semibold text-zinc-900">
+          <h2 className="text-sm font-medium text-zinc-900">
             Subscription &amp; Billing
           </h2>
         </div>
@@ -96,7 +96,7 @@ export default async function SettingsPage() {
               <div className="mt-1 flex items-center gap-2">
                 <span
                   className={cn(
-                    "rounded-full px-3 py-1 text-xs font-semibold",
+                    "rounded-full px-3 py-1 text-xs font-medium",
                     planBadge[plan]
                   )}
                 >
@@ -157,7 +157,7 @@ export default async function SettingsPage() {
             {plan === "FREE" ? (
               <button
                 type="button"
-                className="inline-flex items-center gap-2 rounded-lg bg-[#7C3AED] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#8B5CF6]"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#7C3AED] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#8B5CF6]"
               >
                 <Zap size={15} />
                 Upgrade to Pro — $19/mo

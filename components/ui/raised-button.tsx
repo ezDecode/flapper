@@ -100,7 +100,7 @@ export function RaisedButton({
         padding: sizeStyles.padding,
         fontSize: sizeStyles.fontSize,
         fontFamily: "'DM Sans', sans-serif",
-        fontWeight: 600,
+        fontWeight: 500,
         letterSpacing: "-0.01em",
         borderRadius: sizeStyles.borderRadius,
         border: "none",

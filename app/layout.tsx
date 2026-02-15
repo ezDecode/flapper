@@ -7,6 +7,7 @@ const inter = localFont({
   src: "../public/fonts/InterVariable.ttf",
   variable: "--font-inter",
   display: "swap",
+  weight: "400 500",
 });
 
 export const metadata: Metadata = {

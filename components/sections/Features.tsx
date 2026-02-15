@@ -304,7 +304,7 @@ export function Features() {
                                     initial="initial"
                                     animate="animate"
                                     exit="exit"
-                                    className="mb-1 text-sm font-semibold whitespace-nowrap sm:text-base"
+                                    className="mb-1 text-sm font-medium whitespace-nowrap sm:text-base"
                                     style={{
                                         color: C.text,
                                         letterSpacing: "-0.01em",

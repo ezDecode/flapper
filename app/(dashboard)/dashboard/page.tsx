@@ -107,7 +107,7 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+        <h1 className="text-2xl font-medium tracking-tight text-zinc-900">
           Dashboard
         </h1>
         <p className="mt-1 text-sm text-[#6B6B6B]">
@@ -137,7 +137,7 @@ export default async function DashboardPage() {
                   <Icon size={18} className={stat.color} strokeWidth={2} />
                 </div>
               </div>
-              <p className="mt-3 text-3xl font-bold tracking-tight text-zinc-900">
+              <p className="mt-3 text-3xl font-medium tracking-tight text-zinc-900">
                 {stat.value}
               </p>
             </article>
@@ -150,7 +150,7 @@ export default async function DashboardPage() {
         <div className="flex items-center justify-between border-b border-[#E8E8E4] px-6 py-4">
           <div className="flex items-center gap-2">
             <TrendingUp size={16} className="text-[#6B6B6B]" />
-            <h2 className="text-sm font-semibold text-zinc-900">
+            <h2 className="text-sm font-medium text-zinc-900">
               Recent Activity
             </h2>
           </div>
@@ -189,7 +189,7 @@ export default async function DashboardPage() {
                   <td className="px-6 py-3.5">
                     <span
                       className={cn(
-                        "inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                        "inline-block rounded-full px-2.5 py-0.5 text-xs font-medium",
                         statusStyles[post.status] ??
                         "bg-zinc-100 text-zinc-600 border border-zinc-200"
                       )}

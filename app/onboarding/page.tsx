@@ -253,7 +253,7 @@ export default function OnboardingPage() {
             <Flex key={step.number} alignItems="center" gap="0">
               <Flex direction="column" alignItems="center" gap="1">
                 <div
-                  className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all ${currentStep > step.number
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-medium transition-all ${currentStep > step.number
                     ? "border-[#2B8A3E] bg-[#2B8A3E] text-white"
                     : currentStep === step.number
                       ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"

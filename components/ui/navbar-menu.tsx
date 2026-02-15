@@ -114,7 +114,7 @@ const ListItem = React.forwardRef<
                             {children && (
                                 <p
                                     className={cn(
-                                        "line-clamp-2 text-sm leading-tight font-light text-zinc-500",
+                                        "line-clamp-2 text-sm leading-tight font-normal text-zinc-500",
                                         backgroundImage && "relative z-[2]",
                                     )}
                                 >
