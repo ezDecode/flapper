@@ -28,8 +28,11 @@ export async function GET(request: Request) {
   }
 
   const {
-    data: { session, user }
+    data: { session }
   } = await supabase.auth.getSession();
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
 
   const oauthSession = session as OAuthSession | null;
   const provider = user?.app_metadata?.provider as string | undefined;
@@ -58,7 +61,8 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${origin}/login?error=missing_user`);
   }
 
-  const { data: profile } = await supabase.from("users").select("onboarding_step").eq("id", user.id).single();
+  const { data: profileRaw } = await supabase.from("users").select("onboarding_step").eq("id", user.id).single();
+  const profile = profileRaw as { onboarding_step: number } | null;
   const onboardingStep = profile?.onboarding_step ?? 0;
 
   if (onboardingStep < 3) {
