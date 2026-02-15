@@ -22,6 +22,7 @@ import { Suspense, useEffect, useState } from "react";
 import AuthModal from "@/components/AuthModal";
 import { RaisedButton } from "@/components/ui/raised-button";
 import { FeatureCard } from "@/components/ui/feature-card";
+import { TwitterXIcon, LinkedInIcon, BlueskyIcon } from "@/components/ui/icons";
 
 /* ── Data ─────────────────────────────────────────────── */
 
@@ -250,10 +251,10 @@ function LandingPageInner() {
         style={{ background: C.bg, color: C.text }}
       >
         {/* ─── THE RESPONSIVE CONTAINER ─── */}
-        <div className="mx-auto min-h-screen w-full border-x border-white/[0.03] md:w-[90%] lg:w-[80%] xl:w-[70%]">
+        <div className="mx-auto min-h-screen w-full md:w-[90%] lg:w-[80%] xl:w-[70%]">
 
           {/* ─── NAV ─── */}
-          <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/[0.03] bg-[#0C0C0E]/80 px-4 py-5 backdrop-blur-xl md:px-8">
+          <header className="sticky top-6 z-50 mx-auto flex w-[95%] max-w-5xl items-center justify-between rounded-xl border border-white/10 bg-[#0C0C0E]/80 px-6 py-3 backdrop-blur-xl md:px-6">
             <Link
               href="/"
               className="text-xl font-medium tracking-tighter"
@@ -331,15 +332,15 @@ function LandingPageInner() {
                 className="flex items-center gap-4 px-4 text-sm font-medium"
                 style={{ color: C.textMuted }}
               >
-                <i className="devicon-twitter-original" />
-                <i className="devicon-linkedin-plain" />
-                <span>Bluesky</span>
+                <TwitterXIcon className="h-5 w-5" />
+                <LinkedInIcon className="h-5 w-5" />
+                <BlueskyIcon className="h-5 w-5" />
               </div>
             </div>
           </section>
 
           {/* ─── FEATURES (Bento Grid) ─── */}
-          <section id="features" className="border-t border-white/[0.03] px-4 py-20 md:px-8 md:py-24">
+          <section id="features" className="px-4 py-20 md:px-8 md:py-24">
             <div className="mb-16">
               <h2 className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-tight" style={{ color: C.text }}>
                 Everything needed to<br />
@@ -361,7 +362,7 @@ function LandingPageInner() {
           </section>
 
           {/* ─── HOW IT WORKS ─── */}
-          <section id="how-it-works" className="border-t border-white/[0.03] px-4 py-20 md:px-8 md:py-24">
+          <section id="how-it-works" className="px-4 py-20 md:px-8 md:py-24">
             <div className="grid gap-16 lg:grid-cols-2">
               <div className="self-start lg:sticky lg:top-32">
                 <h2 className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-tight" style={{ color: C.text }}>
@@ -400,7 +401,7 @@ function LandingPageInner() {
           </section>
 
           {/* ─── TESTIMONIALS ─── */}
-          <section className="border-t border-white/[0.03] px-4 py-20 md:px-8 md:py-24">
+          <section className="px-4 py-20 md:px-8 md:py-24">
             <h2 className="mb-16 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight" style={{ color: C.text }}>
               Loved by builders who ship.
             </h2>
@@ -424,7 +425,7 @@ function LandingPageInner() {
           </section>
 
           {/* ─── PRICING ─── */}
-          <section id="pricing" className="border-t border-white/[0.03] px-4 py-20 md:px-8 md:py-24">
+          <section id="pricing" className="px-4 py-20 md:px-8 md:py-24">
             <div className="mb-16 text-center">
               <h2 className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight" style={{ color: C.text }}>
                 Simple pricing.
@@ -478,7 +479,7 @@ function LandingPageInner() {
           </section>
 
           {/* ─── FAQ ─── */}
-          <section className="border-t border-white/[0.03] px-4 py-20 md:px-8 md:py-24">
+          <section className="px-4 py-20 md:px-8 md:py-24">
             <div className="mx-auto max-w-3xl">
               <h2 className="mb-12 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight" style={{ color: C.text }}>
                 Common<br className="md:hidden" /> Questions
@@ -492,7 +493,7 @@ function LandingPageInner() {
           </section>
 
           {/* ─── FOOTER ─── */}
-          <footer className="border-t border-white/[0.03] px-4 py-12 md:px-8">
+          <footer className="px-4 py-12 md:px-8">
             <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
               <p className="text-sm font-medium" style={{ color: C.textMuted }}>
                 &copy; 2026 Flapr Inc.

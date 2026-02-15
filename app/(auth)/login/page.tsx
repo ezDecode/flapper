@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { RaisedButton } from "@/components/ui/raised-button";
+import { TwitterXIcon, LinkedInIcon } from "@/components/ui/icons";
 
 export default function AuthPageWrapper() {
   return (
@@ -151,7 +152,7 @@ function AuthPage() {
               color="#000000"
               className="w-full text-white"
             >
-              <i className="devicon-twitter-original" />
+              <TwitterXIcon className="mr-2 h-5 w-5" />
               Sign in with Twitter
             </RaisedButton>
             <RaisedButton
@@ -160,7 +161,7 @@ function AuthPage() {
               color="#0077B5"
               className="w-full text-white"
             >
-              <i className="devicon-linkedin-plain" />
+              <LinkedInIcon className="mr-2 h-5 w-5" />
               Sign in with LinkedIn
             </RaisedButton>
           </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { RaisedButton } from "./ui/raised-button";
+import { TwitterXIcon, LinkedInIcon } from "./ui/icons";
 
 interface AuthModalProps {
   tab: "login" | "register";
@@ -143,7 +144,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             color="#000000"
             className="w-full text-white"
           >
-            <i className="devicon-twitter-original" />
+            <TwitterXIcon className="mr-2 h-5 w-5" />
             Sign in with Twitter
           </RaisedButton>
           <RaisedButton
@@ -152,7 +153,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             color="#0077B5"
             className="w-full text-white"
           >
-            <i className="devicon-linkedin-plain" />
+            <LinkedInIcon className="mr-2 h-5 w-5" />
             Sign in with LinkedIn
           </RaisedButton>
         </div>
