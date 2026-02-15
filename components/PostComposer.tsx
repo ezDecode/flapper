@@ -5,6 +5,16 @@ import CharacterCount from "@tiptap/extension-character-count";
 import StarterKit from "@tiptap/starter-kit";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { addMinutes } from "date-fns";
+import { Button, Card, Flex, Pill, Text } from "@maximeheckel/design-system";
+import {
+  Send,
+  Clock,
+  Twitter,
+  Linkedin,
+  Globe,
+  AlertCircle,
+  Check,
+} from "lucide-react";
 import { AutoPlugConfig, type AutoPlugState } from "@/components/AutoPlugConfig";
 import { PostPreview } from "@/components/PostPreview";
 import { UpgradeModal } from "@/components/UpgradeModal";
@@ -16,21 +26,50 @@ const platforms = Object.keys(PLATFORM_CHAR_LIMITS) as Platform[];
 const defaultAutoPlug: AutoPlugState = {
   TWITTER: { triggerType: "LIKES", triggerValue: 100, plugContent: "" },
   LINKEDIN: { triggerType: "LIKES", triggerValue: 100, plugContent: "" },
-  BLUESKY: { triggerType: "LIKES", triggerValue: 100, plugContent: "" }
+  BLUESKY: { triggerType: "LIKES", triggerValue: 100, plugContent: "" },
+};
+
+const platformMeta: Record<
+  Platform,
+  { icon: React.ReactNode; label: string; color: string; bgClass: string }
+> = {
+  TWITTER: {
+    icon: <Twitter size={16} />,
+    label: "Twitter / X",
+    color: "#1DA1F2",
+    bgClass: "bg-[#E8F5FD]",
+  },
+  LINKEDIN: {
+    icon: <Linkedin size={16} />,
+    label: "LinkedIn",
+    color: "#0A66C2",
+    bgClass: "bg-[#E8F0FE]",
+  },
+  BLUESKY: {
+    icon: <Globe size={16} />,
+    label: "Bluesky",
+    color: "#0085FF",
+    bgClass: "bg-[#E8F4FF]",
+  },
 };
 
 export function PostComposer() {
   const supabase = createClient();
-  const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>(["TWITTER"]);
-  const [autoPlugState, setAutoPlugState] = useState<AutoPlugState>(defaultAutoPlug);
-  const [scheduledAt, setScheduledAt] = useState(addMinutes(new Date(), 15).toISOString().slice(0, 16));
+  const [selectedPlatforms, setSelectedPlatforms] = useState<Platform[]>([
+    "TWITTER",
+  ]);
+  const [autoPlugState, setAutoPlugState] =
+    useState<AutoPlugState>(defaultAutoPlug);
+  const [scheduledAt, setScheduledAt] = useState(
+    addMinutes(new Date(), 15).toISOString().slice(0, 16)
+  );
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState("");
   const [showUpgrade, setShowUpgrade] = useState(false);
 
   const editor = useEditor({
     extensions: [StarterKit, CharacterCount.configure({ limit: 3000 })],
-    content: ""
+    content: "",
   });
 
   const content = editor?.getText() ?? "";
@@ -39,11 +78,19 @@ export function PostComposer() {
     if (selectedPlatforms.length === 0) {
       return 0;
     }
-    return Math.min(...selectedPlatforms.map((platform) => PLATFORM_CHAR_LIMITS[platform] - content.length));
+    return Math.min(
+      ...selectedPlatforms.map(
+        (platform) => PLATFORM_CHAR_LIMITS[platform] - content.length
+      )
+    );
   }, [content.length, selectedPlatforms]);
 
   const togglePlatform = (platform: Platform) => {
-    setSelectedPlatforms((prev) => (prev.includes(platform) ? prev.filter((item) => item !== platform) : [...prev, platform]));
+    setSelectedPlatforms((prev) =>
+      prev.includes(platform)
+        ? prev.filter((item) => item !== platform)
+        : [...prev, platform]
+    );
   };
 
   const submit = async () => {
@@ -67,7 +114,7 @@ export function PostComposer() {
     setStatus("");
 
     const {
-      data: { user }
+      data: { user },
     } = await supabase.auth.getUser();
 
     if (!user) {
@@ -82,7 +129,7 @@ export function PostComposer() {
         user_id: user.id,
         content,
         status: "SCHEDULED",
-        scheduled_at: new Date(scheduledAt).toISOString()
+        scheduled_at: new Date(scheduledAt).toISOString(),
       })
       .select("id")
       .single();
@@ -96,17 +143,26 @@ export function PostComposer() {
       return;
     }
 
-    const targets = selectedPlatforms.map((platform) => ({ post_id: post.id, platform }));
+    const targets = selectedPlatforms.map((platform) => ({
+      post_id: post.id,
+      platform,
+    }));
     const plugs = selectedPlatforms.map((platform) => ({
       post_id: post.id,
       platform,
-      plug_content: autoPlugState[platform].plugContent || "Check this out: https://flapr.app",
+      plug_content:
+        autoPlugState[platform].plugContent ||
+        "Check this out: https://flapr.app",
       trigger_type: autoPlugState[platform].triggerType,
-      trigger_value: autoPlugState[platform].triggerValue
+      trigger_value: autoPlugState[platform].triggerValue,
     }));
 
-    const { error: targetError } = await supabase.from("post_targets").insert(targets);
-    const { error: plugError } = await supabase.from("auto_plugs").insert(plugs);
+    const { error: targetError } = await supabase
+      .from("post_targets")
+      .insert(targets);
+    const { error: plugError } = await supabase
+      .from("auto_plugs")
+      .insert(plugs);
 
     if (targetError || plugError) {
       setSaving(false);
@@ -120,57 +176,132 @@ export function PostComposer() {
   };
 
   return (
-    <div className="space-y-5">
-      <section className="rounded-xl border border-[var(--line)] bg-white p-4">
-        <h2 className="text-sm font-semibold">Post Content</h2>
-        <div className="mt-3 rounded-lg border border-slate-200 p-3">
-          <EditorContent editor={editor} className="min-h-[140px]" />
-        </div>
-        <p className="mt-2 text-sm text-slate-600">Character headroom: {minRemaining}</p>
-      </section>
+    <Flex direction="column" gap="5">
+      {/* Editor */}
+      <Card>
+        <Card.Header>
+          <Flex alignItems="center" justifyContent="space-between">
+            <Text size="2" weight="4">
+              Post Content
+            </Text>
+            <Pill variant={minRemaining < 0 ? "danger" : "info"}>
+              {minRemaining} chars remaining
+            </Pill>
+          </Flex>
+        </Card.Header>
+        <Card.Body>
+          <div className="min-h-[160px] rounded-lg border border-[#E8E8E4] bg-[#FAFAF8] p-4 transition-colors focus-within:border-[#F76707] focus-within:ring-1 focus-within:ring-[#F76707]">
+            <EditorContent
+              editor={editor}
+              className="prose prose-sm max-w-none focus:outline-none [&_.ProseMirror]:min-h-[120px] [&_.ProseMirror]:outline-none"
+            />
+          </div>
+        </Card.Body>
+      </Card>
 
-      <section className="rounded-xl border border-[var(--line)] bg-white p-4">
-        <h2 className="text-sm font-semibold">Platforms</h2>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {platforms.map((platform) => (
-            <label key={platform} className="inline-flex items-center gap-2 rounded border border-slate-300 px-3 py-1.5 text-sm">
-              <input type="checkbox" checked={selectedPlatforms.includes(platform)} onChange={() => togglePlatform(platform)} />
-              {platform}
-            </label>
-          ))}
-        </div>
-        <label className="mt-4 block text-sm">
-          Schedule at
-          <input
-            type="datetime-local"
-            value={scheduledAt}
-            onChange={(event) => setScheduledAt(event.target.value)}
-            className="mt-1 block rounded border border-slate-300 px-3 py-1.5"
-          />
-        </label>
-      </section>
+      {/* Platform selector + Schedule */}
+      <Card>
+        <Card.Header>
+          <Text size="2" weight="4">
+            Platforms &amp; Schedule
+          </Text>
+        </Card.Header>
+        <Card.Body>
+          <Flex direction="column" gap="4">
+            <div>
+              <Text size="1" variant="tertiary" className="mb-2 block">
+                Select platforms
+              </Text>
+              <Flex gap="2" wrap="wrap">
+                {platforms.map((platform) => {
+                  const meta = platformMeta[platform];
+                  const isSelected = selectedPlatforms.includes(platform);
 
-      <section>
-        <AutoPlugConfig selectedPlatforms={selectedPlatforms} value={autoPlugState} onChange={setAutoPlugState} />
-      </section>
+                  return (
+                    <button
+                      key={platform}
+                      type="button"
+                      onClick={() => togglePlatform(platform)}
+                      className={`inline-flex items-center gap-2 rounded-xl border-2 px-4 py-2.5 text-sm font-medium transition-all ${
+                        isSelected
+                          ? "border-[#F76707] bg-[#FFF4E6] text-[#E8590C]"
+                          : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#F76707]/40"
+                      }`}
+                    >
+                      <span style={{ color: isSelected ? meta.color : undefined }}>
+                        {meta.icon}
+                      </span>
+                      {meta.label}
+                      {isSelected && (
+                        <Check size={14} className="text-[#2B8A3E]" />
+                      )}
+                    </button>
+                  );
+                })}
+              </Flex>
+            </div>
 
-      <section>
-        <PostPreview content={content} selectedPlatforms={selectedPlatforms} />
-      </section>
+            <div>
+              <Text size="1" variant="tertiary" className="mb-2 block">
+                Schedule at
+              </Text>
+              <Flex alignItems="center" gap="2">
+                <Clock size={16} className="text-[#6B6B6B]" />
+                <input
+                  type="datetime-local"
+                  value={scheduledAt}
+                  onChange={(e) => setScheduledAt(e.target.value)}
+                  className="h-9 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#F76707] focus:outline-none focus:ring-1 focus:ring-[#F76707]"
+                />
+              </Flex>
+            </div>
+          </Flex>
+        </Card.Body>
+      </Card>
 
-      <div className="flex items-center gap-3">
-        <button
-          type="button"
+      {/* Auto-plug config */}
+      <AutoPlugConfig
+        selectedPlatforms={selectedPlatforms}
+        value={autoPlugState}
+        onChange={setAutoPlugState}
+      />
+
+      {/* Preview */}
+      <PostPreview content={content} selectedPlatforms={selectedPlatforms} />
+
+      {/* Submit */}
+      <Flex alignItems="center" gap="3">
+        <Button
+          variant="primary"
+          startIcon={<Send size={16} />}
           onClick={submit}
           disabled={saving}
-          className="rounded bg-[var(--brand)] px-4 py-2 text-sm text-white hover:bg-[var(--brand-dark)] disabled:opacity-60"
         >
-          {saving ? "Scheduling..." : "Schedule Post"}
-        </button>
-        {status ? <p className="text-sm text-slate-600">{status}</p> : null}
-      </div>
+          {saving ? "Scheduling…" : "Schedule Post"}
+        </Button>
+        {status ? (
+          <Flex alignItems="center" gap="1">
+            {status.includes("successfully") ? (
+              <Check size={14} className="text-[#2B8A3E]" />
+            ) : (
+              <AlertCircle size={14} className="text-[#E03131]" />
+            )}
+            <Text
+              size="2"
+              variant="tertiary"
+              className={
+                status.includes("successfully")
+                  ? "text-[#2B8A3E]"
+                  : "text-[#E03131]"
+              }
+            >
+              {status}
+            </Text>
+          </Flex>
+        ) : null}
+      </Flex>
 
       <UpgradeModal open={showUpgrade} onClose={() => setShowUpgrade(false)} />
-    </div>
+    </Flex>
   );
 }

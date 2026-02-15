@@ -5,26 +5,21 @@ import type { Database } from "./database.types";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "http://127.0.0.1:54321";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "public-anon-key-placeholder";
 
-export const createClient = () => {
-  const cookieStore = cookies();
+export const createClient = async () => {
+  const cookieStore = await cookies();
 
   return createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
     cookies: {
-      get: (name: string) => cookieStore.get(name)?.value,
-      set: (name: string, value: string, options: Record<string, unknown>) => {
+      getAll: () => cookieStore.getAll(),
+      setAll: (cookiesToSet) => {
         try {
-          cookieStore.set(name, value, options);
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options)
+          );
         } catch {
-          // Ignore server component cookie mutation errors.
+          // Ignore cookie mutation errors in server components
         }
       },
-      remove: (name: string, options: Record<string, unknown>) => {
-        try {
-          cookieStore.set(name, "", { ...options, maxAge: 0 });
-        } catch {
-          // Ignore server component cookie mutation errors.
-        }
-      }
-    }
+    },
   });
 };

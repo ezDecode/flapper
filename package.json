@@ -16,6 +16,7 @@
     "fn:invoke": "supabase functions invoke"
   },
   "dependencies": {
+    "@maximeheckel/design-system": "^4.2.3",
     "@supabase/ssr": "0.8.0",
     "@supabase/supabase-js": "2.95.3",
     "@tanstack/react-query": "5.90.21",
@@ -23,7 +24,10 @@
     "@tiptap/react": "2.4.0",
     "@tiptap/starter-kit": "2.4.0",
     "@vercel/analytics": "1.6.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "date-fns": "3.6.0",
+    "geist": "^1.7.0",
     "lucide-react": "0.379.0",
     "next": "15.5.10",
     "react": "18.3.1",
@@ -31,6 +35,8 @@
     "react-dom": "18.3.1",
     "react-hook-form": "7.51.5",
     "recharts": "2.12.7",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7",
     "zod": "3.23.8",
     "zustand": "4.5.2"
   },

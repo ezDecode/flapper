@@ -1,8 +1,20 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { format, subDays } from "date-fns";
+import { Card, Flex, Text } from "@maximeheckel/design-system";
+import { Heart, Zap, Twitter, Linkedin, Globe } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type MetricRow = {
@@ -16,13 +28,15 @@ const emptySeries = Array.from({ length: 7 }).map((_, index) => ({
   day: format(subDays(new Date(), 6 - index), "MMM d"),
   twitter: 0,
   linkedin: 0,
-  bluesky: 0
+  bluesky: 0,
 }));
 
 export function AnalyticsDashboard() {
   const supabase = createClient();
   const [series, setSeries] = useState<MetricRow[]>(emptySeries);
-  const [topPosts, setTopPosts] = useState<Array<{ label: string; likes: number }>>([]);
+  const [topPosts, setTopPosts] = useState<
+    Array<{ label: string; likes: number }>
+  >([]);
 
   useEffect(() => {
     const load = async () => {
@@ -63,8 +77,9 @@ export function AnalyticsDashboard() {
         .sort((a, b) => b.likes_count - a.likes_count)
         .slice(0, 5)
         .map((item, index) => ({
-          label: item.platform_post_id?.slice(0, 8) || `Post ${index + 1}`,
-          likes: item.likes_count
+          label:
+            item.platform_post_id?.slice(0, 8) || `Post ${index + 1}`,
+          likes: item.likes_count,
         }));
 
       setTopPosts(top);
@@ -73,46 +88,169 @@ export function AnalyticsDashboard() {
     void load();
   }, []);
 
-  const plugsFired = useMemo(() => series.reduce((sum, row) => sum + row.twitter + row.linkedin + row.bluesky, 0), [series]);
+  const plugsFired = useMemo(
+    () =>
+      series.reduce(
+        (sum, row) => sum + row.twitter + row.linkedin + row.bluesky,
+        0
+      ),
+    [series]
+  );
 
   return (
-    <div className="space-y-5">
-      <div className="rounded-xl border border-[var(--line)] bg-white p-4">
-        <p className="text-sm text-slate-600">Total tracked engagement (7d)</p>
-        <p className="text-2xl font-semibold">{plugsFired}</p>
+    <Flex direction="column" gap="5">
+      {/* Stat cards */}
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Card>
+          <Card.Body>
+            <Flex direction="column" gap="2">
+              <Flex alignItems="center" gap="2">
+                <Heart size={16} className="text-[#F76707]" />
+                <Text size="1" variant="tertiary">
+                  Total engagement (7d)
+                </Text>
+              </Flex>
+              <Text size="4" weight="4">
+                {plugsFired}
+              </Text>
+            </Flex>
+          </Card.Body>
+        </Card>
+
+        <Card>
+          <Card.Body>
+            <Flex direction="column" gap="2">
+              <Flex alignItems="center" gap="2">
+                <Zap size={16} className="text-[#F76707]" />
+                <Text size="1" variant="tertiary">
+                  Top posts tracked
+                </Text>
+              </Flex>
+              <Text size="4" weight="4">
+                {topPosts.length}
+              </Text>
+            </Flex>
+          </Card.Body>
+        </Card>
+
+        <Card>
+          <Card.Body>
+            <Flex direction="column" gap="2">
+              <Flex alignItems="center" gap="2">
+                <Globe size={16} className="text-[#F76707]" />
+                <Text size="1" variant="tertiary">
+                  Platforms active
+                </Text>
+              </Flex>
+              <Text size="4" weight="4">
+                3
+              </Text>
+            </Flex>
+          </Card.Body>
+        </Card>
       </div>
 
-      <section className="rounded-xl border border-[var(--line)] bg-white p-4">
-        <h3 className="mb-3 text-sm font-semibold">Posts over time</h3>
-        <div className="h-[260px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={series}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="twitter" stroke="#0ea5e9" strokeWidth={2} />
-              <Line type="monotone" dataKey="linkedin" stroke="#1d4ed8" strokeWidth={2} />
-              <Line type="monotone" dataKey="bluesky" stroke="#14b8a6" strokeWidth={2} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </section>
+      {/* Engagement over time */}
+      <Card>
+        <Card.Header>
+          <Flex alignItems="center" justifyContent="space-between">
+            <Text size="2" weight="4">
+              Engagement over time
+            </Text>
+            <Flex gap="3" alignItems="center">
+              <Flex alignItems="center" gap="1">
+                <div className="h-2 w-2 rounded-full bg-[#0ea5e9]" />
+                <Text size="1" variant="tertiary">
+                  Twitter
+                </Text>
+              </Flex>
+              <Flex alignItems="center" gap="1">
+                <div className="h-2 w-2 rounded-full bg-[#1d4ed8]" />
+                <Text size="1" variant="tertiary">
+                  LinkedIn
+                </Text>
+              </Flex>
+              <Flex alignItems="center" gap="1">
+                <div className="h-2 w-2 rounded-full bg-[#14b8a6]" />
+                <Text size="1" variant="tertiary">
+                  Bluesky
+                </Text>
+              </Flex>
+            </Flex>
+          </Flex>
+        </Card.Header>
+        <Card.Body>
+          <div className="h-[280px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={series}>
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="#E8E8E4"
+                />
+                <XAxis
+                  dataKey="day"
+                  tick={{ fontSize: 12, fill: "#6B6B6B" }}
+                />
+                <YAxis tick={{ fontSize: 12, fill: "#6B6B6B" }} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="twitter"
+                  stroke="#0ea5e9"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="linkedin"
+                  stroke="#1d4ed8"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="bluesky"
+                  stroke="#14b8a6"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </Card.Body>
+      </Card>
 
-      <section className="rounded-xl border border-[var(--line)] bg-white p-4">
-        <h3 className="mb-3 text-sm font-semibold">Top posts by likes</h3>
-        <div className="h-[240px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={topPosts}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="label" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="likes" fill="#0284c7" radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </section>
-    </div>
+      {/* Top posts by likes */}
+      <Card>
+        <Card.Header>
+          <Text size="2" weight="4">
+            Top posts by likes
+          </Text>
+        </Card.Header>
+        <Card.Body>
+          <div className="h-[260px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={topPosts}>
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="#E8E8E4"
+                />
+                <XAxis
+                  dataKey="label"
+                  tick={{ fontSize: 12, fill: "#6B6B6B" }}
+                />
+                <YAxis tick={{ fontSize: 12, fill: "#6B6B6B" }} />
+                <Tooltip />
+                <Bar
+                  dataKey="likes"
+                  fill="#F76707"
+                  radius={[6, 6, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </Card.Body>
+      </Card>
+    </Flex>
   );
 }
