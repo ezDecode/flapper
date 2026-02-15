@@ -1,0 +1,94 @@
+// -----------------------------------------------------------------------------
+// Layers & Groups
+// -----------------------------------------------------------------------------
+
+// External Services
+Group ExternalServices [icon: globe, color: non-neptune] {
+  Stripe [icon: stripe]
+  Resend [icon: mail]
+  Twitter [icon: twitter]
+  LinkedIn [icon: linkedin]
+  Bluesky [icon: cloud]
+}
+
+// Client Layer
+Group ClientLayer [icon: monitor, color: blue] {
+  NextApp [icon: nextjs, label: "Next.js App"]
+  AuthUI [icon: lock, label: "Auth & Registration"]
+}
+
+// Serverless Layer (Edge Functions)
+Group EdgeFunctions [icon: serverless, color: orange] {
+  FuncPublish [icon: code, label: "publish-post"]
+  FuncPoll [icon: code, label: "poll-engagement"]
+  FuncRefresh [icon: code, label: "refresh-tokens"]
+  FuncEmail [icon: code, label: "send-email"]
+  FuncStripeHook [icon: code, label: "stripe-webhook"]
+  FuncCheckout [icon: code, label: "create-checkout-session"]
+  FuncConnect [icon: code, label: "platform-connect"]
+}
+
+// Database Layer
+Group DatabaseLayer [icon: database, color: green] {
+  TableUsers [icon: table, label: "public.users"]
+  TablePosts [icon: table, label: "public.posts"]
+  TableTargets [icon: table, label: "public.post_targets"]
+  TablePlugs [icon: table, label: "public.auto_plugs"]
+  TableConnections [icon: table, label: "public.platform_connections"]
+  TableBetaCodes [icon: table, label: "public.beta_codes"]
+  
+  // Triggers
+  TriggerBeta [icon: lightning, label: "Trigger: validate_beta_code"]
+  TriggerUserInit [icon: lightning, label: "Trigger: handle_new_user"]
+}
+
+// Infrastructure
+CronScheduler [icon: clock, label: "pg_cron"]
+StorageBucket [icon: storage, label: "Storage: post-media"]
+
+// -----------------------------------------------------------------------------
+// Data Flows
+// -----------------------------------------------------------------------------
+
+// 1. Authentication & Onboarding
+User [icon: user] > AuthUI [label: "Sign Up"]
+AuthUI > TriggerBeta [label: "Validate Code RPC"]
+TriggerBeta > TableBetaCodes [label: "Check/Mark Used"]
+TriggerUserInit > TableUsers [label: "Create User Profile"]
+
+// 2. Billing Flow
+NextApp > FuncCheckout [label: "Start Subscription"]
+FuncCheckout > Stripe [label: "Create Session"]
+Stripe > FuncStripeHook [label: "Webhook: Invoice Paid"]
+FuncStripeHook > TableUsers [label: "Update Plan"]
+
+// 3. Platform Connection
+NextApp > FuncConnect [label: "OAuth Flow"]
+FuncConnect > Twitter [label: "Exchange Tokens"]
+FuncConnect > LinkedIn [label: "Exchange Tokens"]
+FuncConnect > Bluesky [label: "Exchange Tokens"]
+FuncConnect > TableConnections [label: "Store Creds"]
+
+// 4. Publishing Flow
+NextApp > TablePosts [label: "Draft Post"]
+NextApp > StorageBucket [label: "Upload Media"]
+CronScheduler > FuncPublish [label: "Schedule: Every 1m"]
+FuncPublish > TablePosts [label: "Fetch Scheduled"]
+FuncPublish > TableConnections [label: "Get Tokens"]
+FuncPublish > Twitter [label: "Post API"]
+FuncPublish > LinkedIn [label: "Post API"]
+FuncPublish > Bluesky [label: "Post API"]
+FuncPublish > TableTargets [label: "Record Result"]
+
+// 5. Engagement & Automation
+CronScheduler > FuncPoll [label: "Schedule: Every 5m"]
+FuncPoll > Twitter [label: "Fetch Metrics"]
+FuncPoll > TableTargets [label: "Update Lines/Reposts"]
+
+// 6. Maintenance
+CronScheduler > FuncRefresh [label: "Schedule: Daily"]
+FuncRefresh > TableConnections [label: "Refresh OAuth Tokens"]
+
+// 7. Notifications
+NextApp > FuncEmail [label: "Trigger Email"]
+FuncEmail > Resend [label: "Send via API"]

@@ -11,3 +11,8 @@ coverage
 .DS_Store
 *.tsbuildinfo
 .tmp_docx
+
+
+
+/.agent
+/.agents

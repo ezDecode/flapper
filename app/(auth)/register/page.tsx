@@ -56,7 +56,16 @@ export default function RegisterPage() {
         <input
           className="w-full rounded border border-slate-300 px-3 py-2"
           value={betaCode}
-          onChange={(event) => setBetaCode(event.target.value)}
+          onChange={async (event) => {
+            const code = event.target.value;
+            setBetaCode(code);
+            // Optional: debounce this check in real implementation
+            if (code.length > 5) {
+              const { data: isValid } = await supabase.rpc("check_invite_code", { code_input: code });
+              if (!isValid) setError("Invalid invite code");
+              else setError("");
+            }
+          }}
           placeholder="Enter invite code"
           required
         />

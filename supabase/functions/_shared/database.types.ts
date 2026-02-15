@@ -11,8 +11,8 @@ export type Database = {
           avatar_url: string | null;
           plan: "FREE" | "PRO" | "AGENCY";
           onboarding_step: number;
-          stripe_customer_id: string | null;
-          stripe_subscription_id: string | null;
+          dodo_customer_id: string | null;
+          dodo_subscription_id: string | null;
           is_beta_user: boolean;
           created_at: string;
           updated_at: string;
@@ -24,13 +24,13 @@ export type Database = {
           avatar_url?: string | null;
           plan?: "FREE" | "PRO" | "AGENCY";
           onboarding_step?: number;
-          stripe_customer_id?: string | null;
-          stripe_subscription_id?: string | null;
+          dodo_customer_id?: string | null;
+          dodo_subscription_id?: string | null;
           is_beta_user?: boolean;
           created_at?: string;
           updated_at?: string;
         };
-        
+
         Relationships: [];
       };
       beta_codes: {
@@ -46,7 +46,7 @@ export type Database = {
           used_at?: string | null;
           created_at?: string;
         };
-        
+
         Relationships: [];
       };
       platform_connections: {
@@ -78,7 +78,7 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
-        
+
         Relationships: [];
       };
       posts: {
@@ -110,7 +110,7 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
-        
+
         Relationships: [];
       };
       post_targets: {
@@ -142,7 +142,7 @@ export type Database = {
           published_at?: string | null;
           fail_reason?: string | null;
         };
-        
+
         Relationships: [];
       };
       auto_plugs: {
@@ -172,7 +172,7 @@ export type Database = {
           fail_reason?: string | null;
           created_at?: string;
         };
-        
+
         Relationships: [];
       };
       api_rate_tracking: {
@@ -188,7 +188,7 @@ export type Database = {
           window_start: string;
           call_count?: number;
         };
-        
+
         Relationships: [];
       };
     };

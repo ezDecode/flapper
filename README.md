@@ -6,7 +6,7 @@ Flapr is a web-only auto-plug engine for creators and indie hackers.
 
 - Next.js 14 App Router
 - Supabase (Auth, Postgres, Storage, Edge Functions, Cron)
-- Stripe billing
+- Dodo Payments billing
 - Resend transactional email
 
 ## Scripts
