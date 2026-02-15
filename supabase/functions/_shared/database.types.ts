@@ -195,7 +195,7 @@ export type Database = {
     Views: Record<string, never>;
     Functions: {
       get_dashboard_stats: {
-        Args: { user_id_input: string };
+        Args: Record<string, never>;
         Returns: Json;
       };
     };
