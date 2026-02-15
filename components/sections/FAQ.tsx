@@ -6,9 +6,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { faqs, C } from "@/lib/landing-data";
 
-const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
-    const [isOpen, setIsOpen] = useState(false);
-
+const FAQItem = ({
+    q,
+    a,
+    index,
+    isOpen,
+    onToggle,
+}: {
+    q: string;
+    a: string;
+    index: number;
+    isOpen: boolean;
+    onToggle: () => void;
+}) => {
     return (
         <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -31,7 +41,7 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
                 className="overflow-hidden rounded-2xl border"
             >
                 <button
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={onToggle}
                     className="group flex w-full items-center justify-between px-6 py-5 text-left"
                 >
                     <span
@@ -41,7 +51,6 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
                         {q}
                     </span>
 
-                    {/* Animated icon container */}
                     <motion.div
                         animate={{ rotate: isOpen ? 180 : 0 }}
                         transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
@@ -78,7 +87,6 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
                     </motion.div>
                 </button>
 
-                {/* Animated answer panel */}
                 <AnimatePresence initial={false}>
                     {isOpen && (
                         <motion.div
@@ -92,7 +100,6 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
                             }}
                             className="overflow-hidden"
                         >
-                            {/* Subtle divider line */}
                             <motion.div
                                 initial={{ scaleX: 0 }}
                                 animate={{ scaleX: 1 }}
@@ -124,10 +131,15 @@ const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
 };
 
 export function FAQ() {
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+    const handleToggle = (index: number) => {
+        setActiveIndex((prev) => (prev === index ? null : index));
+    };
+
     return (
         <section className="px-4 py-20 md:px-8 md:py-24">
             <div className="mx-auto max-w-3xl">
-                {/* Heading with entrance animation */}
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -141,7 +153,13 @@ export function FAQ() {
 
                 <div className="space-y-3">
                     {faqs.map((faq, i) => (
-                        <FAQItem key={i} index={i} {...faq} />
+                        <FAQItem
+                            key={i}
+                            index={i}
+                            isOpen={activeIndex === i}
+                            onToggle={() => handleToggle(i)}
+                            {...faq}
+                        />
                     ))}
                 </div>
             </div>
