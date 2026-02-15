@@ -148,7 +148,7 @@ export function NavbarMenu({ activeMenu, sections }: NavbarMenuProps) {
                 ease: [0.19, 1, 0.15, 1.01],
             }}
             className={cn(
-                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-2xl border border-t-0 border-white/5 bg-zinc-950/80 backdrop-blur-2xl outline-none",
+                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-2xl border border-t-0 border-white/5 bg-zinc-950/50 backdrop-blur-3xl outline-none shadow-xl shadow-black/20"
             )}
         >
             <div className="p-6">
@@ -206,15 +206,15 @@ export function NavbarWithMenu({
         <div className="fixed top-6 left-0 right-0 z-50 flex items-start justify-center px-4">
             {/* biome-ignore lint/a11y/noStaticElementInteractions: Hover container for menu, not interactive content */}
             <div
-                className="relative mx-auto w-full max-w-5xl"
+                className="relative mx-auto w-full max-w-2xl"
                 onMouseLeave={handleNavbarMouseLeave}
             >
                 <div
                     className={cn(
-                        "navbar_content flex h-14 w-full items-center justify-between border border-white/10 px-4 backdrop-blur-xl transition-all",
+                        "navbar_content flex h-14 w-full items-center justify-between border border-white/[0.08] px-4 backdrop-blur-3xl transition-all shadow-lg shadow-black/5",
                         activeDropdown || mobileMenuOpen
-                            ? "rounded-t-2xl border-b-0 bg-zinc-950"
-                            : "rounded-xl bg-[#0C0C0E]/80",
+                            ? "rounded-t-2xl border-b-0 bg-zinc-950/90"
+                            : "rounded-xl bg-zinc-950/30 hover:bg-zinc-950/40",
                     )}
                 >
                     <div className="flex items-center gap-2">
@@ -294,7 +294,7 @@ export function NavbarWithMenu({
                                 ease: [0.19, 1, 0.15, 1.01],
                             }}
                             className={cn(
-                                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-2xl border border-t-0 border-white/5 bg-zinc-950/95 backdrop-blur-2xl outline-none md:hidden",
+                                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-2xl border border-t-0 border-white/5 bg-zinc-950/80 backdrop-blur-3xl outline-none md:hidden shadow-xl shadow-black/20"
                             )}
                         >
                             <div className="flex flex-col gap-4 p-6">
