@@ -158,7 +158,7 @@ export function StaggeredText({
             {rows.map((segments, rowIndex) => (
                 <span
                     key={rowIndex}
-                    style={{ display: "inline-block", width: "100%", overflow: "hidden" }}
+                    style={{ display: "inline-block", width: "100%", overflow: "visible" }}
                     aria-hidden="true"
                 >
                     {segments.map((segment) => {

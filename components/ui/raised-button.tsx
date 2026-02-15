@@ -72,7 +72,7 @@ export function RaisedButton({
     const sizeStyles = {
         sm: { padding: "7px 14px", fontSize: "12px", borderRadius: "10px", gap: "5px" },
         default: { padding: "10px 20px", fontSize: "14px", borderRadius: "13px", gap: "7px" },
-        lg: { padding: "13px 28px", fontSize: "16px", borderRadius: "15px", gap: "8px" },
+        lg: { padding: "13px 22px", fontSize: "16px", borderRadius: "15px", gap: "8px" },
         icon: { padding: "10px", fontSize: "14px", borderRadius: "12px", gap: 0 },
         xl: { padding: "16px 36px", fontSize: "18px", borderRadius: "17px", gap: "9px" },
     }[size] || {};

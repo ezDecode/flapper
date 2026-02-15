@@ -2,7 +2,6 @@
 
 import { Check } from "lucide-react";
 import { RaisedButton } from "@/components/ui/raised-button";
-import { cn } from "@/lib/utils";
 import { plans, C } from "@/lib/landing-data";
 
 interface PricingProps {
@@ -14,7 +13,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
         <section id="pricing" className="px-4 py-20 md:px-8 md:py-24">
             <div className="mb-16 text-center">
                 <h2
-                    className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-[0.94]"
+                    className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-[1.034]"
                     style={{ color: C.text }}
                 >
                     Simple pricing.
@@ -71,19 +70,25 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                             ))}
                         </ul>
 
-                        <RaisedButton
-                            onClick={() => onOpenAuth("register")}
-                            color={plan.highlighted ? C.accent : undefined}
-                            size="lg"
-                            fullWidth
-                            className={cn(
-                                "font-medium h-12",
-                                !plan.highlighted &&
-                                "!bg-transparent !border !border-white/10 hover:!bg-white/5 !shadow-none"
-                            )}
-                        >
-                            {plan.cta}
-                        </RaisedButton>
+                        {plan.highlighted ? (
+                            <RaisedButton
+                                onClick={() => onOpenAuth("register")}
+                                color={C.accent}
+                                size="lg"
+                                fullWidth
+                                className="font-medium h-12"
+                            >
+                                {plan.cta}
+                            </RaisedButton>
+                        ) : (
+                            <button
+                                onClick={() => onOpenAuth("register")}
+                                className="h-12 w-full rounded-[15px] border text-base font-medium transition-colors hover:bg-white/5"
+                                style={{ borderColor: C.border, color: C.textSoft }}
+                            >
+                                {plan.cta}
+                            </button>
+                        )}
                     </div>
                 ))}
             </div>

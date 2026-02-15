@@ -98,19 +98,19 @@ export function PlatformCycler() {
     const blurStyle: React.CSSProperties =
         phase === "blurring-out"
             ? {
-                  opacity: 0,
-                  filter: "blur(12px)",
-                  transform: "translateY(-6px) scale(0.96)",
-                  transition: `all ${BLUR_DURATION}ms cubic-bezier(0.4,0,0.2,1)`,
-              }
+                opacity: 0,
+                filter: "blur(12px)",
+                transform: "translateY(-6px) scale(0.96)",
+                transition: `all ${BLUR_DURATION}ms cubic-bezier(0.4,0,0.2,1)`,
+            }
             : phase === "blurring-in"
-              ? {
+                ? {
                     opacity: 0,
                     filter: "blur(12px)",
                     transform: "translateY(6px) scale(0.96)",
                     transition: "none",
                 }
-              : {
+                : {
                     opacity: 1,
                     filter: "blur(0px)",
                     transform: "translateY(0px) scale(1)",
@@ -199,7 +199,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
             </motion.div>
 
             {/* Heading */}
-            <h1 className="max-w-4xl text-[clamp(2.5rem,8vw,5rem)] font-medium tracking-tighter leading-[0.825] md:leading-[0.94]">
+            <h1 className="max-w-4xl text-[clamp(2.5rem,8vw,5rem)] font-medium tracking-tighter leading-[1.15] md:leading-[1.1]">
                 <StaggeredText
                     text="Engage smarter."
                     as="span"
@@ -243,17 +243,26 @@ export function Hero({ onOpenAuth }: HeroProps) {
             {/* CTA */}
             <motion.div
                 {...fadeUp(SEQUENCE.cta)}
-                className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
+                className="mt-10 flex flex-row items-center justify-center gap-3 sm:gap-4"
             >
                 <RaisedButton
                     onClick={() => onOpenAuth("register")}
                     size="lg"
                     color={C.accent}
-                    className="h-12 px-8 text-base font-medium"
+                    className="h-10 px-5 text-sm font-medium sm:h-12 sm:px-8 sm:text-base"
                 >
                     Start for free
                     <ArrowRight className="h-4 w-4" />
                 </RaisedButton>
+
+                <a
+                    href="#how-it-works"
+                    className="group inline-flex h-10 items-center gap-2 rounded-xl border px-5 text-sm font-medium transition-colors hover:bg-white/5 sm:h-12 sm:rounded-[15px] sm:px-8 sm:text-base"
+                    style={{ borderColor: C.border, color: C.textSoft }}
+                >
+                    See how it works
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </a>
             </motion.div>
         </section>
     );

@@ -6,7 +6,7 @@ export function Testimonials() {
     return (
         <section className="px-4 py-20 md:px-8 md:py-24">
             <h2
-                className="mb-16 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight leading-[0.94]"
+                className="mb-16 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight leading-[1.034]"
                 style={{ color: C.text }}
             >
                 Loved by builders who ship.

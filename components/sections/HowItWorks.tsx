@@ -8,7 +8,7 @@ export function HowItWorks() {
             <div className="grid gap-16 lg:grid-cols-2">
                 <div className="self-start lg:sticky lg:top-32">
                     <h2
-                        className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-[0.94]"
+                        className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-[1.034]"
                         style={{ color: C.text }}
                     >
                         Three steps.
