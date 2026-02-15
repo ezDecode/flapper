@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/react";
-import { DesignSystemProvider } from "@/components/DesignSystemProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,11 +9,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+      </head>
       <body className="font-sans antialiased">
-        <DesignSystemProvider>
-          {children}
-        </DesignSystemProvider>
+        {children}
         <Analytics />
       </body>
     </html>

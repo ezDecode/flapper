@@ -1,166 +1,351 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Button, Card, TextInput, Text, H2, Flex, Box } from "@maximeheckel/design-system";
-import { AtSign, Linkedin } from "lucide-react";
 
-export default function LoginPage() {
+export default function AuthPageWrapper() {
+  return (
+    <Suspense>
+      <AuthPage />
+    </Suspense>
+  );
+}
+
+function AuthPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
+
+  const initialTab = searchParams.get("tab") === "register" ? "register" : "login";
+  const [tab, setTab] = useState<"login" | "register">(initialTab);
   const [nextPath, setNextPath] = useState("/dashboard");
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  // Login state
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState("");
+
+  // Register state
+  const [name, setName] = useState("");
+  const [betaCode, setBetaCode] = useState("");
+  const [regEmail, setRegEmail] = useState("");
+  const [regPassword, setRegPassword] = useState("");
+  const [regLoading, setRegLoading] = useState(false);
+  const [regError, setRegError] = useState("");
+  const [regSuccess, setRegSuccess] = useState("");
 
   useEffect(() => {
-    const value = new URLSearchParams(window.location.search).get("next");
-    if (value?.startsWith("/")) {
-      setNextPath(value);
-    }
-  }, []);
+    const value = searchParams.get("next");
+    if (value?.startsWith("/")) setNextPath(value);
+  }, [searchParams]);
 
   const oauth = async (provider: "twitter" | "linkedin_oidc") => {
     const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
     await supabase.auth.signInWithOAuth({ provider, options: { redirectTo } });
   };
 
-  const signIn = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setLoading(true);
-    setError("");
-
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-
-    if (signInError) {
-      setError(signInError.message);
+  const signIn = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoginLoading(true);
+    setLoginError("");
+    const { error } = await supabase.auth.signInWithPassword({
+      email: loginEmail,
+      password: loginPassword,
+    });
+    setLoginLoading(false);
+    if (error) {
+      setLoginError(error.message);
       return;
     }
-
     router.push(nextPath);
     router.refresh();
+  };
+
+  const register = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setRegError("");
+    setRegSuccess("");
+    setRegLoading(true);
+    const { error } = await supabase.auth.signUp({
+      email: regEmail,
+      password: regPassword,
+      options: {
+        data: { full_name: name, beta_code: betaCode.trim() },
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/onboarding`,
+      },
+    });
+    setRegLoading(false);
+    if (error) {
+      setRegError(error.message);
+      return;
+    }
+    setRegSuccess("Check your email to confirm your account.");
+  };
+
+  const inputClass =
+    "w-full rounded-lg border px-3 py-2.5 text-sm font-normal outline-none transition-colors focus:border-[#E8590C]";
+  const inputStyle = {
+    background: "#0B0B0F",
+    borderColor: "#1E1E26",
+    color: "#E8E8EC",
   };
 
   return (
     <div
       className="flex min-h-screen items-center justify-center px-4"
-      style={{ backgroundColor: "#FAFAF8" }}
+      style={{ background: "#0B0B0F" }}
     >
       <div className="w-full max-w-[420px]">
-        <Flex direction="column" alignItems="center" gap="4">
-          <Text
-            size="3"
-            weight="4"
-            style={{ color: "#F76707", letterSpacing: "0.05em" }}
+        <div className="mb-8 text-center">
+          <Link
+            href="/"
+            className="text-lg font-medium tracking-tight"
+            style={{ color: "#E8590C" }}
           >
-            FLAPR
-          </Text>
+            Flapr
+          </Link>
+        </div>
 
-          <Card depth={1}>
-            <Card.Body>
-              <Flex direction="column" gap="6">
-                <Box>
-                  <H2 style={{ color: "#1A1A1A", marginBottom: "4px" }}>
-                    Welcome back
-                  </H2>
-                  <Text size="1" style={{ color: "#6B6B6B" }}>
-                    Sign in to your account to continue
-                  </Text>
-                </Box>
+        <div
+          className="rounded-xl border p-8"
+          style={{ background: "#141419", borderColor: "#1E1E26" }}
+        >
+          {/* Tab switcher */}
+          <div
+            className="mb-6 flex rounded-lg border p-1"
+            style={{ borderColor: "#1E1E26", background: "#0B0B0F" }}
+          >
+            <button
+              type="button"
+              onClick={() => setTab("login")}
+              className="flex-1 rounded-md py-2 text-sm font-medium transition-all"
+              style={{
+                background: tab === "login" ? "#1E1E26" : "transparent",
+                color: tab === "login" ? "#E8E8EC" : "#6B6B7B",
+              }}
+            >
+              Log in
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab("register")}
+              className="flex-1 rounded-md py-2 text-sm font-medium transition-all"
+              style={{
+                background: tab === "register" ? "#1E1E26" : "transparent",
+                color: tab === "register" ? "#E8E8EC" : "#6B6B7B",
+              }}
+            >
+              Register
+            </button>
+          </div>
 
-                <Flex direction="column" gap="3">
-                  <Button
-                    variant="secondary"
-                    startIcon={<AtSign size={16} />}
-                    onClick={() => oauth("twitter")}
-                    style={{ width: "100%" }}
-                  >
-                    Continue with Twitter
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    startIcon={<Linkedin size={16} />}
-                    onClick={() => oauth("linkedin_oidc")}
-                    style={{ width: "100%" }}
-                  >
-                    Continue with LinkedIn
-                  </Button>
-                </Flex>
+          {/* OAuth buttons — shared */}
+          <div className="flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={() => oauth("twitter")}
+              className="flex w-full items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-normal transition-colors hover:border-[#2A2A34]"
+              style={{ borderColor: "#1E1E26", color: "#C8C8D0" }}
+            >
+              <i className="devicon-twitter-original" />
+              Continue with Twitter
+            </button>
+            <button
+              type="button"
+              onClick={() => oauth("linkedin_oidc")}
+              className="flex w-full items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-normal transition-colors hover:border-[#2A2A34]"
+              style={{ borderColor: "#1E1E26", color: "#C8C8D0" }}
+            >
+              <i className="devicon-linkedin-plain" />
+              Continue with LinkedIn
+            </button>
+          </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="h-px flex-1 bg-[#E5E5E3]" />
-                  <Text size="1" style={{ color: "#6B6B6B" }}>
-                    or continue with email
-                  </Text>
-                  <div className="h-px flex-1 bg-[#E5E5E3]" />
+          <div className="my-6 flex items-center gap-3">
+            <div className="h-px flex-1" style={{ background: "#1E1E26" }} />
+            <span className="text-xs font-normal" style={{ color: "#6B6B7B" }}>
+              or continue with email
+            </span>
+            <div className="h-px flex-1" style={{ background: "#1E1E26" }} />
+          </div>
+
+          {/* ── LOGIN FORM ── */}
+          {tab === "login" && (
+            <form onSubmit={signIn} className="flex flex-col gap-4">
+              <div>
+                <label
+                  htmlFor="login-email"
+                  className="mb-1.5 block text-xs font-medium"
+                  style={{ color: "#6B6B7B" }}
+                >
+                  Email
+                </label>
+                <input
+                  id="login-email"
+                  type="email"
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className={inputClass}
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="login-password"
+                  className="mb-1.5 block text-xs font-medium"
+                  style={{ color: "#6B6B7B" }}
+                >
+                  Password
+                </label>
+                <input
+                  id="login-password"
+                  type="password"
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className={inputClass}
+                  style={inputStyle}
+                />
+              </div>
+
+              {loginError && (
+                <p className="text-xs font-normal" style={{ color: "#EF4444" }}>
+                  {loginError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={loginLoading}
+                className="w-full rounded-lg py-2.5 text-sm font-medium text-white transition-all hover:brightness-110 disabled:opacity-60"
+                style={{ background: "#E8590C" }}
+              >
+                {loginLoading ? "Logging in…" : "Log in"}
+              </button>
+            </form>
+          )}
+
+          {/* ── REGISTER FORM ── */}
+          {tab === "register" && (
+            <>
+              {regSuccess ? (
+                <div
+                  className="rounded-lg border px-4 py-3"
+                  style={{ borderColor: "#1A4A2E", background: "#0D2818" }}
+                >
+                  <p className="text-sm font-normal" style={{ color: "#4ADE80" }}>
+                    {regSuccess}
+                  </p>
                 </div>
-
-                <form onSubmit={signIn}>
-                  <Flex direction="column" gap="4">
-                    <TextInput
-                      id="login-email"
-                      aria-label="Email address"
-                      type="email"
-                      label="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.currentTarget.value)}
-                      placeholder="you@example.com"
-                    />
-                    <TextInput
-                      id="login-password"
-                      aria-label="Password"
-                      type="password"
-                      label="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.currentTarget.value)}
-                      placeholder="••••••••"
-                    />
-
-                    {error && (
-                      <Text size="1" style={{ color: "#DC2626" }}>
-                        {error}
-                      </Text>
-                    )}
-
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-colors disabled:opacity-60"
-                      style={{
-                        backgroundColor: loading ? "#F76707" : "#F76707",
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!loading)
-                          (e.currentTarget.style.backgroundColor = "#E8590C");
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = "#F76707";
-                      }}
+              ) : (
+                <form onSubmit={register} className="flex flex-col gap-4">
+                  <div>
+                    <label
+                      htmlFor="reg-name"
+                      className="mb-1.5 block text-xs font-medium"
+                      style={{ color: "#6B6B7B" }}
                     >
-                      {loading ? "Logging in…" : "Log in"}
-                    </button>
-                  </Flex>
-                </form>
+                      Full name
+                    </label>
+                    <input
+                      id="reg-name"
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Jane Doe"
+                      className={inputClass}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="reg-beta"
+                      className="mb-1.5 block text-xs font-medium"
+                      style={{ color: "#6B6B7B" }}
+                    >
+                      Invite code
+                    </label>
+                    <input
+                      id="reg-beta"
+                      type="text"
+                      value={betaCode}
+                      onChange={async (e) => {
+                        const code = e.target.value;
+                        setBetaCode(code);
+                        if (code.length > 5) {
+                          const { data: isValid } = await (supabase.rpc as Function)(
+                            "check_invite_code",
+                            { code_input: code }
+                          );
+                          if (!isValid) setRegError("Invalid invite code");
+                          else setRegError("");
+                        }
+                      }}
+                      placeholder="Enter invite code"
+                      className={inputClass}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="reg-email"
+                      className="mb-1.5 block text-xs font-medium"
+                      style={{ color: "#6B6B7B" }}
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="reg-email"
+                      type="email"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      className={inputClass}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="reg-password"
+                      className="mb-1.5 block text-xs font-medium"
+                      style={{ color: "#6B6B7B" }}
+                    >
+                      Password
+                    </label>
+                    <input
+                      id="reg-password"
+                      type="password"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className={inputClass}
+                      style={inputStyle}
+                    />
+                  </div>
 
-                <Text size="1" style={{ color: "#6B6B6B", textAlign: "center" }}>
-                  Need an account?{" "}
-                  <Link
-                    href="/register"
-                    className="font-medium underline"
-                    style={{ color: "#E8590C" }}
+                  {regError && (
+                    <p className="text-xs font-normal" style={{ color: "#EF4444" }}>
+                      {regError}
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={regLoading}
+                    className="w-full rounded-lg py-2.5 text-sm font-medium text-white transition-all hover:brightness-110 disabled:opacity-60"
+                    style={{ background: "#E8590C" }}
                   >
-                    Register
-                  </Link>
-                </Text>
-              </Flex>
-            </Card.Body>
-          </Card>
-        </Flex>
+                    {regLoading ? "Creating account…" : "Create account"}
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

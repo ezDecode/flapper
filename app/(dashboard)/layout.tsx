@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { DesignSystemProvider } from "@/components/DesignSystemProvider";
 import {
   LayoutDashboard,
   PenSquare,
@@ -66,6 +67,7 @@ export default async function DashboardLayout({
     .toUpperCase();
 
   return (
+    <DesignSystemProvider>
     <div className="flex min-h-screen bg-[#FAFAF8]">
       {/* Sidebar */}
       <aside className="hidden lg:flex lg:w-[240px] lg:flex-col lg:fixed lg:inset-y-0 bg-zinc-950 text-white">
@@ -129,5 +131,6 @@ export default async function DashboardLayout({
         </div>
       </main>
     </div>
+    </DesignSystemProvider>
   );
 }
