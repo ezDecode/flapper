@@ -11,7 +11,7 @@ interface HeroProps {
 
 export function Hero({ onOpenAuth }: HeroProps) {
     return (
-        <section className="relative flex flex-col items-center justify-center px-4 pt-40 pb-20 text-center md:px-8 md:pt-52 md:pb-32">
+        <section className="relative flex flex-col items-center justify-center px-4 pt-40 pb-10 text-center md:px-8 md:pt-52 md:pb-16">
             <div
                 className="mb-8 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-medium"
                 style={{
