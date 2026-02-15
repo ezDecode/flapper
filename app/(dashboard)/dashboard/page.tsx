@@ -81,7 +81,7 @@ export default async function DashboardPage() {
       bg: "bg-blue-50",
     },
     {
-      label: "Plugs Fired",
+      label: "Auto-Plugs Active",
       value: plugsFired,
       icon: Zap,
       color: "text-[#F76707]",
@@ -151,7 +151,7 @@ export default async function DashboardPage() {
           <div className="flex items-center gap-2">
             <TrendingUp size={16} className="text-[#6B6B6B]" />
             <h2 className="text-sm font-semibold text-zinc-900">
-              Recent Posts
+              Recent Activity
             </h2>
           </div>
           <span className="text-xs text-[#6B6B6B]">Last 10</span>
@@ -191,7 +191,7 @@ export default async function DashboardPage() {
                       className={cn(
                         "inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold",
                         statusStyles[post.status] ??
-                          "bg-zinc-100 text-zinc-600 border border-zinc-200"
+                        "bg-zinc-100 text-zinc-600 border border-zinc-200"
                       )}
                     >
                       {post.status}

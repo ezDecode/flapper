@@ -4,22 +4,26 @@ import Link from "next/link";
 import { Check, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import AuthModal from "@/components/AuthModal";
+
 const steps = [
   {
     num: "01",
-    title: "Schedule your post",
+    title: "Draft & Schedule",
     description:
       "Write once, queue across Twitter/X, LinkedIn, and Bluesky. Pick your time or let Flapr choose the best slot.",
   },
   {
     num: "02",
-    title: "Set your trigger",
+    title: "Set Triggers",
     description:
       "Choose a like threshold — 50, 200, 1,000 — whatever signals your post is taking off.",
   },
   {
     num: "03",
-    title: "Auto-plug fires",
+    title: "Auto-Plug Fires",
     description:
       "The moment your post hits the threshold, Flapr replies with your CTA. Zero delay, zero effort.",
   },
@@ -69,6 +73,35 @@ const plans = [
 
 export default function LandingPage() {
   return (
+    <Suspense>
+      <LandingPageInner />
+    </Suspense>
+  );
+}
+
+function LandingPageInner() {
+  const searchParams = useSearchParams();
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authTab, setAuthTab] = useState<"login" | "register">("login");
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    const mode = searchParams.get("mode");
+    if (mode === "login" || mode === "register") {
+      setAuthTab(mode);
+      setAuthOpen(true);
+    } else if (tab === "register") {
+      setAuthTab("register");
+      setAuthOpen(true);
+    }
+  }, [searchParams]);
+
+  const openAuth = (tab: "login" | "register") => {
+    setAuthTab(tab);
+    setAuthOpen(true);
+  };
+
+  return (
     <div className="min-h-screen" style={{ background: "#0B0B0F", color: "#E8E8EC" }}>
       {/* ─── NAV ─── */}
       <nav
@@ -105,20 +138,20 @@ export default function LandingPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Link
-              href="/login"
+            <button
+              onClick={() => openAuth("login")}
               className="rounded-lg px-4 py-2 text-sm font-normal transition-opacity hover:opacity-80"
               style={{ color: "#6B6B7B" }}
             >
               Log in
-            </Link>
-            <Link
-              href="/login?tab=register"
+            </button>
+            <button
+              onClick={() => openAuth("register")}
               className="rounded-lg px-4 py-2 text-sm font-medium text-white transition-all hover:brightness-110"
               style={{ background: "#E8590C" }}
             >
               Get started
-            </Link>
+            </button>
           </div>
         </div>
       </nav>
@@ -138,8 +171,8 @@ export default function LandingPage() {
             className="text-4xl font-medium leading-[1.15] tracking-tight sm:text-5xl"
             style={{ color: "#E8E8EC" }}
           >
-            Your posts deserve
-            <br />a second act.
+            Give your best posts
+            <br />a second life.
           </h1>
 
           <p
@@ -161,8 +194,8 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-10 flex flex-col items-center gap-4">
-            <Link
-              href="/login?tab=register"
+            <button
+              onClick={() => openAuth("register")}
               className="group inline-flex items-center gap-2 rounded-xl px-7 py-3 text-sm font-medium text-white transition-all hover:brightness-110"
               style={{
                 background: "#E8590C",
@@ -171,7 +204,7 @@ export default function LandingPage() {
             >
               Start for free
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            </button>
             <p className="text-xs font-normal" style={{ color: "#4A4A58" }}>
               No credit card required · Free plan available
             </p>
@@ -193,7 +226,7 @@ export default function LandingPage() {
               className="text-2xl font-medium tracking-tight md:text-3xl"
               style={{ color: "#E8E8EC" }}
             >
-              Three steps. Zero friction.
+              How Flapr Works
             </h2>
           </div>
 
@@ -352,8 +385,8 @@ export default function LandingPage() {
                   ))}
                 </ul>
 
-                <Link
-                  href="/login?tab=register"
+                <button
+                  onClick={() => openAuth("register")}
                   className={cn(
                     "mt-8 block w-full rounded-lg py-2.5 text-center text-sm font-medium transition-all",
                     plan.highlighted
@@ -367,7 +400,51 @@ export default function LandingPage() {
                   }
                 >
                   {plan.price === "$0" ? "Get started" : `Choose ${plan.name}`}
-                </Link>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FAQ ─── */}
+      <section className="px-6 pb-28 md:pb-36">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-16 text-center">
+            <h2
+              className="text-2xl font-medium tracking-tight md:text-3xl"
+              style={{ color: "#E8E8EC" }}
+            >
+              Frequently asked questions
+            </h2>
+          </div>
+
+          <div className="space-y-8">
+            {[
+              {
+                q: "Is there a free trial?",
+                a: "Yes! You can start on the Free plan which includes 10 posts per month. No credit card required.",
+              },
+              {
+                q: "Can I cancel anytime?",
+                a: "Absolutely. You can downgrade to the Free plan or cancel your subscription at any time from your dashboard.",
+              },
+              {
+                q: "How does the auto-plug work?",
+                a: "You set a 'like threshold' (e.g., 50 likes). Flapr monitors your post, and once it hits that number, it automatically replies with your pre-written plug. It's like having a viral marketing assistant.",
+              },
+              {
+                q: "Which platforms do you support?",
+                a: "Currently, we support Twitter/X, LinkedIn, and Bluesky. We're actively working on adding Threads and Instagram.",
+              },
+            ].map((faq, i) => (
+              <div key={i} className="border-b pb-8 last:border-0" style={{ borderColor: "#1E1E26" }}>
+                <h3 className="text-lg font-medium" style={{ color: "#E8E8EC" }}>
+                  {faq.q}
+                </h3>
+                <p className="mt-3 text-base font-normal leading-relaxed" style={{ color: "#6B6B7B" }}>
+                  {faq.a}
+                </p>
               </div>
             ))}
           </div>
@@ -399,13 +476,13 @@ export default function LandingPage() {
             >
               Pricing
             </a>
-            <Link
-              href="/login"
+            <button
+              onClick={() => openAuth("login")}
               className="text-xs font-normal transition-opacity hover:opacity-100"
               style={{ color: "#6B6B7B", opacity: 0.8 }}
             >
               Log in
-            </Link>
+            </button>
           </div>
 
           <div className="flex items-center gap-4">
@@ -421,6 +498,17 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-    </div>
+
+      {/* ─── AUTH MODAL OVERLAY ─── */}
+      {
+        authOpen && (
+          <AuthModal
+            tab={authTab}
+            onTabChange={setAuthTab}
+            onClose={() => setAuthOpen(false)}
+          />
+        )
+      }
+    </div >
   );
 }

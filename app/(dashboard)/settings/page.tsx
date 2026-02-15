@@ -84,7 +84,7 @@ export default async function SettingsPage() {
         <div className="flex items-center gap-2 border-b border-[#E8E8E4] px-6 py-4">
           <CreditCard size={16} className="text-[#6B6B6B]" />
           <h2 className="text-sm font-semibold text-zinc-900">
-            Plan &amp; Billing
+            Subscription &amp; Billing
           </h2>
         </div>
 
@@ -116,7 +116,7 @@ export default async function SettingsPage() {
             {/* Posts */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-[#6B6B6B]">Posts this month</span>
+                <span className="text-[#6B6B6B]">Monthly Posts</span>
                 <span className="font-medium text-zinc-900">
                   {posts}/{postLimitLabel}
                 </span>
@@ -135,7 +135,7 @@ export default async function SettingsPage() {
             {/* Plugs */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-[#6B6B6B]">Plugs fired this month</span>
+                <span className="text-[#6B6B6B]">Monthly Auto-Plugs</span>
                 <span className="font-medium text-zinc-900">
                   {plugCount}/{plugLimitLabel}
                 </span>

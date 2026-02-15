@@ -102,7 +102,7 @@ export function PostComposer() {
       return;
     }
     if (!content.trim()) {
-      setStatus("Post content is required.");
+      setStatus("Please add some content to your post.");
       return;
     }
     if (minRemaining < 0) {
@@ -182,7 +182,7 @@ export function PostComposer() {
         <Card.Header>
           <Flex alignItems="center" justifyContent="space-between">
             <Text size="2" weight="4">
-              Post Content
+              New Post
             </Text>
             <Pill variant={minRemaining < 0 ? "danger" : "info"}>
               {minRemaining} chars remaining
@@ -203,7 +203,7 @@ export function PostComposer() {
       <Card>
         <Card.Header>
           <Text size="2" weight="4">
-            Platforms &amp; Schedule
+            Destinations &amp; Schedule
           </Text>
         </Card.Header>
         <Card.Body>
@@ -222,11 +222,10 @@ export function PostComposer() {
                       key={platform}
                       type="button"
                       onClick={() => togglePlatform(platform)}
-                      className={`inline-flex items-center gap-2 rounded-xl border-2 px-4 py-2.5 text-sm font-medium transition-all ${
-                        isSelected
+                      className={`inline-flex items-center gap-2 rounded-xl border-2 px-4 py-2.5 text-sm font-medium transition-all ${isSelected
                           ? "border-[#F76707] bg-[#FFF4E6] text-[#E8590C]"
                           : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#F76707]/40"
-                      }`}
+                        }`}
                     >
                       <span style={{ color: isSelected ? meta.color : undefined }}>
                         {meta.icon}

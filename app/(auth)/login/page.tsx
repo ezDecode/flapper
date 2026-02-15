@@ -151,7 +151,7 @@ function AuthPage() {
               style={{ borderColor: "#1E1E26", color: "#C8C8D0" }}
             >
               <i className="devicon-twitter-original" />
-              Continue with Twitter
+              Sign in with Twitter
             </button>
             <button
               type="button"
@@ -160,14 +160,14 @@ function AuthPage() {
               style={{ borderColor: "#1E1E26", color: "#C8C8D0" }}
             >
               <i className="devicon-linkedin-plain" />
-              Continue with LinkedIn
+              Sign in with LinkedIn
             </button>
           </div>
 
           <div className="my-6 flex items-center gap-3">
             <div className="h-px flex-1" style={{ background: "#1E1E26" }} />
             <span className="text-xs font-normal" style={{ color: "#6B6B7B" }}>
-              or continue with email
+              or sign in with email
             </span>
             <div className="h-px flex-1" style={{ background: "#1E1E26" }} />
           </div>
@@ -339,7 +339,7 @@ function AuthPage() {
                     className="w-full rounded-lg py-2.5 text-sm font-medium text-white transition-all hover:brightness-110 disabled:opacity-60"
                     style={{ background: "#E8590C" }}
                   >
-                    {regLoading ? "Creating account…" : "Create account"}
+                    {regLoading ? "Creating your account…" : "Create account"}
                   </button>
                 </form>
               )}

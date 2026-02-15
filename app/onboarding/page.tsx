@@ -44,9 +44,9 @@ const platformMeta: Record<
 };
 
 const steps = [
-  { number: 1, label: "Connect", icon: <Globe size={16} /> },
-  { number: 2, label: "Write", icon: <Send size={16} /> },
-  { number: 3, label: "Auto-Plug", icon: <Zap size={16} /> },
+  { number: 1, label: "Connect Accounts", icon: <Globe size={16} /> },
+  { number: 2, label: "Draft First Post", icon: <Send size={16} /> },
+  { number: 3, label: "Set Auto-Plug", icon: <Zap size={16} /> },
 ];
 
 export default function OnboardingPage() {
@@ -237,7 +237,7 @@ export default function OnboardingPage() {
             <H1>Welcome to Flapr</H1>
           </Flex>
           <Text size="2" variant="tertiary">
-            Let&apos;s get you set up in 3 quick steps
+            Let's get you set up in 3 quick steps.
           </Text>
         </Flex>
 
@@ -252,13 +252,12 @@ export default function OnboardingPage() {
             <Flex key={step.number} alignItems="center" gap="0">
               <Flex direction="column" alignItems="center" gap="1">
                 <div
-                  className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all ${
-                    currentStep > step.number
+                  className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all ${currentStep > step.number
                       ? "border-[#2B8A3E] bg-[#2B8A3E] text-white"
                       : currentStep === step.number
                         ? "border-[#F76707] bg-[#FFF4E6] text-[#E8590C]"
                         : "border-[#E8E8E4] bg-white text-[#6B6B6B]"
-                  }`}
+                    }`}
                 >
                   {currentStep > step.number ? (
                     <Check size={18} />
@@ -278,11 +277,10 @@ export default function OnboardingPage() {
               </Flex>
               {idx < steps.length - 1 && (
                 <div
-                  className={`mx-3 mb-5 h-0.5 w-16 rounded-full ${
-                    currentStep > step.number
+                  className={`mx-3 mb-5 h-0.5 w-16 rounded-full ${currentStep > step.number
                       ? "bg-[#2B8A3E]"
                       : "bg-[#E8E8E4]"
-                  }`}
+                    }`}
                 />
               )}
             </Flex>
@@ -295,7 +293,7 @@ export default function OnboardingPage() {
             <Card.Header>
               <Flex alignItems="center" gap="2">
                 <Globe size={18} className="text-[#F76707]" />
-                <H2>Connect at least one platform</H2>
+                <H2>Connect Your Accounts</H2>
               </Flex>
             </Card.Header>
             <Card.Body>
@@ -315,11 +313,10 @@ export default function OnboardingPage() {
                     return (
                       <div
                         key={platform}
-                        className={`flex items-center justify-between rounded-xl border p-4 transition-colors ${
-                          isConnected
+                        className={`flex items-center justify-between rounded-xl border p-4 transition-colors ${isConnected
                             ? "border-[#2B8A3E]/30 bg-[#EBFBEE]"
                             : "border-[#E8E8E4] bg-white"
-                        }`}
+                          }`}
                       >
                         <Flex alignItems="center" gap="3">
                           <div
@@ -384,7 +381,7 @@ export default function OnboardingPage() {
             <Card.Header>
               <Flex alignItems="center" gap="2">
                 <Send size={18} className="text-[#F76707]" />
-                <H2>Write your first post</H2>
+                <H2>Draft Your First Post</H2>
               </Flex>
             </Card.Header>
             <Card.Body>
@@ -417,11 +414,10 @@ export default function OnboardingPage() {
                               key={platform}
                               type="button"
                               onClick={() => setPostPlatform(platform)}
-                              className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
-                                postPlatform === platform
+                              className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${postPlatform === platform
                                   ? "border-[#F76707] bg-[#FFF4E6] text-[#E8590C]"
                                   : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#F76707]/40"
-                              }`}
+                                }`}
                             >
                               <span
                                 style={{
@@ -472,7 +468,7 @@ export default function OnboardingPage() {
             <Card.Header>
               <Flex alignItems="center" gap="2">
                 <Zap size={18} className="text-[#F76707]" />
-                <H2>Configure your first auto-plug</H2>
+                <H2>Set Up Auto-Plug</H2>
               </Flex>
             </Card.Header>
             <Card.Body>

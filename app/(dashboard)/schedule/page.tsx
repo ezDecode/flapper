@@ -12,7 +12,7 @@ export default function SchedulePage() {
         <div>
           <H1>Schedule</H1>
           <Text size="2" variant="tertiary">
-            View and manage your scheduled posts on the calendar.
+            Manage your content calendar and upcoming posts.
           </Text>
         </div>
       </Flex>

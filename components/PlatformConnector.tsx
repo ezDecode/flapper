@@ -19,28 +19,28 @@ const platformRows: Array<{
   color: string;
   bgClass: string;
 }> = [
-  {
-    key: "TWITTER",
-    label: "Twitter / X",
-    icon: <Twitter size={18} />,
-    color: "#1DA1F2",
-    bgClass: "bg-[#E8F5FD]",
-  },
-  {
-    key: "LINKEDIN",
-    label: "LinkedIn",
-    icon: <Linkedin size={18} />,
-    color: "#0A66C2",
-    bgClass: "bg-[#E8F0FE]",
-  },
-  {
-    key: "BLUESKY",
-    label: "Bluesky",
-    icon: <Globe size={18} />,
-    color: "#0085FF",
-    bgClass: "bg-[#E8F4FF]",
-  },
-];
+    {
+      key: "TWITTER",
+      label: "Twitter / X",
+      icon: <Twitter size={18} />,
+      color: "#1DA1F2",
+      bgClass: "bg-[#E8F5FD]",
+    },
+    {
+      key: "LINKEDIN",
+      label: "LinkedIn",
+      icon: <Linkedin size={18} />,
+      color: "#0A66C2",
+      bgClass: "bg-[#E8F0FE]",
+    },
+    {
+      key: "BLUESKY",
+      label: "Bluesky",
+      icon: <Globe size={18} />,
+      color: "#0085FF",
+      bgClass: "bg-[#E8F4FF]",
+    },
+  ];
 
 export function PlatformConnector() {
   const supabase = createClient();
@@ -74,7 +74,7 @@ export function PlatformConnector() {
       data: { session },
     } = await supabase.auth.getSession();
     if (!session?.access_token) {
-      setMessage("Please log in first.");
+      setMessage("You must be signed in to connect accounts.");
       setLoading(false);
       return;
     }
@@ -146,9 +146,8 @@ export function PlatformConnector() {
                     </Text>
                     <Flex alignItems="center" gap="1">
                       <div
-                        className={`h-2 w-2 rounded-full ${
-                          connected ? "bg-[#2B8A3E]" : "bg-[#ADB5BD]"
-                        }`}
+                        className={`h-2 w-2 rounded-full ${connected ? "bg-[#2B8A3E]" : "bg-[#ADB5BD]"
+                          }`}
                       />
                       <Text size="1" variant="tertiary">
                         {connected

@@ -12,7 +12,7 @@ export default function ComposePage() {
         <div>
           <H1>Compose</H1>
           <Text size="2" variant="tertiary">
-            Write, schedule, and auto-plug your posts across platforms.
+            Draft, schedule, and configure Auto-Plugs across platforms.
           </Text>
         </div>
       </Flex>
