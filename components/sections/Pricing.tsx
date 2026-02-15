@@ -74,8 +74,9 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                         <RaisedButton
                             onClick={() => onOpenAuth("register")}
                             color={plan.highlighted ? C.accent : undefined}
+                            size="lg"
                             className={cn(
-                                "w-full font-medium",
+                                "w-full font-medium h-12",
                                 !plan.highlighted &&
                                 "bg-transparent border border-white/10 hover:bg-white/5"
                             )}
