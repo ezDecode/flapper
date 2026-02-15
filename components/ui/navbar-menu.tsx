@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import * as React from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { RaisedButton } from "@/components/ui/raised-button";
@@ -182,6 +182,7 @@ export function NavbarWithMenu({
         null,
     );
     const [hoveredItem, setHoveredItem] = React.useState<string | null>(null);
+    const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
     const defaultNavItems = [
         { type: "dropdown", label: "Product", menu: "product" },
@@ -205,22 +206,23 @@ export function NavbarWithMenu({
         <div className="fixed top-6 left-0 right-0 z-50 flex items-start justify-center px-4">
             {/* biome-ignore lint/a11y/noStaticElementInteractions: Hover container for menu, not interactive content */}
             <div
-                className="relative mx-auto w-full max-w-2xl"
+                className="relative mx-auto w-full max-w-5xl"
                 onMouseLeave={handleNavbarMouseLeave}
             >
                 <div
                     className={cn(
-                        "navbar_content flex h-14 w-full items-center justify-between border border-white/10 px-3 backdrop-blur-xl transition-all",
-                        activeDropdown
+                        "navbar_content flex h-14 w-full items-center justify-between border border-white/10 px-4 backdrop-blur-xl transition-all",
+                        activeDropdown || mobileMenuOpen
                             ? "rounded-t-2xl border-b-0 bg-zinc-950"
                             : "rounded-xl bg-[#0C0C0E]/80",
                     )}
                 >
-                    <div className="flex items-center gap-2 px-2">
+                    <div className="flex items-center gap-2">
                         {logo}
                     </div>
 
-                    <div className="flex items-center gap-1 rounded-lg px-1 py-1">
+                    {/* DESKTOP NAV */}
+                    <div className="hidden md:flex items-center gap-1 rounded-lg px-1 py-1">
                         {items.map((item) =>
                             item.type === "link" ? (
                                 <a
@@ -266,14 +268,72 @@ export function NavbarWithMenu({
                         )}
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="hidden md:flex items-center gap-2">
                         {cta}
                     </div>
+
+                    {/* MOBILE HAMBURGER */}
+                    <button
+                        className="flex items-center justify-center p-2 text-zinc-400 hover:text-white md:hidden"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    >
+                        {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                    </button>
                 </div>
 
                 <AnimatePresence>
                     {activeDropdown && (
                         <NavbarMenu activeMenu={activeDropdown} sections={sections} />
+                    )}
+                    {mobileMenuOpen && (
+                        <motion.div
+                            initial={{ scaleY: 0.95, opacity: 0 }}
+                            animate={{ scaleY: 1, opacity: 1 }}
+                            exit={{ scaleY: 0.95, opacity: 0 }}
+                            transition={{
+                                ease: [0.19, 1, 0.15, 1.01],
+                            }}
+                            className={cn(
+                                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-2xl border border-t-0 border-white/5 bg-zinc-950/95 backdrop-blur-2xl outline-none md:hidden",
+                            )}
+                        >
+                            <div className="flex flex-col gap-4 p-6">
+                                {items.map((item) => (
+                                    item.type === "link" ? (
+                                        <a
+                                            key={item.href}
+                                            href={item.href}
+                                            className="text-lg font-medium text-zinc-300 hover:text-white"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
+                                            {item.label}
+                                        </a>
+                                    ) : (
+                                        <div key={item.menu} className="flex flex-col gap-2">
+                                            <span className="text-sm font-medium text-zinc-500 uppercase tracking-wider">{item.label}</span>
+                                            <div className="pl-4 flex flex-col gap-2">
+                                                {/* Mobile dropdown logic would go here if needed, simplified for now */}
+                                                {sections.find(s => s.id === item.menu)?.links.map(link => (
+                                                    <a key={link.href} href={link.href} className="text-base text-zinc-400 hover:text-white py-1">
+                                                        {link.label}
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )
+                                ))}
+                                <div className="mt-4 flex flex-col gap-3 border-t border-white/10 pt-6">
+                                    {/* Render CTA buttons for mobile */}
+                                    <div className="flex items-center gap-3">
+                                        {/* We can't easily clone the fragment, so we might need to adjust how CTA is passed or valid.
+                         For now, assuming CTA content is button-like and responsive or we render a specific mobile set.
+                         Actually, let's just render the passed CTA node. It might be a fragment with buttons.
+                      */}
+                                        {cta}
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
                     )}
                 </AnimatePresence>
             </div>
