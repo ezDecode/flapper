@@ -145,7 +145,7 @@ export function FAQ() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-                    className="mb-12 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight leading-tight"
+                    className="mb-12 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight leading-[0.75]"
                     style={{ color: C.text }}
                 >
                     Common Questions

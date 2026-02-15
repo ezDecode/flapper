@@ -14,7 +14,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
         <section id="pricing" className="px-4 py-20 md:px-8 md:py-24">
             <div className="mb-16 text-center">
                 <h2
-                    className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight"
+                    className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-[0.75]"
                     style={{ color: C.text }}
                 >
                     Simple pricing.
