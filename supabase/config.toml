@@ -32,7 +32,4 @@ enabled = true
 client_id = "env(TWITTER_CLIENT_ID)"
 secret = "env(TWITTER_CLIENT_SECRET)"
 
-[auth.external.linkedin_oidc]
-enabled = true
-client_id = "env(LINKEDIN_CLIENT_ID)"
-secret = "env(LINKEDIN_CLIENT_SECRET)"
+

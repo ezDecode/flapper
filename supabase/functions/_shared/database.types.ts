@@ -53,7 +53,7 @@ export type Database = {
         Row: {
           id: string;
           user_id: string;
-          platform: "TWITTER" | "LINKEDIN" | "BLUESKY";
+          platform: "TWITTER";
           platform_user_id: string;
           platform_handle: string;
           access_token: string;
@@ -67,7 +67,7 @@ export type Database = {
         Insert: {
           id?: string;
           user_id: string;
-          platform: "TWITTER" | "LINKEDIN" | "BLUESKY";
+          platform: "TWITTER";
           platform_user_id: string;
           platform_handle: string;
           access_token: string;
@@ -117,10 +117,9 @@ export type Database = {
         Row: {
           id: string;
           post_id: string;
-          platform: "TWITTER" | "LINKEDIN" | "BLUESKY";
+          platform: "TWITTER";
           platform_post_id: string | null;
           platform_post_url: string | null;
-          bluesky_cid: string | null;
           likes_count: number;
           comments_count: number;
           reposts_count: number;
@@ -131,10 +130,9 @@ export type Database = {
         Insert: {
           id?: string;
           post_id: string;
-          platform: "TWITTER" | "LINKEDIN" | "BLUESKY";
+          platform: "TWITTER";
           platform_post_id?: string | null;
           platform_post_url?: string | null;
-          bluesky_cid?: string | null;
           likes_count?: number;
           comments_count?: number;
           reposts_count?: number;
@@ -149,7 +147,7 @@ export type Database = {
         Row: {
           id: string;
           post_id: string;
-          platform: "TWITTER" | "LINKEDIN" | "BLUESKY";
+          platform: "TWITTER";
           plug_content: string;
           trigger_type: "LIKES" | "COMMENTS" | "REPOSTS" | "TIME_AFTER_PUBLISH";
           trigger_value: number;
@@ -162,7 +160,7 @@ export type Database = {
         Insert: {
           id?: string;
           post_id: string;
-          platform: "TWITTER" | "LINKEDIN" | "BLUESKY";
+          platform: "TWITTER";
           plug_content: string;
           trigger_type?: "LIKES" | "COMMENTS" | "REPOSTS" | "TIME_AFTER_PUBLISH";
           trigger_value: number;
@@ -178,13 +176,13 @@ export type Database = {
       api_rate_tracking: {
         Row: {
           user_id: string;
-          platform: "TWITTER" | "LINKEDIN" | "BLUESKY";
+          platform: "TWITTER";
           window_start: string;
           call_count: number;
         };
         Insert: {
           user_id: string;
-          platform: "TWITTER" | "LINKEDIN" | "BLUESKY";
+          platform: "TWITTER";
           window_start: string;
           call_count?: number;
         };
@@ -200,7 +198,7 @@ export type Database = {
       };
     };
     Enums: {
-      platform_type: "TWITTER" | "LINKEDIN" | "BLUESKY";
+      platform_type: "TWITTER";
       post_status: "DRAFT" | "SCHEDULED" | "PUBLISHING" | "PUBLISHED" | "FAILED";
       plug_status: "PENDING" | "FIRED" | "FAILED" | "SKIPPED";
       trigger_type: "LIKES" | "COMMENTS" | "REPOSTS" | "TIME_AFTER_PUBLISH";

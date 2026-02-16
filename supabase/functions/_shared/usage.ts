@@ -60,7 +60,7 @@ export async function checkAndEnforceLimit(userId: string, kind: "PUBLISH" | "PL
   return true;
 }
 
-export async function checkRateLimit(userId: string, platform: "TWITTER" | "LINKEDIN" | "BLUESKY", max = 45) {
+export async function checkRateLimit(userId: string, platform: "TWITTER", max = 45) {
   const now = new Date();
   const bucketStart = new Date(now);
   bucketStart.setUTCMinutes(Math.floor(bucketStart.getUTCMinutes() / 15) * 15, 0, 0);

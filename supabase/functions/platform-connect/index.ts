@@ -2,18 +2,18 @@ import { encrypt } from "../_shared/token-crypto.ts";
 import { admin, getUserFromRequest } from "../_shared/supabase-admin.ts";
 import { err, handleCors, json } from "../_shared/cors.ts";
 
-type Platform = "TWITTER" | "LINKEDIN" | "BLUESKY";
+type Platform = "TWITTER";
 
 type Payload = {
   platform: Platform;
   access_token?: string;
   refresh_token?: string;
+  expires_in?: number;
   platform_user_id?: string;
   platform_handle?: string;
-  expires_in?: number;
+  code_verifier?: string;
+  redirect_uri?: string;
   scopes?: string[];
-  bluesky_handle?: string;
-  bluesky_app_password?: string;
 };
 
 Deno.serve(async (req) => {
@@ -33,17 +33,16 @@ Deno.serve(async (req) => {
     }
 
     const platform = body.platform;
-    const rawAccessToken =
-      platform === "BLUESKY" ? body.bluesky_app_password ?? body.access_token ?? "" : body.access_token ?? "";
-    const rawRefreshToken = body.refresh_token ?? null;
-    const platformHandle = platform === "BLUESKY" ? body.bluesky_handle ?? body.platform_handle : body.platform_handle;
+    const accessToken = body.access_token ?? "";
+    const refreshToken = body.refresh_token ?? null;
+    const platformHandle = body.platform_handle;
 
-    if (!rawAccessToken || !platformHandle) {
+    if (!accessToken || !platformHandle) {
       return err("Missing access token or platform handle");
     }
 
-    const encryptedAccess = await encrypt(rawAccessToken);
-    const encryptedRefresh = rawRefreshToken ? await encrypt(rawRefreshToken) : null;
+    const encryptedAccess = await encrypt(accessToken);
+    const encryptedRefresh = refreshToken ? await encrypt(refreshToken) : null;
     const tokenExpiresAt = body.expires_in ? new Date(Date.now() + body.expires_in * 1000).toISOString() : null;
 
     const { error: upsertError } = await admin.from("platform_connections").upsert(

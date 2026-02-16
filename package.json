@@ -9,8 +9,9 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "gen:types": "supabase gen types typescript --local > lib/supabase/database.types.ts && node -e \"require('node:fs').copyFileSync('lib/supabase/database.types.ts','supabase/functions/_shared/database.types.ts')\"",
+    "gen:types:remote": "npx supabase gen types typescript --project-ref okmointqzxuizsqnqzqm > lib/supabase/database.types.ts",
     "db:push": "supabase db push",
-    "db:reset": "supabase db reset",
+    "db:push:remote": "npx supabase db push --exclude-all",
     "fn:serve": "supabase functions serve",
     "fn:deploy": "supabase functions deploy",
     "fn:invoke": "supabase functions invoke"

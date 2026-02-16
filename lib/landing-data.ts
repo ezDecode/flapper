@@ -27,9 +27,7 @@ export const features = [
     {
         icon: Clock,
         title: "Smart Scheduling",
-        title: "Multi-Platform Sync",
         desc: "Queue posts for Twitter/X. Pick your time or let Flapr find the best slot.",
-        icon: "zap",
         className: "md:col-span-2",
     },
     {
@@ -156,7 +154,6 @@ export const faqs = [
         a: "Set a threshold (like 50 likes). When it’s reached, Flapr replies with your CTA automatically.",
     },
     {
-        q: "Which platforms are supported?",
         q: "Which platforms do you support?",
         a: "Twitter/X. More coming soon.",
     },
