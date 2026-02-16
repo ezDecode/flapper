@@ -18,3 +18,7 @@ package-lock.json
 
 /.agent
 /.agents
+
+supabase/.temp
+supabase/.branches
+supabase/functions/*/deno.lock
