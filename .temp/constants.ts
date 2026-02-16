@@ -3,8 +3,8 @@ export const PLATFORM_CHAR_LIMITS = {
 } as const;
 
 export const PLAN_LIMITS = {
-  FREE: { posts: 10, plugs: 5 },
-  PRO: { posts: 100, plugs: 50 },
+  FREE:   { posts: 10,                       plugs: 5 },
+  PRO:    { posts: 100,                      plugs: 50 },
   AGENCY: { posts: Number.POSITIVE_INFINITY, plugs: Number.POSITIVE_INFINITY }
 } as const;
 

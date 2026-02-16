@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-import { TwitterXIcon, LinkedInIcon } from "@/components/ui/icons";
+import { TwitterXIcon } from "@/components/ui/icons";
 
 export default function AuthPageWrapper() {
   return (
@@ -155,15 +155,7 @@ function AuthPage() {
               <TwitterXIcon className="mr-2 h-5 w-5" />
               Sign in with Twitter
             </button>
-            <button
-              type="button"
-              onClick={() => oauth("linkedin_oidc")}
-              className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
-              style={{ backgroundColor: "#0077B5", color: "#ffffff" }}
-            >
-              <LinkedInIcon className="mr-2 h-5 w-5" />
-              Sign in with LinkedIn
-            </button>
+
           </div>
 
           <div className="my-6 flex items-center gap-3">

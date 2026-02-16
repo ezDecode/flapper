@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Card, Flex, H1, H2, Pill, Text } from "@maximeheckel/design-system";
+// Actually better to just remove the import as we will use native elements per my discovery
+// import { Button, Card, Flex, H1, H2, Pill, Text } from "@maximeheckel/design-system"; -> REMOVE
 import {
   Twitter,
-  Linkedin,
   Globe,
   Send,
   Zap,
@@ -187,26 +187,21 @@ export default function OnboardingPage() {
     <div className="mx-auto min-h-screen bg-[#FAFAF8] px-4 py-12">
       <div className="mx-auto max-w-2xl">
         {/* Header */}
-        <Flex direction="column" alignItems="center" gap="2" className="mb-8">
-          <Flex alignItems="center" gap="2">
+        <div className="mb-8 flex flex-col items-center gap-2">
+          <div className="flex items-center gap-2">
             <Sparkles size={20} className="text-[#7C3AED]" />
-            <H1>Welcome to Flapr</H1>
-          </Flex>
-          <Text size="2" variant="tertiary">
+            <h1 className="text-3xl font-bold tracking-tight text-[#1A1A2E]">Welcome to Flapr</h1>
+          </div>
+          <p className="text-sm text-[#6B6B7B]">
             Let's get you set up in 3 quick steps.
-          </Text>
-        </Flex>
+          </p>
+        </div>
 
         {/* Step indicator */}
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          gap="0"
-          className="mb-10"
-        >
+        <div className="mb-10 flex items-center justify-center gap-0">
           {steps.map((step, idx) => (
-            <Flex key={step.number} alignItems="center" gap="0">
-              <Flex direction="column" alignItems="center" gap="1">
+            <div key={step.number} className="flex items-center gap-0">
+              <div className="flex flex-col items-center gap-1">
                 <div
                   className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-medium transition-all ${currentStep > step.number
                     ? "border-[#2B8A3E] bg-[#2B8A3E] text-white"
@@ -221,16 +216,12 @@ export default function OnboardingPage() {
                     step.number
                   )}
                 </div>
-                <Text
-                  size="1"
-                  weight={currentStep === step.number ? "4" : "3"}
-                  variant={
-                    currentStep === step.number ? "primary" : "tertiary"
-                  }
+                <p
+                  className={`text-xs ${currentStep === step.number ? "font-semibold text-[#1A1A2E]" : "font-normal text-[#6B6B7B]"}`}
                 >
                   {step.label}
-                </Text>
-              </Flex>
+                </p>
+              </div>
               {idx < steps.length - 1 && (
                 <div
                   className={`mx-3 mb-5 h-0.5 w-16 rounded-full ${currentStep > step.number
@@ -239,27 +230,27 @@ export default function OnboardingPage() {
                     }`}
                 />
               )}
-            </Flex>
+            </div>
           ))}
-        </Flex>
+        </div>
 
         {/* Step 1: Connect Platform */}
         {currentStep <= 1 && (
-          <Card>
-            <Card.Header>
-              <Flex alignItems="center" gap="2">
+          <div className="rounded-2xl border border-[#E5E0D8] bg-white shadow-sm">
+            <div className="border-b border-[#E5E0D8] px-6 py-4">
+              <div className="flex items-center gap-2">
                 <Globe size={18} className="text-[#7C3AED]" />
-                <H2>Connect Your Accounts</H2>
-              </Flex>
-            </Card.Header>
-            <Card.Body>
-              <Flex direction="column" gap="4">
-                <Text size="2" variant="tertiary">
+                <h2 className="text-xl font-semibold text-[#1A1A2E]">Connect Your Accounts</h2>
+              </div>
+            </div>
+            <div className="p-6">
+              <div className="flex flex-col gap-4">
+                <p className="text-sm text-[#6B6B7B]">
                   Connect your social accounts so Flapr can publish posts and
                   fire auto-plugs on your behalf.
-                </Text>
+                </p>
 
-                <Flex direction="column" gap="3">
+                <div className="flex flex-col gap-3">
                   {platformOptions.map((platform) => {
                     const meta = platformMeta[platform];
                     const isConnected = connections.some(
@@ -274,7 +265,7 @@ export default function OnboardingPage() {
                           : "border-[#E8E8E4] bg-white"
                           }`}
                       >
-                        <Flex alignItems="center" gap="3">
+                        <div className="flex items-center gap-3">
                           <div
                             className={`flex h-10 w-10 items-center justify-center rounded-xl ${meta.bgClass}`}
                             style={{ color: meta.color }}
@@ -282,35 +273,36 @@ export default function OnboardingPage() {
                             {meta.icon}
                           </div>
                           <div>
-                            <Text size="2" weight="4">
+                            <p className="text-sm font-semibold text-[#1A1A2E]">
                               {meta.label}
-                            </Text>
+                            </p>
                             {isConnected && (
-                              <Flex alignItems="center" gap="1">
+                              <div className="flex items-center gap-1">
                                 <Check
                                   size={12}
                                   className="text-[#2B8A3E]"
                                 />
-                                <Text size="1" className="text-[#2B8A3E]">
+                                <p className="text-xs text-[#2B8A3E]">
                                   Connected
-                                </Text>
-                              </Flex>
+                                </p>
+                              </div>
                             )}
                           </div>
-                        </Flex>
+                        </div>
 
                         {!isConnected && (
-                          <Button
-                            variant="secondary"
+                          <button
+                            type="button"
                             onClick={() => connectOAuth("twitter")}
+                            className="inline-flex items-center justify-center rounded-lg border border-[#E8E8E4] bg-white px-3 py-1.5 text-xs font-medium text-[#1A1A2E] hover:bg-[#FAFAF8]"
                           >
                             Connect
-                          </Button>
+                          </button>
                         )}
                       </div>
                     );
                   })}
-                </Flex>
+                </div>
 
                 <button
                   disabled={connections.length < 1}
@@ -321,27 +313,27 @@ export default function OnboardingPage() {
                   Continue
                   <ChevronDown size={16} className="rotate-[-90deg]" />
                 </button>
-              </Flex>
-            </Card.Body>
-          </Card>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Step 2: Write First Post */}
         {currentStep === 2 && (
-          <Card>
-            <Card.Header>
-              <Flex alignItems="center" gap="2">
+          <div className="rounded-2xl border border-[#E5E0D8] bg-white shadow-sm">
+            <div className="border-b border-[#E5E0D8] px-6 py-4">
+              <div className="flex items-center gap-2">
                 <Send size={18} className="text-[#7C3AED]" />
-                <H2>Draft Your First Post</H2>
-              </Flex>
-            </Card.Header>
-            <Card.Body>
+                <h2 className="text-xl font-semibold text-[#1A1A2E]">Draft Your First Post</h2>
+              </div>
+            </div>
+            <div className="p-6">
               <form onSubmit={submitStep2}>
-                <Flex direction="column" gap="4">
-                  <Text size="2" variant="tertiary">
+                <div className="flex flex-col gap-4">
+                  <p className="text-sm text-[#6B6B7B]">
                     Draft a quick post — you can always edit it later in the
                     composer.
-                  </Text>
+                  </p>
 
                   <textarea
                     value={postContent}
@@ -352,12 +344,12 @@ export default function OnboardingPage() {
                     className="w-full rounded-xl border border-[#E8E8E4] bg-[#FAFAF8] px-4 py-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                   />
 
-                  <Flex gap="3" wrap="wrap" alignItems="end">
+                  <div className="flex gap-3 flex-wrap items-end">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-xs font-medium text-[#6B6B6B]">
                         Platform
                       </label>
-                      <Flex gap="2">
+                      <div className="flex gap-2">
                         {platformOptions.map((platform) => {
                           const meta = platformMeta[platform];
                           return (
@@ -384,7 +376,7 @@ export default function OnboardingPage() {
                             </button>
                           );
                         })}
-                      </Flex>
+                      </div>
                     </div>
 
                     <div className="flex flex-col gap-1.5">
@@ -398,7 +390,7 @@ export default function OnboardingPage() {
                         className="h-8 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                       />
                     </div>
-                  </Flex>
+                  </div>
 
                   <button
                     type="submit"
@@ -408,36 +400,36 @@ export default function OnboardingPage() {
                     Save and continue
                     <ChevronDown size={16} className="rotate-[-90deg]" />
                   </button>
-                </Flex>
+                </div>
               </form>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
         )}
 
         {/* Step 3: Auto-Plug */}
         {currentStep >= 3 && (
-          <Card>
-            <Card.Header>
-              <Flex alignItems="center" gap="2">
+          <div className="rounded-2xl border border-[#E5E0D8] bg-white shadow-sm">
+            <div className="border-b border-[#E5E0D8] px-6 py-4">
+              <div className="flex items-center gap-2">
                 <Zap size={18} className="text-[#7C3AED]" />
-                <H2>Set Up Auto-Plug</H2>
-              </Flex>
-            </Card.Header>
-            <Card.Body>
+                <h2 className="text-xl font-semibold text-[#1A1A2E]">Set Up Auto-Plug</h2>
+              </div>
+            </div>
+            <div className="p-6">
               <form onSubmit={submitStep3}>
-                <Flex direction="column" gap="4">
-                  <Text size="2" variant="tertiary">
+                <div className="flex flex-col gap-4">
+                  <p className="text-sm text-[#6B6B7B]">
                     Set a threshold — when your post hits that many likes, Flapr
                     automatically replies with your plug content.
-                  </Text>
+                  </p>
 
                   <div className="flex flex-col gap-1.5">
-                    <Flex alignItems="center" gap="2">
+                    <div className="flex items-center gap-2">
                       <Heart size={14} className="text-[#7C3AED]" />
                       <label className="text-xs font-medium text-[#6B6B6B]">
                         Fire when likes reach
                       </label>
-                    </Flex>
+                    </div>
                     <input
                       type="number"
                       min={1}
@@ -469,18 +461,18 @@ export default function OnboardingPage() {
                     <Sparkles size={16} />
                     Finish onboarding
                   </button>
-                </Flex>
+                </div>
               </form>
-            </Card.Body>
-          </Card>
+            </div>
+          </div>
         )}
 
         {/* Message */}
         {message ? (
           <div className="mt-4">
-            <Text size="2" variant="tertiary">
+            <p className="text-sm text-[#6B6B7B]">
               {message}
-            </Text>
+            </p>
           </div>
         ) : null}
       </div>

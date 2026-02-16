@@ -1,11 +1,10 @@
 import { err, handleCors, json } from "../_shared/cors.ts";
 import { tokenExpired } from "../_shared/email-templates.ts";
-import { LinkedInService } from "../_shared/linkedin.ts";
 import { encrypt } from "../_shared/token-crypto.ts";
 import { admin, isServiceRoleRequest } from "../_shared/supabase-admin.ts";
 import { TwitterService } from "../_shared/twitter.ts";
 
-async function sendExpiredNotice(userId: string, platform: "TWITTER" | "LINKEDIN") {
+async function sendExpiredNotice(userId: string, platform: "TWITTER") {
   const { data: user } = await admin.from("users").select("email").eq("id", userId).single();
   if (!user?.email) return;
   const siteUrl = Deno.env.get("SITE_URL") ?? "http://localhost:3000";
@@ -37,9 +36,6 @@ Deno.serve(async (req) => {
 
     if (refreshError) return err(refreshError.message, 500);
 
-    // The 'error' variable here seems to be undefined based on the provided snippet.
-    // Assuming it was meant to be 'refreshError' or removed.
-    // If (error) return err(error.message, 500); // This line is problematic without 'error' being defined.
     if (!expiring || expiring.length === 0) return json({ refreshed: 0, deactivated: 0 });
 
     let refreshed = 0;

@@ -5,13 +5,10 @@ import CharacterCount from "@tiptap/extension-character-count";
 import StarterKit from "@tiptap/starter-kit";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { addMinutes } from "date-fns";
-import { Button, Card, Flex, Pill, Text } from "@maximeheckel/design-system";
 import {
   Send,
   Clock,
   Twitter,
-  Linkedin,
-  Globe,
   AlertCircle,
   Check,
 } from "lucide-react";
@@ -163,43 +160,48 @@ export function PostComposer() {
   };
 
   return (
-    <Flex direction="column" gap="5">
+    <div className="flex flex-col gap-5">
       {/* Editor */}
-      <Card>
-        <Card.Header>
-          <Flex alignItems="center" justifyContent="space-between">
-            <Text size="2" weight="4">
+      <div className="rounded-xl border border-[#27272B] bg-[#131316]">
+        <div className="border-b border-[#27272B] px-6 py-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-[#EDEDEF]">
               New Post
-            </Text>
-            <Pill variant={minRemaining < 0 ? "danger" : "info"}>
+            </p>
+            <span
+              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${minRemaining < 0
+                  ? "bg-red-500/10 text-red-500"
+                  : "bg-blue-500/10 text-blue-500"
+                }`}
+            >
               {minRemaining} chars remaining
-            </Pill>
-          </Flex>
-        </Card.Header>
-        <Card.Body>
-          <div className="min-h-[160px] rounded-lg border border-[#E8E8E4] bg-[#FAFAF8] p-4 transition-colors focus-within:border-[#7C3AED] focus-within:ring-1 focus-within:ring-[#7C3AED]">
+            </span>
+          </div>
+        </div>
+        <div className="p-6">
+          <div className="min-h-[160px] rounded-lg border border-[#27272B] bg-[#1A1A1E] p-4 transition-colors focus-within:border-[#7C3AED] focus-within:ring-1 focus-within:ring-[#7C3AED]">
             <EditorContent
               editor={editor}
-              className="prose prose-sm max-w-none focus:outline-none [&_.ProseMirror]:min-h-[120px] [&_.ProseMirror]:outline-none"
+              className="prose prose-sm prose-invert max-w-none focus:outline-none [&_.ProseMirror]:min-h-[120px] [&_.ProseMirror]:outline-none text-[#EDEDEF]"
             />
           </div>
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
 
       {/* Platform selector + Schedule */}
-      <Card>
-        <Card.Header>
-          <Text size="2" weight="4">
+      <div className="rounded-xl border border-[#27272B] bg-[#131316]">
+        <div className="border-b border-[#27272B] px-6 py-4">
+          <p className="text-sm font-medium text-[#EDEDEF]">
             Destinations &amp; Schedule
-          </Text>
-        </Card.Header>
-        <Card.Body>
-          <Flex direction="column" gap="4">
+          </p>
+        </div>
+        <div className="p-6">
+          <div className="flex flex-col gap-4">
             <div>
-              <Text size="1" variant="tertiary" className="mb-2 block">
+              <span className="mb-2 block text-xs text-[#A1A1AA]">
                 Select platforms
-              </Text>
-              <Flex gap="2" wrap="wrap">
+              </span>
+              <div className="flex flex-wrap gap-2">
                 {platforms.map((platform) => {
                   const meta = platformMeta[platform];
                   const isSelected = selectedPlatforms.includes(platform);
@@ -210,8 +212,8 @@ export function PostComposer() {
                       type="button"
                       onClick={() => togglePlatform(platform)}
                       className={`inline-flex items-center gap-2 rounded-xl border-2 px-4 py-2.5 text-sm font-medium transition-all ${isSelected
-                        ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
-                        : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
+                        ? "border-[#7C3AED] bg-[#2E1065] text-[#A78BFA]"
+                        : "border-[#27272B] bg-[#1A1A1E] text-[#A1A1AA] hover:border-[#7C3AED]/40"
                         }`}
                     >
                       <span style={{ color: isSelected ? meta.color : undefined }}>
@@ -224,26 +226,26 @@ export function PostComposer() {
                     </button>
                   );
                 })}
-              </Flex>
+              </div>
             </div>
 
             <div>
-              <Text size="1" variant="tertiary" className="mb-2 block">
+              <span className="mb-2 block text-xs text-[#A1A1AA]">
                 Schedule at
-              </Text>
-              <Flex alignItems="center" gap="2">
-                <Clock size={16} className="text-[#6B6B6B]" />
+              </span>
+              <div className="flex items-center gap-2">
+                <Clock size={16} className="text-[#A1A1AA]" />
                 <input
                   type="datetime-local"
                   value={scheduledAt}
                   onChange={(e) => setScheduledAt(e.target.value)}
-                  className="h-9 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                  className="h-9 rounded-lg border border-[#27272B] bg-[#1A1A1E] px-3 text-sm text-[#EDEDEF] focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
                 />
-              </Flex>
+              </div>
             </div>
-          </Flex>
-        </Card.Body>
-      </Card>
+          </div>
+        </div>
+      </div>
 
       {/* Auto-plug config */}
       <AutoPlugConfig
@@ -256,7 +258,7 @@ export function PostComposer() {
       <PostPreview content={content} selectedPlatforms={selectedPlatforms} />
 
       {/* Submit */}
-      <Flex alignItems="center" gap="3">
+      <div className="flex items-center gap-3">
         <button
           onClick={submit}
           disabled={saving}
@@ -267,28 +269,25 @@ export function PostComposer() {
           {saving ? "Scheduling…" : "Schedule Post"}
         </button>
         {status ? (
-          <Flex alignItems="center" gap="1">
+          <div className="flex items-center gap-1">
             {status.includes("successfully") ? (
               <Check size={14} className="text-[#2B8A3E]" />
             ) : (
               <AlertCircle size={14} className="text-[#E03131]" />
             )}
-            <Text
-              size="2"
-              variant="tertiary"
-              className={
-                status.includes("successfully")
+            <p
+              className={`text-sm ${status.includes("successfully")
                   ? "text-[#2B8A3E]"
                   : "text-[#E03131]"
-              }
+                }`}
             >
               {status}
-            </Text>
-          </Flex>
+            </p>
+          </div>
         ) : null}
-      </Flex>
+      </div>
 
       <UpgradeModal open={showUpgrade} onClose={() => setShowUpgrade(false)} />
-    </Flex>
+    </div>
   );
 }

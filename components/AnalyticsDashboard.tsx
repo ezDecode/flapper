@@ -13,22 +13,17 @@ import {
   YAxis,
 } from "recharts";
 import { format, subDays } from "date-fns";
-import { Card, Flex, Text } from "@maximeheckel/design-system";
-import { Heart, Zap, Twitter, Linkedin, Globe } from "lucide-react";
+import { Heart, Zap, Twitter } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type MetricRow = {
   day: string;
   twitter: number;
-  linkedin: number;
-  bluesky: number;
 };
 
 const emptySeries = Array.from({ length: 7 }).map((_, index) => ({
   day: format(subDays(new Date(), 6 - index), "MMM d"),
   twitter: 0,
-  linkedin: 0,
-  bluesky: 0,
 }));
 
 export function AnalyticsDashboard() {
@@ -63,10 +58,6 @@ export function AnalyticsDashboard() {
         }
         if (target.platform === "TWITTER") {
           row.twitter += target.likes_count;
-        } else if (target.platform === "LINKEDIN") {
-          row.linkedin += target.likes_count;
-        } else if (target.platform === "BLUESKY") {
-          row.bluesky += target.likes_count;
         }
       });
 
@@ -91,108 +82,94 @@ export function AnalyticsDashboard() {
   const plugsFired = useMemo(
     () =>
       series.reduce(
-        (sum, row) => sum + row.twitter + row.linkedin + row.bluesky,
+        (sum, row) => sum + row.twitter,
         0
       ),
     [series]
   );
 
   return (
-    <Flex direction="column" gap="5">
+    <div className="flex flex-col gap-5">
       {/* Stat cards */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card>
-          <Card.Body>
-            <Flex direction="column" gap="2">
-              <Flex alignItems="center" gap="2">
-                <Heart size={16} className="text-[#7C3AED]" />
-                <Text size="1" variant="tertiary">
-                  Total engagement (7d)
-                </Text>
-              </Flex>
-              <Text size="4" weight="4">
-                {plugsFired}
-              </Text>
-            </Flex>
-          </Card.Body>
-        </Card>
+        <div className="rounded-xl border border-[#27272B] bg-[#131316] p-5">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <Heart size={16} className="text-[#7C3AED]" />
+              <p className="text-sm text-[#A1A1AA]">
+                Total engagement (7d)
+              </p>
+            </div>
+            <p className="text-2xl font-semibold text-[#EDEDEF]">
+              {plugsFired}
+            </p>
+          </div>
+        </div>
 
-        <Card>
-          <Card.Body>
-            <Flex direction="column" gap="2">
-              <Flex alignItems="center" gap="2">
+        <div className="rounded-xl border border-[#27272B] bg-[#131316] p-5">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
                 <Zap size={16} className="text-[#7C3AED]" />
-                <Text size="1" variant="tertiary">
+                <p className="text-sm text-[#A1A1AA]">
                   Top posts tracked
-                </Text>
-              </Flex>
-              <Text size="4" weight="4">
+                </p>
+              </div>
+              <p className="text-2xl font-semibold text-[#EDEDEF]">
                 {topPosts.length}
-              </Text>
-            </Flex>
-          </Card.Body>
-        </Card>
+              </p>
+            </div>
+        </div>
 
-        <Card>
-          <Card.Body>
-            <Flex direction="column" gap="2">
-              <Flex alignItems="center" gap="2">
-                <Globe size={16} className="text-[#7C3AED]" />
-                <Text size="1" variant="tertiary">
+        <div className="rounded-xl border border-[#27272B] bg-[#131316] p-5">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <Twitter size={16} className="text-[#7C3AED]" />
+                <p className="text-sm text-[#A1A1AA]">
                   Platforms active
-                </Text>
-              </Flex>
-              <Text size="4" weight="4">
-                3
-              </Text>
-            </Flex>
-          </Card.Body>
-        </Card>
+                </p>
+              </div>
+              <p className="text-2xl font-semibold text-[#EDEDEF]">
+                1
+              </p>
+            </div>
+        </div>
       </div>
 
       {/* Engagement over time */}
-      <Card>
-        <Card.Header>
-          <Flex alignItems="center" justifyContent="space-between">
-            <Text size="2" weight="4">
+      {/* Engagement over time */}
+      <div className="rounded-xl border border-[#27272B] bg-[#131316]">
+        <div className="border-b border-[#27272B] px-6 py-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-medium text-[#EDEDEF]">
               Engagement over time
-            </Text>
-            <Flex gap="3" alignItems="center">
-              <Flex alignItems="center" gap="1">
+            </h3>
+            <div className="flex gap-3 items-center">
+              <div className="flex items-center gap-1">
                 <div className="h-2 w-2 rounded-full bg-[#0ea5e9]" />
-                <Text size="1" variant="tertiary">
+                <p className="text-xs text-[#A1A1AA]">
                   Twitter
-                </Text>
-              </Flex>
-              <Flex alignItems="center" gap="1">
-                <div className="h-2 w-2 rounded-full bg-[#1d4ed8]" />
-                <Text size="1" variant="tertiary">
-                  LinkedIn
-                </Text>
-              </Flex>
-              <Flex alignItems="center" gap="1">
-                <div className="h-2 w-2 rounded-full bg-[#14b8a6]" />
-                <Text size="1" variant="tertiary">
-                  Bluesky
-                </Text>
-              </Flex>
-            </Flex>
-          </Flex>
-        </Card.Header>
-        <Card.Body>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="p-6">
           <div className="h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={series}>
                 <CartesianGrid
                   strokeDasharray="3 3"
-                  stroke="#E8E8E4"
+                  stroke="#27272B"
                 />
                 <XAxis
                   dataKey="day"
-                  tick={{ fontSize: 12, fill: "#6B6B6B" }}
+                  tick={{ fontSize: 12, fill: "#A1A1AA" }}
+                  stroke="#27272B"
                 />
-                <YAxis tick={{ fontSize: 12, fill: "#6B6B6B" }} />
-                <Tooltip />
+                <YAxis tick={{ fontSize: 12, fill: "#A1A1AA" }} stroke="#27272B" />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: "#18181B", borderColor: "#27272B", color: "#EDEDEF" }}
+                />
                 <Line
                   type="monotone"
                   dataKey="twitter"
@@ -200,47 +177,37 @@ export function AnalyticsDashboard() {
                   strokeWidth={2}
                   dot={false}
                 />
-                <Line
-                  type="monotone"
-                  dataKey="linkedin"
-                  stroke="#1d4ed8"
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="bluesky"
-                  stroke="#14b8a6"
-                  strokeWidth={2}
-                  dot={false}
-                />
               </LineChart>
             </ResponsiveContainer>
           </div>
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
 
       {/* Top posts by likes */}
-      <Card>
-        <Card.Header>
-          <Text size="2" weight="4">
+      {/* Top posts by likes */}
+      <div className="rounded-xl border border-[#27272B] bg-[#131316]">
+        <div className="border-b border-[#27272B] px-6 py-4">
+          <h3 className="text-lg font-medium text-[#EDEDEF]">
             Top posts by likes
-          </Text>
-        </Card.Header>
-        <Card.Body>
+          </h3>
+        </div>
+        <div className="p-6">
           <div className="h-[260px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={topPosts}>
                 <CartesianGrid
                   strokeDasharray="3 3"
-                  stroke="#E8E8E4"
+                  stroke="#27272B"
                 />
                 <XAxis
                   dataKey="label"
-                  tick={{ fontSize: 12, fill: "#6B6B6B" }}
+                  tick={{ fontSize: 12, fill: "#A1A1AA" }}
+                  stroke="#27272B"
                 />
-                <YAxis tick={{ fontSize: 12, fill: "#6B6B6B" }} />
-                <Tooltip />
+                <YAxis tick={{ fontSize: 12, fill: "#A1A1AA" }} stroke="#27272B" />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: "#18181B", borderColor: "#27272B", color: "#EDEDEF" }}
+                />
                 <Bar
                   dataKey="likes"
                   fill="#7C3AED"
@@ -249,8 +216,8 @@ export function AnalyticsDashboard() {
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </Card.Body>
-      </Card>
-    </Flex>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,13 +1,11 @@
-import { BlueskyService } from "../_shared/bluesky.ts";
 import { err, handleCors, json } from "../_shared/cors.ts";
 import { plugFailed } from "../_shared/email-templates.ts";
-import { LinkedInService } from "../_shared/linkedin.ts";
 import { admin, isServiceRoleRequest } from "../_shared/supabase-admin.ts";
 import { TwitterService } from "../_shared/twitter.ts";
 
 import { validatePostContent } from "../_shared/validators.ts";
 
-function appendUtm(content: string, platform: "TWITTER" | "LINKEDIN" | "BLUESKY") {
+function appendUtm(content: string, platform: "TWITTER") {
   const utm = `utm_source=${platform.toLowerCase()}&utm_medium=autoplug&utm_campaign=flapr`;
   return content.replace(/https?:\/\/[^\s]+/g, (url) => {
     if (url.includes("utm_source=")) return url;
@@ -50,7 +48,7 @@ Deno.serve(async (req) => {
         id, post_id, platform, plug_content, trigger_type, trigger_value, status,
         posts!inner ( user_id ),
         post_targets!inner (
-          id, platform_post_id, bluesky_cid,
+          id, platform_post_id,
           likes_count, comments_count, reposts_count
         ),
         platform_connections!inner ( access_token, platform_handle, is_active )
@@ -60,13 +58,11 @@ Deno.serve(async (req) => {
       .limit(50);
 
     if (plugsError) return err(plugsError.message, 500);
-    // @ts-ignore: explicit check for empty array
     if (!plugs || plugs.length === 0) return json({ polled: 0, fired: 0, failed: 0 });
 
     let fired = 0;
     let failed = 0;
 
-    // @ts-ignore: Supabase join types are sometimes inferred strictly, we prioritize the manual logic correctness here
     for (const plug of plugs) {
       // Access joined data directly
       const post = plug.posts; // { user_id }

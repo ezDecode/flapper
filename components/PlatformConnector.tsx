@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Card, Flex, Text } from "@maximeheckel/design-system";
-import { Twitter, Linkedin, Globe, Check, X } from "lucide-react";
+import { Twitter, Check, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type PlatformConnection = {
@@ -47,12 +46,10 @@ export function PlatformConnector() {
     void refresh();
   }, []);
 
-  const connectOAuth = async (provider: "twitter" | "linkedin_oidc") => {
+  const connectOAuth = async (provider: "twitter") => {
     const redirectTo = `${window.location.origin}/auth/callback?next=/settings`;
     await supabase.auth.signInWithOAuth({ provider, options: { redirectTo } });
   };
-
-
 
   const disconnect = async (id: string) => {
     await supabase
@@ -63,72 +60,65 @@ export function PlatformConnector() {
   };
 
   return (
-    <Flex direction="column" gap="3">
+    <div className="flex flex-col gap-3">
       {platformRows.map((row) => {
         const connected = connections.find((item) => item.platform === row.key);
 
         return (
-          <Card key={row.key}>
-            <Card.Body>
-              <Flex
-                alignItems="center"
-                justifyContent="space-between"
-                gap="4"
-                wrap="wrap"
-              >
-                <Flex alignItems="center" gap="3">
-                  <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-xl ${row.bgClass}`}
-                    style={{ color: row.color }}
-                  >
-                    {row.icon}
+          <div key={row.key} className="rounded-xl border border-[#27272B] bg-[#131316] p-4">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-3">
+                <div
+                  className={`flex h-10 w-10 items-center justify-center rounded-xl ${row.bgClass}`}
+                  style={{ color: row.color }}
+                >
+                  {row.icon}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-[#EDEDEF]">
+                    {row.label}
+                  </p>
+                  <div className="flex items-center gap-1">
+                    <div
+                      className={`h-2 w-2 rounded-full ${connected ? "bg-[#2B8A3E]" : "bg-[#ADB5BD]"
+                        }`}
+                    />
+                    <p className="text-xs text-[#A1A1AA]">
+                      {connected
+                        ? `Connected as @${connected.platform_handle}`
+                        : "Not connected"}
+                    </p>
                   </div>
-                  <div>
-                    <Text size="2" weight="4">
-                      {row.label}
-                    </Text>
-                    <Flex alignItems="center" gap="1">
-                      <div
-                        className={`h-2 w-2 rounded-full ${connected ? "bg-[#2B8A3E]" : "bg-[#ADB5BD]"
-                          }`}
-                      />
-                      <Text size="1" variant="tertiary">
-                        {connected
-                          ? `Connected as @${connected.platform_handle}`
-                          : "Not connected"}
-                      </Text>
-                    </Flex>
-                  </div>
-                </Flex>
+                </div>
+              </div>
 
-                {connected ? (
-                  <Button
-                    variant="secondary"
-                    startIcon={<X size={14} />}
-                    onClick={() => disconnect(connected.id)}
-                  >
-                    Disconnect
-                  </Button>
-                ) : (
-                  <Button
-                    variant="primary"
-                    startIcon={<Check size={14} />}
-                    onClick={() => connectOAuth("twitter")}
-                  >
-                    Connect
-                  </Button>
-                )}
-              </Flex>
-            </Card.Body>
-          </Card>
+              {connected ? (
+                <button
+                  onClick={() => disconnect(connected.id)}
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#3F3F46] bg-[#27272B] px-3 py-1.5 text-xs font-medium text-[#EDEDEF] hover:bg-[#3F3F46] transition-colors"
+                >
+                  <X size={14} />
+                  Disconnect
+                </button>
+              ) : (
+                <button
+                  onClick={() => connectOAuth("twitter")}
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#EDEDEF] px-3 py-1.5 text-xs font-medium text-[#131316] hover:bg-[#D4D4D8] transition-colors"
+                >
+                  <Check size={14} />
+                  Connect
+                </button>
+              )}
+            </div>
+          </div>
         );
       })}
 
       {message ? (
-        <Text size="2" variant="tertiary">
+        <p className="text-sm text-[#A1A1AA]">
           {message}
-        </Text>
+        </p>
       ) : null}
-    </Flex>
+    </div>
   );
 }

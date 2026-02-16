@@ -37,7 +37,7 @@ const items = [
     {
         id: "scheduling",
         label: "Smart Scheduling",
-        description: "Queue posts across X, LinkedIn & Bluesky — pick your time or let Flapr find the best slot.",
+        description: "Queue posts for X — pick your time or let Flapr find the best slot.",
         color: "#3b82f6",
         icon: Clock,
     },

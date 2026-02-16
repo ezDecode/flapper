@@ -3,7 +3,7 @@ import { admin, getUserFromRequest } from "../_shared/supabase-admin.ts";
 import { err, handleCors, json } from "../_shared/cors.ts";
 
 type Payload = {
-  plan?: "PRO" | "AGENCY";
+  plan?: "PRO";
 };
 
 const client = new DodoPayments({
@@ -11,10 +11,8 @@ const client = new DodoPayments({
   environment: "live_mode"
 });
 
-function resolveProductId(plan: "PRO" | "AGENCY") {
-  return plan === "AGENCY"
-    ? Deno.env.get("DODO_AGENCY_PRODUCT_ID")
-    : Deno.env.get("DODO_PRO_PRODUCT_ID");
+function resolveProductId(_plan: "PRO") {
+  return Deno.env.get("DODO_PRO_PRODUCT_ID");
 }
 
 Deno.serve(async (req) => {

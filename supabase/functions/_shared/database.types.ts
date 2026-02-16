@@ -9,7 +9,7 @@ export type Database = {
           email: string;
           name: string | null;
           avatar_url: string | null;
-          plan: "FREE" | "PRO" | "AGENCY";
+          plan: "FREE" | "PRO";
           onboarding_step: number;
           dodo_customer_id: string | null;
           dodo_subscription_id: string | null;
@@ -22,7 +22,7 @@ export type Database = {
           email: string;
           name?: string | null;
           avatar_url?: string | null;
-          plan?: "FREE" | "PRO" | "AGENCY";
+          plan?: "FREE" | "PRO";
           onboarding_step?: number;
           dodo_customer_id?: string | null;
           dodo_subscription_id?: string | null;
@@ -202,7 +202,7 @@ export type Database = {
       post_status: "DRAFT" | "SCHEDULED" | "PUBLISHING" | "PUBLISHED" | "FAILED";
       plug_status: "PENDING" | "FIRED" | "FAILED" | "SKIPPED";
       trigger_type: "LIKES" | "COMMENTS" | "REPOSTS" | "TIME_AFTER_PUBLISH";
-      user_plan: "FREE" | "PRO" | "AGENCY";
+      user_plan: "FREE" | "PRO";
     };
     CompositeTypes: Record<string, never>;
   };

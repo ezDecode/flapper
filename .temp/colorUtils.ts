@@ -1,4 +1,4 @@
-
+export { cn } from "@/lib/utils";
 
 const CSS_COLOR_NAMES: Record<string, [number, number, number]> = {
     black: [0, 0, 0],
@@ -187,4 +187,11 @@ export function hslToRgb(
         g: Math.round(g),
         b: Math.round(b),
     };
+}
+
+/**
+ * Returns a high-contrast text color (black or white) for a given background luminance.
+ */
+export function getContrastColorFromLuminance(luminance: number) {
+    return luminance > 0.35 ? "#1a1a1a" : "#ffffff";
 }

@@ -50,8 +50,8 @@ export const features = [
     },
     {
         icon: Shield,
-        title: "Multi-Platform Sync",
-        desc: "One dashboard for every platform. Manage all your content and auto-plugs from a single place.",
+        title: "Twitter Focused",
+        desc: "Built specifically to grow your X audience. No distractions, just tools that work.",
         className: "md:col-span-3",
     },
 ];
@@ -104,7 +104,6 @@ export const plans = [
         features: [
             "10 posts / month",
             "5 auto-plugs",
-            "2 platforms",
             "Basic analytics",
         ],
         cta: "Get started",
@@ -117,27 +116,13 @@ export const plans = [
         features: [
             "100 posts",
             "50 auto-plugs",
-            "All platforms",
             "Advanced analytics",
             "Priority support",
         ],
         cta: "Choose Pro",
         highlighted: true,
     },
-    {
-        name: "Agency",
-        price: "$49",
-        period: "/ month",
-        features: [
-            "Unlimited posts & plugs",
-            "All platforms",
-            "1-year analytics history",
-            "Team features (soon)",
-            "Dedicated support",
-        ],
-        cta: "Choose Agency",
-        highlighted: false,
-    },
+
 ];
 
 export const faqs = [

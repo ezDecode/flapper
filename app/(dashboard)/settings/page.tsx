@@ -30,7 +30,7 @@ export default async function SettingsPage() {
         .eq("posts.user_id", userId),
     ]);
 
-  const profile = profileRaw as { plan: "FREE" | "PRO" | "AGENCY" } | null;
+  const profile = profileRaw as { plan: "FREE" | "PRO" } | null;
   const plan = profile?.plan ?? "FREE";
   const plugCount =
     (firedPlugsRaw as Array<{ id: string }> | null)?.length ?? 0;
@@ -38,10 +38,8 @@ export default async function SettingsPage() {
 
   const postLimit = plan === "FREE" ? 10 : plan === "PRO" ? 100 : Infinity;
   const plugLimit = plan === "FREE" ? 5 : plan === "PRO" ? 50 : Infinity;
-  const postLimitLabel =
-    plan === "AGENCY" ? "Unlimited" : String(postLimit);
-  const plugLimitLabel =
-    plan === "AGENCY" ? "Unlimited" : String(plugLimit);
+  const postLimitLabel = String(postLimit);
+  const plugLimitLabel = String(plugLimit);
 
   const postPct =
     postLimit === Infinity ? 0 : Math.min((posts / postLimit) * 100, 100);
@@ -51,7 +49,6 @@ export default async function SettingsPage() {
   const planBadge: Record<string, string> = {
     FREE: "bg-zinc-100 text-zinc-700 border border-zinc-200",
     PRO: "bg-[#F0ECFE] text-[#7C3AED] border border-[#DDD5FD]",
-    AGENCY: "bg-purple-50 text-purple-700 border border-purple-200",
   };
 
   return (

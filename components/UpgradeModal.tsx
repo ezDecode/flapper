@@ -30,7 +30,7 @@ export function UpgradeModal({ open, onClose }: Props) {
 
             <Text size="2" variant="tertiary">
               You&apos;ve hit your plan&apos;s limit for scheduling posts and
-              firing auto-plugs. Upgrade to Pro or Agency to keep growing.
+              firing auto-plugs. Upgrade to Pro to keep growing.
             </Text>
 
             <Flex gap="3" justifyContent="flex-end">
