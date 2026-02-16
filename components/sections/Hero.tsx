@@ -1,7 +1,8 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
-import { motion } from "motion/react";
+import { useState, useEffect } from "react";
+import { ArrowRight, Clock, Zap, BarChart3, TrendingUp } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 import { C } from "@/lib/landing-data";
 
@@ -12,23 +13,6 @@ const XIcon = ({ className }: { className?: string }) => (
     </svg>
 );
 
-
-
-const PLATFORMS = [
-    {
-        name: "X (Twitter)",
-        shortName: "X",
-        Icon: XIcon,
-        color: "#e7e7e7",
-        bg: "rgba(231,231,231,0.10)",
-        border: "rgba(231,231,231,0.18)",
-        iconBg: "#000",
-        iconColor: "#fff",
-    },
-
-];
-
-// Simplified static badge
 export function PlatformCycler() {
     return (
         <span
@@ -44,6 +28,58 @@ export function PlatformCycler() {
         >
             <XIcon className="w-full h-full" />
         </span>
+    );
+}
+
+function RotatingBadge() {
+    const [index, setIndex] = useState(0);
+    const badges = [
+        { text: "Smart Scheduling", icon: Clock },
+        { text: "Auto-Plug Engine", icon: Zap },
+        { text: "Analytics & Insights", icon: BarChart3 },
+        { text: "Growth Tools", icon: TrendingUp },
+    ];
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setIndex((prev) => (prev + 1) % badges.length);
+        }, 2200);
+        return () => clearInterval(timer);
+    }, []);
+
+    const CurrentIcon = badges[index].icon;
+
+    return (
+        <div className="mt-8 flex items-center gap-3">
+            <span className="text-base font-medium" style={{ color: C.textSoft }}>
+                Powering
+            </span>
+            <div className="relative h-8 w-64 overflow-hidden">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={index}
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -20, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="absolute inset-0 flex items-center"
+                    >
+                        <span
+                            className="inline-flex items-center gap-2 rounded-full border px-4 py-1 text-sm font-medium tracking-wide"
+                            style={{
+                                borderColor: "rgba(139, 92, 246, 0.2)",
+                                backgroundColor: "rgba(139, 92, 246, 0.1)",
+                                color: "#A78BFA",
+                                boxShadow: "0 0 12px rgba(139, 92, 246, 0.1)",
+                            }}
+                        >
+                            <CurrentIcon className="h-3.5 w-3.5" />
+                            {badges[index].text}
+                        </span>
+                    </motion.div>
+                </AnimatePresence>
+            </div>
+        </div>
     );
 }
 
@@ -92,6 +128,9 @@ export function Hero({ onOpenAuth }: HeroProps) {
                     Convert on autopilot.
                 </span>
             </h1>
+
+            {/* Rotating Feature Badge */}
+            <RotatingBadge />
 
 
 

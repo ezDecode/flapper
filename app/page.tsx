@@ -10,7 +10,6 @@ import { NavbarWithMenu } from "@/components/ui/navbar-menu";
 import { C } from "@/lib/landing-data";
 
 import { Hero } from "@/components/sections/Hero";
-import { Features } from "@/components/sections/Features";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Pricing } from "@/components/sections/Pricing";
@@ -95,7 +94,6 @@ function LandingPageInner() {
           />
 
           <Hero onOpenAuth={openAuth} />
-          <Features />
           <HowItWorks />
           <Testimonials />
           <Pricing onOpenAuth={openAuth} />
