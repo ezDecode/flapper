@@ -292,7 +292,7 @@ export default function OnboardingPage() {
                           <button
                             type="button"
                             onClick={() => connectOAuth("twitter")}
-                            className="inline-flex items-center justify-center rounded-lg border border-[#E8E8E4] bg-white px-3 py-1.5 text-xs font-medium text-[#1A1A2E] hover:bg-[#FAFAF8]"
+                            className="inline-flex items-center justify-center rounded-full border border-[#E8E8E4] bg-white px-3 py-1.5 text-xs font-medium text-[#1A1A2E] hover:bg-[#FAFAF8]"
                           >
                             Connect
                           </button>
@@ -305,7 +305,7 @@ export default function OnboardingPage() {
                 <button
                   disabled={connections.length < 1}
                   onClick={() => updateStep(1)}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
                   style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                 >
                   Continue
@@ -355,7 +355,7 @@ export default function OnboardingPage() {
                               key={platform}
                               type="button"
                               onClick={() => setPostPlatform(platform)}
-                              className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${postPlatform === platform
+                              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${postPlatform === platform
                                 ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
                                 : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
                                 }`}
@@ -392,7 +392,7 @@ export default function OnboardingPage() {
 
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                    className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
                     style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                   >
                     Save and continue
@@ -453,7 +453,7 @@ export default function OnboardingPage() {
 
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                    className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
                     style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                   >
                     <Sparkles size={16} />

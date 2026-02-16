@@ -73,7 +73,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                         {plan.highlighted ? (
                             <button
                                 onClick={() => onOpenAuth("register")}
-                                className="inline-flex items-center justify-center gap-2 rounded-[15px] w-full h-12 text-base font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                                className="inline-flex items-center justify-center gap-2 rounded-full w-full h-12 text-base font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
                                 style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                             >
                                 {plan.cta}
@@ -81,7 +81,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                         ) : (
                             <button
                                 onClick={() => onOpenAuth("register")}
-                                className="h-12 w-full rounded-[15px] border text-base font-medium transition-colors hover:bg-white/5"
+                                className="h-12 w-full rounded-full border text-base font-medium transition-colors hover:bg-white/5"
                                 style={{ borderColor: C.border, color: C.textSoft }}
                             >
                                 {plan.cta}

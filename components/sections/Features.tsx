@@ -62,17 +62,18 @@ function RoundedRectProgress({
     progress,
     size,
     padding,
-    radius,
+    radius, // kept for prop compatibility but unused for circle
 }: {
     progress: number;
     size: number;
     padding: number;
     radius: number;
 }) {
-    const inner = size - padding * 2;
-    const straight = inner - 2 * radius;
-    const perimeter = 2 * straight + 2 * straight + 2 * Math.PI * radius;
-    const offset = perimeter * (1 - progress);
+    const center = size / 2;
+    const strokeWidth = 3;
+    const r = (size - padding * 2 - strokeWidth) / 2;
+    const circumference = 2 * Math.PI * r;
+    const offset = circumference * (1 - progress);
 
     return (
         <svg
@@ -80,32 +81,26 @@ function RoundedRectProgress({
             height={size}
             style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
         >
-            <rect
-                x={padding}
-                y={padding}
-                width={inner}
-                height={inner}
-                rx={radius}
-                ry={radius}
+            <circle
+                cx={center}
+                cy={center}
+                r={r}
                 fill="none"
                 stroke="rgba(255,255,255,0.12)"
-                strokeWidth={3}
+                strokeWidth={strokeWidth}
             />
-            <rect
-                x={padding}
-                y={padding}
-                width={inner}
-                height={inner}
-                rx={radius}
-                ry={radius}
+            <circle
+                cx={center}
+                cy={center}
+                r={r}
                 fill="none"
                 stroke="white"
-                strokeWidth={3}
+                strokeWidth={strokeWidth}
                 strokeLinecap="round"
-                strokeDasharray={perimeter}
+                strokeDasharray={circumference}
                 strokeDashoffset={offset}
                 style={{ transition: "stroke-dashoffset 50ms linear" }}
-                transform={`rotate(-90 ${size / 2} ${size / 2})`}
+                transform={`rotate(-90 ${center} ${center})`}
             />
         </svg>
     );
@@ -222,7 +217,7 @@ export function Features() {
                                     style={{
                                         width: SIZE,
                                         height: SIZE,
-                                        borderRadius: RADIUS + PADDING,
+                                        borderRadius: 9999,
                                         background: item.color,
                                     }}
                                 >
@@ -259,7 +254,7 @@ export function Features() {
                                 style={{
                                     width: SIZE,
                                     height: SIZE,
-                                    borderRadius: RADIUS + PADDING,
+                                    borderRadius: 9999,
                                     background: isActive ? item.color : "rgba(255,255,255,0.06)",
                                 }}
                             >

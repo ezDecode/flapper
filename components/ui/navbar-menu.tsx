@@ -214,7 +214,7 @@ export function NavbarWithMenu({
                         "navbar_content flex h-14 w-full items-center justify-between border border-white/[0.08] px-4 backdrop-blur-3xl transition-all shadow-lg shadow-black/5",
                         activeDropdown || mobileMenuOpen
                             ? "rounded-t-2xl border-b-0 bg-zinc-950/90"
-                            : "rounded-xl bg-zinc-950/30 hover:bg-zinc-950/40",
+                            : "rounded-full bg-zinc-950/30 hover:bg-zinc-950/40",
                     )}
                 >
                     <div className="flex items-center gap-2">
@@ -229,7 +229,7 @@ export function NavbarWithMenu({
                                     key={item.href}
                                     href={item.href}
                                     className={cn(
-                                        "relative flex h-9 cursor-pointer items-center rounded-xl px-4 py-2 text-sm transition-colors hover:bg-zinc-800/40 font-medium",
+                                        "relative flex h-9 cursor-pointer items-center rounded-full px-4 py-2 text-sm transition-colors hover:bg-zinc-800/40 font-medium",
                                         hoveredItem === item.label.toLowerCase()
                                             ? "text-zinc-100"
                                             : "text-zinc-400 hover:text-zinc-100",
@@ -245,11 +245,11 @@ export function NavbarWithMenu({
                                 <button
                                     type="button"
                                     key={item.menu}
-                                    className="relative flex h-9 cursor-pointer items-center rounded-xl px-4 py-2 text-sm text-zinc-400 font-medium transition-colors hover:text-zinc-100"
+                                    className="relative flex h-9 cursor-pointer items-center rounded-full px-4 py-2 text-sm text-zinc-400 font-medium transition-colors hover:text-zinc-100"
                                     onMouseEnter={() => handleMouseEnter(item.menu)}
                                 >
                                     {hoveredItem === item.menu && (
-                                        <div className="absolute inset-0 h-full w-full rounded-xl bg-zinc-800 transition-all duration-300 ease-out" />
+                                        <div className="absolute inset-0 h-full w-full rounded-full bg-zinc-800 transition-all duration-300 ease-out" />
                                     )}
                                     <div className="relative z-10 flex items-center gap-2">
                                         <span>

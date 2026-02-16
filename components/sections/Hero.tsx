@@ -96,7 +96,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
     }, []);
 
     return (
-        <section className="relative flex flex-col items-center justify-center px-4 pt-40 pb-10 text-center md:px-8 md:pt-52 md:pb-16">
+        <section className="relative flex flex-col items-end justify-center px-4 pt-40 pb-10 text-right md:px-8 md:pt-52 md:pb-16">
             {/* Badge */}
             <motion.div
                 {...fadeUp(SEQUENCE.badge)}
@@ -142,25 +142,16 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 </span>
             </h1>
 
-            {/* Description */}
-            <motion.p
-                {...fadeUp(SEQUENCE.description)}
-                className="mt-8 max-w-xl text-lg leading-relaxed text-balance font-normal"
-                style={{ color: C.textSoft }}
-            >
-                Schedule detailed threads. Set engagement triggers. Flapr replies with
-                your CTA exactly when your post takes off — capturing every opportunity
-                while you sleep.
-            </motion.p>
+
 
             {/* CTA */}
             <motion.div
                 {...fadeUp(SEQUENCE.cta)}
-                className="mt-10 flex flex-row items-center justify-center gap-3 sm:gap-4"
+                className="mt-10 flex flex-row items-center justify-end gap-3 sm:gap-4"
             >
                 <button
                     onClick={() => onOpenAuth("register")}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl h-10 px-5 text-sm font-medium sm:h-12 sm:px-8 sm:text-base transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                    className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-5 text-sm font-medium sm:h-12 sm:px-8 sm:text-base transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
                     style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                 >
                     Start for free
@@ -169,7 +160,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
 
                 <a
                     href="#how-it-works"
-                    className="group inline-flex h-10 items-center gap-2 rounded-xl border px-5 text-sm font-medium transition-colors hover:bg-white/5 sm:h-12 sm:rounded-[15px] sm:px-8 sm:text-base"
+                    className="group inline-flex h-10 items-center gap-2 rounded-full border px-5 text-sm font-medium transition-colors hover:bg-white/5 sm:h-12 sm:px-8 sm:text-base"
                     style={{ borderColor: C.border, color: C.textSoft }}
                 >
                     See how it works

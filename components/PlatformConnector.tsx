@@ -95,7 +95,7 @@ export function PlatformConnector() {
               {connected ? (
                 <button
                   onClick={() => disconnect(connected.id)}
-                  className="inline-flex items-center gap-2 rounded-lg border border-[#3F3F46] bg-[#27272B] px-3 py-1.5 text-xs font-medium text-[#EDEDEF] hover:bg-[#3F3F46] transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#3F3F46] bg-[#27272B] px-3 py-1.5 text-xs font-medium text-[#EDEDEF] hover:bg-[#3F3F46] transition-colors"
                 >
                   <X size={14} />
                   Disconnect
@@ -103,7 +103,7 @@ export function PlatformConnector() {
               ) : (
                 <button
                   onClick={() => connectOAuth("twitter")}
-                  className="inline-flex items-center gap-2 rounded-lg bg-[#EDEDEF] px-3 py-1.5 text-xs font-medium text-[#131316] hover:bg-[#D4D4D8] transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#EDEDEF] px-3 py-1.5 text-xs font-medium text-[#131316] hover:bg-[#D4D4D8] transition-colors"
                 >
                   <Check size={14} />
                   Connect

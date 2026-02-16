@@ -154,7 +154,7 @@ export default async function SettingsPage() {
             {plan === "FREE" ? (
               <button
                 type="button"
-                className="inline-flex items-center gap-2 rounded-lg bg-[#7C3AED] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#8B5CF6]"
+                className="inline-flex items-center gap-2 rounded-full bg-[#7C3AED] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#8B5CF6]"
               >
                 <Zap size={15} />
                 Upgrade to Pro — $19/mo
@@ -163,7 +163,7 @@ export default async function SettingsPage() {
             ) : (
               <button
                 type="button"
-                className="inline-flex items-center gap-2 rounded-lg border border-[#E8E8E4] bg-white px-5 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-colors hover:bg-[#FAFAF8]"
+                className="inline-flex items-center gap-2 rounded-full border border-[#E8E8E4] bg-white px-5 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-colors hover:bg-[#FAFAF8]"
               >
                 <CreditCard size={15} />
                 Manage billing

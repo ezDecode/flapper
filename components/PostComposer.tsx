@@ -211,7 +211,7 @@ export function PostComposer() {
                       key={platform}
                       type="button"
                       onClick={() => togglePlatform(platform)}
-                      className={`inline-flex items-center gap-2 rounded-xl border-2 px-4 py-2.5 text-sm font-medium transition-all ${isSelected
+                      className={`inline-flex items-center gap-2 rounded-full border-2 px-4 py-2.5 text-sm font-medium transition-all ${isSelected
                         ? "border-[#7C3AED] bg-[#2E1065] text-[#A78BFA]"
                         : "border-[#27272B] bg-[#1A1A1E] text-[#A1A1AA] hover:border-[#7C3AED]/40"
                         }`}
@@ -262,7 +262,7 @@ export function PostComposer() {
         <button
           onClick={submit}
           disabled={saving}
-          className="inline-flex items-center justify-center gap-2 rounded-xl h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
           style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
         >
           <Send size={16} />

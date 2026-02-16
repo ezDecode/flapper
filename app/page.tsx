@@ -78,14 +78,14 @@ function LandingPageInner() {
               <>
                 <button
                   onClick={() => openAuth("login")}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium transition-colors cursor-pointer hover:bg-white/10 active:scale-[0.96]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors cursor-pointer hover:bg-zinc-800 active:scale-[0.96]"
                   style={{ color: "inherit" }}
                 >
                   Log in
                 </button>
                 <button
                   onClick={() => openAuth("register")}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl h-9 px-5 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                  className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-5 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
                   style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                 >
                   Start free

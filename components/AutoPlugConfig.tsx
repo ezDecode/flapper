@@ -84,7 +84,7 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
                               [platform]: { ...config, triggerType: opt.value },
                             })
                           }
-                          className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
+                          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                             config.triggerType === opt.value
                               ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
                               : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"

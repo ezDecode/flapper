@@ -109,13 +109,13 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
 
         {/* Tab switcher */}
         <div
-          className="mb-6 flex rounded-lg border p-1"
+          className="mb-6 flex rounded-full border p-1"
           style={{ borderColor: "#E5E0D8", background: "#FAF8F5" }}
         >
           <button
             type="button"
             onClick={() => onTabChange("login")}
-            className="flex-1 rounded-md py-2 text-sm font-medium transition-all"
+            className="flex-1 rounded-full py-2 text-sm font-medium transition-all"
             style={{
               background: tab === "login" ? "#E5E0D8" : "transparent",
               color: tab === "login" ? "#1A1A2E" : "#6B6B7B",
@@ -126,7 +126,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
           <button
             type="button"
             onClick={() => onTabChange("register")}
-            className="flex-1 rounded-md py-2 text-sm font-medium transition-all"
+            className="flex-1 rounded-full py-2 text-sm font-medium transition-all"
             style={{
               background: tab === "register" ? "#E5E0D8" : "transparent",
               color: tab === "register" ? "#1A1A2E" : "#6B6B7B",
@@ -141,7 +141,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
           <button
             type="button"
             onClick={() => oauth("twitter")}
-            className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+            className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
             style={{ backgroundColor: "#000000", color: "#ffffff" }}
           >
             <TwitterXIcon className="mr-2 h-5 w-5" />
@@ -207,7 +207,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             <button
               type="submit"
               disabled={loginLoading}
-              className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
               style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
             >
               {loginLoading ? "Logging in…" : "Log in"}
@@ -322,7 +322,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                 <button
                   type="submit"
                   disabled={regLoading}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
                   style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                 >
                   {regLoading ? "Creating your account…" : "Create account"}
