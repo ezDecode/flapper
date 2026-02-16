@@ -248,7 +248,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 <RaisedButton
                     onClick={() => onOpenAuth("register")}
                     size="lg"
-                    color={C.accent}
+                    variant="primary"
                     className="h-10 px-5 text-sm font-medium sm:h-12 sm:px-8 sm:text-base"
                 >
                     Start for free

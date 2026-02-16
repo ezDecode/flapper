@@ -272,7 +272,7 @@ export function PostComposer() {
       {/* Submit */}
       <Flex alignItems="center" gap="3">
         <RaisedButton
-          color="#8B5CF6"
+          variant="primary"
           onClick={submit}
           disabled={saving}
         >

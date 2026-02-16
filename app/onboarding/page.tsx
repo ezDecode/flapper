@@ -366,7 +366,7 @@ export default function OnboardingPage() {
                 <RaisedButton
                   disabled={connections.length < 1}
                   onClick={() => updateStep(1)}
-                  color="#8B5CF6"
+                  variant="primary"
                   fullWidth
                   className="justify-center"
                 >
@@ -454,7 +454,7 @@ export default function OnboardingPage() {
 
                   <RaisedButton
                     type="submit"
-                    color="#8B5CF6"
+                    variant="primary"
                     fullWidth
                     className="justify-center"
                   >
@@ -516,7 +516,7 @@ export default function OnboardingPage() {
 
                   <RaisedButton
                     type="submit"
-                    color="#8B5CF6"
+                    variant="primary"
                     fullWidth
                     className="justify-center"
                   >

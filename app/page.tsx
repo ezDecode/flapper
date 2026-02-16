@@ -76,16 +76,16 @@ function LandingPageInner() {
             }
             cta={
               <>
-                <button
+                <RaisedButton
                   onClick={() => openAuth("login")}
-                  className="text-sm font-medium transition-colors hover:text-white px-3"
-                  style={{ color: C.textSoft }}
+                  variant="ghost"
+                  className="text-sm font-medium px-3"
                 >
                   Log in
-                </button>
+                </RaisedButton>
                 <RaisedButton
                   onClick={() => openAuth("register")}
-                  color={C.accent}
+                  variant="primary"
                   className="h-9 px-5 text-sm font-medium"
                 >
                   Start free

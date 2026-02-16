@@ -141,7 +141,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
           <RaisedButton
             type="button"
             onClick={() => oauth("twitter")}
-            color="#000000"
+            style={{ backgroundColor: "#000000", color: "#ffffff" }}
             fullWidth
             className="text-white"
           >
@@ -151,7 +151,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
           <RaisedButton
             type="button"
             onClick={() => oauth("linkedin_oidc")}
-            color="#0077B5"
+            style={{ backgroundColor: "#0077B5", color: "#ffffff" }}
             fullWidth
             className="text-white"
           >
@@ -217,7 +217,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             <RaisedButton
               type="submit"
               disabled={loginLoading}
-              color="#8B5CF6"
+              variant="primary"
               fullWidth
             >
               {loginLoading ? "Logging in…" : "Log in"}
@@ -332,7 +332,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                 <RaisedButton
                   type="submit"
                   disabled={regLoading}
-                  color="#8B5CF6"
+                  variant="primary"
                   fullWidth
                 >
                   {regLoading ? "Creating your account…" : "Create account"}

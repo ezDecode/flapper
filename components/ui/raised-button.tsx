@@ -3,16 +3,41 @@
 import React, { useState, useRef, useCallback } from "react";
 
 // ── Utility: parse any CSS color → {r,g,b} ──────────────────────────────────
+// ── Utility: parse any CSS color → {r,g,b} ──────────────────────────────────
 function parseColor(color: string) {
-    if (typeof document === "undefined") return { r: 99, g: 102, b: 241 }; // Default fallback for SSR
-    const canvas = document.createElement("canvas");
-    canvas.width = canvas.height = 1;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return { r: 0, g: 0, b: 0 };
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 0, 1, 1);
-    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-    return { r, g, b };
+    if (!color) return { r: 99, g: 102, b: 241 }; // Default fallback
+
+    // Handle Hex
+    if (color.startsWith("#")) {
+        const hex = color.slice(1);
+        if (hex.length === 3) {
+            return {
+                r: parseInt(hex[0] + hex[0], 16),
+                g: parseInt(hex[1] + hex[1], 16),
+                b: parseInt(hex[2] + hex[2], 16),
+            };
+        }
+        if (hex.length === 6) {
+            return {
+                r: parseInt(hex.slice(0, 2), 16),
+                g: parseInt(hex.slice(2, 4), 16),
+                b: parseInt(hex.slice(4, 6), 16),
+            };
+        }
+    }
+
+    // Handle RGB/RGBA
+    const rgbMatch = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if (rgbMatch) {
+        return {
+            r: parseInt(rgbMatch[1], 10),
+            g: parseInt(rgbMatch[2], 10),
+            b: parseInt(rgbMatch[3], 10),
+        };
+    }
+
+    // Default fallback for unparseable colors
+    return { r: 99, g: 102, b: 241 };
 }
 
 function getLuminance({ r, g, b }: { r: number; g: number; b: number }) {
@@ -30,7 +55,7 @@ function getContrastColor(luminance: number) {
 // ── Core RaisedButton ────────────────────────────────────────────────────────
 interface RaisedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children?: React.ReactNode;
-    color?: string;
+    variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
     size?: "sm" | "default" | "lg" | "xl" | "icon";
     fullWidth?: boolean;
     icon?: React.ReactNode;
@@ -38,7 +63,7 @@ interface RaisedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
 
 export function RaisedButton({
     children,
-    color,
+    variant = "primary",
     size = "default",
     disabled = false,
     onClick,
@@ -52,22 +77,106 @@ export function RaisedButton({
     const [ripples, setRipples] = useState<Array<{ id: number; x: number; y: number }>>([]);
     const btnRef = useRef<HTMLButtonElement>(null);
 
-    const rgb = color ? parseColor(color) : null;
-    const luminance = rgb ? getLuminance(rgb) : 0.5;
-    const textColor = rgb ? getContrastColor(luminance) : "#ffffff";
-    const isDark = luminance < 0.35;
+    // ── Variant Styles ─────────────────────────────────────────────────────────
+    // Primary: Purple #8B5CF6
+    // Secondary: Dark Grey #27272B (surface)
+    // Outline: Transparent with border
+    // Ghost: Transparent no border
+    // Danger: Red #EF4444
 
+    const getVariantStyles = (variant: string) => {
+        switch (variant) {
+            case "secondary":
+                return {
+                    bg: "#27272B",
+                    color: "#F1F1F3",
+                    shadowColor: "rgba(0,0,0,0.24)",
+                    bottomShadow: "rgba(0,0,0,0.6)",
+                    borderTop: "rgba(255,255,255,0.1)",
+                    borderBottom: "rgba(0,0,0,0.8)",
+                };
+            case "outline":
+                return {
+                    bg: "transparent",
+                    color: "#F1F1F3",
+                    shadowColor: "transparent",
+                    bottomShadow: "transparent",
+                    borderTop: "rgba(255,255,255,0.1)", // actually border all around
+                    borderBottom: "transparent",
+                };
+            case "ghost":
+                return {
+                    bg: "transparent",
+                    color: "#A1A1AA",
+                    shadowColor: "transparent",
+                    bottomShadow: "transparent",
+                    borderTop: "transparent",
+                    borderBottom: "transparent",
+                };
+            case "danger":
+                return {
+                    bg: "#EF4444",
+                    color: "#ffffff",
+                    shadowColor: "rgba(239, 68, 68, 0.24)",
+                    bottomShadow: "rgba(185, 28, 28, 1)",
+                    borderTop: "rgba(255,255,255,0.3)",
+                    borderBottom: "rgba(127, 29, 29, 0.8)",
+                };
+            case "primary":
+            default:
+                return {
+                    bg: "#8B5CF6",
+                    color: "#ffffff",
+                    shadowColor: "rgba(139, 92, 246, 0.24)",
+                    bottomShadow: "rgba(91, 33, 182, 1)", // darker purple
+                    borderTop: "rgba(255,255,255,0.4)",
+                    borderBottom: "rgba(76, 29, 149, 0.8)",
+                };
+        }
+    };
 
-    const bottomShadow = rgb
-        ? `rgba(${Math.max(0, rgb.r - 60)},${Math.max(0, rgb.g - 60)},${Math.max(0, rgb.b - 60)},1)`
-        : `rgba(0,0,0,0.7)`;
-    const shadowColor = rgb
-        ? `rgba(${rgb.r},${rgb.g},${rgb.b},0.27)`
-        : `rgba(0,0,0,0.24)`;
-    const borderTop = isDark ? `rgba(255,255,255,0.55)` : `rgba(255,255,255,0.88)`;
-    const borderBottom = rgb
-        ? `rgba(${Math.max(0, rgb.r - 80)},${Math.max(0, rgb.g - 80)},${Math.max(0, rgb.b - 80)},0.8)`
-        : `rgba(0,0,0,0.5)`;
+    const vStyles = getVariantStyles(variant);
+    const isFlat = variant === "outline" || variant === "ghost";
+
+    const customBg = style?.backgroundColor?.toString() || style?.background?.toString();
+    const effectiveBg = customBg || vStyles.bg;
+
+    // Parse effective background for dynamic shadow generation
+    // Only strictly needed if customBg is present, but consistent to always have it.
+    // If not custom, we can just use vStyles for exact backwards compatibility, 
+    // OR use the dynamic logic for everything if we trust it.
+    // To be safe and stick to the "fix" request for custom colors, let's prioritize custom overrides.
+
+    let computedStyle = { ...vStyles };
+
+    if (customBg) {
+        const { r, g, b } = parseColor(effectiveBg);
+
+        // Dynamic Shadow: 24% opacity of the base color
+        const dynamicShadowColor = `rgba(${r}, ${g}, ${b}, 0.24)`;
+
+        // Dynamic Bottom Shadow: Darker version of base color
+        // Subtracting ~60 from each channel to create depth
+        const bottomR = Math.max(0, r - 60);
+        const bottomG = Math.max(0, g - 60);
+        const bottomB = Math.max(0, b - 60);
+        const dynamicBottomShadow = `rgba(${bottomR}, ${bottomG}, ${bottomB}, 1)`;
+
+        // Dynamic Border Bottom: Even darker or similar
+        const borderR = Math.max(0, r - 80);
+        const borderG = Math.max(0, g - 80);
+        const borderB = Math.max(0, b - 80);
+        const dynamicBorderBottom = `rgba(${borderR}, ${borderG}, ${borderB}, 0.8)`;
+
+        computedStyle = {
+            ...vStyles,
+            bg: effectiveBg,
+            shadowColor: dynamicShadowColor,
+            bottomShadow: dynamicBottomShadow,
+            borderBottom: dynamicBorderBottom,
+            // Keep borderTop from variant (usually white overlay)
+        };
+    }
 
     const sizeStyles = {
         sm: { padding: "7px 14px", fontSize: "12px", borderRadius: "10px", gap: "5px" },
@@ -92,6 +201,22 @@ export function RaisedButton({
 
     const handlePointerUp = useCallback(() => setPressed(false), []);
 
+    // Construct box-shadow based on variant
+    let boxShadow = "none";
+    if (!isFlat) {
+        boxShadow = pressed
+            ? `0 0px 0px 0px ${computedStyle.shadowColor},
+         inset 0 1px 2px rgba(0,0,0,0.2),
+         inset 0 0px 0px 0px ${computedStyle.borderTop},
+         0 0 0 1px ${computedStyle.borderBottom}`
+            : `0 1.5px 0px 0px ${computedStyle.bottomShadow},
+         0 4px 10px 0px ${computedStyle.shadowColor},
+         inset 0 1.5px 0px 0px ${computedStyle.borderTop},
+         0 0 0 1px ${computedStyle.borderBottom}`;
+    } else if (variant === "outline") {
+        boxShadow = `inset 0 0 0 1px ${computedStyle.borderTop}`; // simple border
+    }
+
     const baseStyle: React.CSSProperties = {
         display: "inline-flex",
         alignItems: "center",
@@ -112,21 +237,12 @@ export function RaisedButton({
         overflow: "hidden",
         userSelect: "none",
         WebkitUserSelect: "none",
-        color: textColor,
-        backgroundColor: color || "#6366f1",
-        // Layered box-shadow for the 3D raised effect
-        boxShadow: pressed
-            ? `0 0px 0px 0px ${shadowColor},
-         inset 0 1px 2px rgba(0,0,0,0.2),
-         inset 0 0px 0px 0px ${borderTop},
-         0 0 0 1px ${borderBottom}`
-            : `0 2px 0px 0px ${bottomShadow},
-         0 4px 10px 0px ${shadowColor},
-         inset 0 1.5px 0px 0px ${borderTop},
-         0 0 0 1px ${borderBottom}`,
-        transform: pressed ? "translateY(2px)" : "translateY(0px)",
-        transition: "box-shadow 0.1s ease, transform 0.1s ease, filter 0.15s ease",
-        filter: pressed ? "brightness(0.92)" : "brightness(1)",
+        color: computedStyle.color,
+        backgroundColor: computedStyle.bg,
+        boxShadow: boxShadow,
+        transform: !isFlat && pressed ? "translateY(1.5px)" : "translateY(0px)",
+        transition: "box-shadow 0.1s ease, transform 0.1s ease, filter 0.15s ease, background-color 0.2s ease, color 0.2s ease",
+        filter: pressed && !isFlat ? "brightness(0.92)" : "brightness(1)",
         ...style,
     };
 

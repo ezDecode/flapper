@@ -149,7 +149,7 @@ function AuthPage() {
             <RaisedButton
               type="button"
               onClick={() => oauth("twitter")}
-              color="#000000"
+              style={{ backgroundColor: "#000000", color: "#ffffff" }}
               className="w-full text-white"
             >
               <TwitterXIcon className="mr-2 h-5 w-5" />
@@ -158,7 +158,7 @@ function AuthPage() {
             <RaisedButton
               type="button"
               onClick={() => oauth("linkedin_oidc")}
-              color="#0077B5"
+              style={{ backgroundColor: "#0077B5", color: "#ffffff" }}
               className="w-full text-white"
             >
               <LinkedInIcon className="mr-2 h-5 w-5" />
@@ -223,7 +223,7 @@ function AuthPage() {
               <RaisedButton
                 type="submit"
                 disabled={loginLoading}
-                color="#8B5CF6"
+                variant="primary"
                 className="w-full"
               >
                 {loginLoading ? "Logging in…" : "Log in"}
@@ -338,7 +338,7 @@ function AuthPage() {
                   <RaisedButton
                     type="submit"
                     disabled={regLoading}
-                    color="#8B5CF6"
+                    variant="primary"
                     className="w-full"
                   >
                     {regLoading ? "Creating your account…" : "Create account"}

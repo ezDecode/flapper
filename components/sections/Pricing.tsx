@@ -73,7 +73,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                         {plan.highlighted ? (
                             <RaisedButton
                                 onClick={() => onOpenAuth("register")}
-                                color={C.accent}
+                                variant="primary"
                                 size="lg"
                                 fullWidth
                                 className="font-medium h-12"
