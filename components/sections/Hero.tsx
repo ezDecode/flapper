@@ -3,9 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 
-import { StaggeredText } from "@/components/ui/staggered-text";
 import { C } from "@/lib/landing-data";
-import { useEffect, useState } from "react";
 
 // Inline SVGs to avoid extra icon component dependencies
 const XIcon = ({ className }: { className?: string }) => (
@@ -49,16 +47,6 @@ export function PlatformCycler() {
     );
 }
 
-// ─── Sequence timing (ms from page load) ──────────────────────────────────────
-const SEQUENCE = {
-    badge: 200,
-    headingLine1: 500,
-    headingLine2: 900,
-    description: 1400,
-    cta: 1800,
-    features: 2200,
-} as const;
-
 // ─── Fade-up motion variant ───────────────────────────────────────────────────
 const EASE = [0.19, 1, 0.22, 1] as const;
 
@@ -81,25 +69,11 @@ interface HeroProps {
 }
 
 export function Hero({ onOpenAuth }: HeroProps) {
-    const [step, setStep] = useState(0);
-
-    useEffect(() => {
-        const timers = [
-            setTimeout(() => setStep(1), SEQUENCE.badge),
-            setTimeout(() => setStep(2), SEQUENCE.headingLine1),
-            setTimeout(() => setStep(3), SEQUENCE.headingLine2),
-            setTimeout(() => setStep(4), SEQUENCE.description),
-            setTimeout(() => setStep(5), SEQUENCE.cta),
-            setTimeout(() => setStep(6), SEQUENCE.features),
-        ];
-        return () => timers.forEach(clearTimeout);
-    }, []);
-
     return (
-        <section className="relative flex flex-col items-end justify-center px-4 pt-40 pb-10 text-right md:px-8 md:pt-52 md:pb-16">
+        <section className="relative flex flex-col items-start justify-center px-4 pt-40 pb-10 text-left md:px-8 md:pt-52 md:pb-16">
             {/* Badge */}
             <motion.div
-                {...fadeUp(SEQUENCE.badge)}
+                {...fadeUp(200)}
                 className="mb-8 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-medium"
                 style={{
                     borderColor: C.border,
@@ -113,32 +87,10 @@ export function Hero({ onOpenAuth }: HeroProps) {
 
             {/* Heading */}
             <h1 className="max-w-4xl text-[clamp(2.5rem,8vw,5rem)] font-medium tracking-tighter leading-[1.15] md:leading-[1.1]">
-                <StaggeredText
-                    text="Engage smarter."
-                    as="span"
-                    segmentBy="chars"
-                    delay={25}
-                    duration={0.5}
-                    direction="top"
-                    blur
-                    easing="anticipate"
-                    startAnimation={step >= 2}
-                    className="!w-auto"
-                />
+                Engage smarter.
                 <br />
                 <span style={{ color: C.textMuted }}>
-                    <StaggeredText
-                        text="Convert on autopilot."
-                        as="span"
-                        segmentBy="chars"
-                        delay={25}
-                        duration={0.5}
-                        direction="top"
-                        blur
-                        easing="anticipate"
-                        startAnimation={step >= 3}
-                        className="!w-auto"
-                    />
+                    Convert on autopilot.
                 </span>
             </h1>
 
@@ -146,8 +98,8 @@ export function Hero({ onOpenAuth }: HeroProps) {
 
             {/* CTA */}
             <motion.div
-                {...fadeUp(SEQUENCE.cta)}
-                className="mt-10 flex flex-row items-center justify-end gap-3 sm:gap-4"
+                {...fadeUp(400)}
+                className="mt-10 flex flex-row items-center justify-start gap-3 sm:gap-4"
             >
                 <button
                     onClick={() => onOpenAuth("register")}
