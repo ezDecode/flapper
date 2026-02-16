@@ -20,7 +20,7 @@ import { PostPreview } from "@/components/PostPreview";
 import { UpgradeModal } from "@/components/UpgradeModal";
 import { PLATFORM_CHAR_LIMITS, type Platform } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/client";
-import { RaisedButton } from "@/components/ui/raised-button";
+
 
 const platforms = Object.keys(PLATFORM_CHAR_LIMITS) as Platform[];
 
@@ -271,14 +271,15 @@ export function PostComposer() {
 
       {/* Submit */}
       <Flex alignItems="center" gap="3">
-        <RaisedButton
-          variant="primary"
+        <button
           onClick={submit}
           disabled={saving}
+          className="inline-flex items-center justify-center gap-2 rounded-xl h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
+          style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
         >
           <Send size={16} />
           {saving ? "Scheduling…" : "Schedule Post"}
-        </RaisedButton>
+        </button>
         {status ? (
           <Flex alignItems="center" gap="1">
             {status.includes("successfully") ? (

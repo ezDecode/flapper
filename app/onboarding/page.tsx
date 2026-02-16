@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import type { Platform } from "@/lib/constants";
-import { RaisedButton } from "@/components/ui/raised-button";
+
 
 const platformOptions: Platform[] = ["TWITTER", "LINKEDIN", "BLUESKY"];
 
@@ -363,16 +363,15 @@ export default function OnboardingPage() {
                   })}
                 </Flex>
 
-                <RaisedButton
+                <button
                   disabled={connections.length < 1}
                   onClick={() => updateStep(1)}
-                  variant="primary"
-                  fullWidth
-                  className="justify-center"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
+                  style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                 >
                   Continue
                   <ChevronDown size={16} className="rotate-[-90deg]" />
-                </RaisedButton>
+                </button>
               </Flex>
             </Card.Body>
           </Card>
@@ -452,15 +451,14 @@ export default function OnboardingPage() {
                     </div>
                   </Flex>
 
-                  <RaisedButton
+                  <button
                     type="submit"
-                    variant="primary"
-                    fullWidth
-                    className="justify-center"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                    style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                   >
                     Save and continue
                     <ChevronDown size={16} className="rotate-[-90deg]" />
-                  </RaisedButton>
+                  </button>
                 </Flex>
               </form>
             </Card.Body>
@@ -514,15 +512,14 @@ export default function OnboardingPage() {
                     />
                   </div>
 
-                  <RaisedButton
+                  <button
                     type="submit"
-                    variant="primary"
-                    fullWidth
-                    className="justify-center"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                    style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                   >
                     <Sparkles size={16} />
                     Finish onboarding
-                  </RaisedButton>
+                  </button>
                 </Flex>
               </form>
             </Card.Body>

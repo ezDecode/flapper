@@ -2,7 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
-import { RaisedButton } from "@/components/ui/raised-button";
+
 import { StaggeredText } from "@/components/ui/staggered-text";
 import { C } from "@/lib/landing-data";
 import { useEffect, useState } from "react";
@@ -245,15 +245,14 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 {...fadeUp(SEQUENCE.cta)}
                 className="mt-10 flex flex-row items-center justify-center gap-3 sm:gap-4"
             >
-                <RaisedButton
+                <button
                     onClick={() => onOpenAuth("register")}
-                    size="lg"
-                    variant="primary"
-                    className="h-10 px-5 text-sm font-medium sm:h-12 sm:px-8 sm:text-base"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl h-10 px-5 text-sm font-medium sm:h-12 sm:px-8 sm:text-base transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                    style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                 >
                     Start for free
                     <ArrowRight className="h-4 w-4" />
-                </RaisedButton>
+                </button>
 
                 <a
                     href="#how-it-works"

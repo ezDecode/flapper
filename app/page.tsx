@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 import AuthModal from "@/components/AuthModal";
-import { RaisedButton } from "@/components/ui/raised-button";
+
 import { NavbarWithMenu } from "@/components/ui/navbar-menu";
 import { C } from "@/lib/landing-data";
 
@@ -76,20 +76,20 @@ function LandingPageInner() {
             }
             cta={
               <>
-                <RaisedButton
+                <button
                   onClick={() => openAuth("login")}
-                  variant="ghost"
-                  className="text-sm font-medium px-3"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium transition-colors cursor-pointer hover:bg-white/10 active:scale-[0.96]"
+                  style={{ color: "inherit" }}
                 >
                   Log in
-                </RaisedButton>
-                <RaisedButton
+                </button>
+                <button
                   onClick={() => openAuth("register")}
-                  variant="primary"
-                  className="h-9 px-5 text-sm font-medium"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl h-9 px-5 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                  style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                 >
                   Start free
-                </RaisedButton>
+                </button>
               </>
             }
           />

@@ -1,7 +1,7 @@
 "use client";
 
 import { Check } from "lucide-react";
-import { RaisedButton } from "@/components/ui/raised-button";
+
 import { plans, C } from "@/lib/landing-data";
 
 interface PricingProps {
@@ -71,15 +71,13 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                         </ul>
 
                         {plan.highlighted ? (
-                            <RaisedButton
+                            <button
                                 onClick={() => onOpenAuth("register")}
-                                variant="primary"
-                                size="lg"
-                                fullWidth
-                                className="font-medium h-12"
+                                className="inline-flex items-center justify-center gap-2 rounded-[15px] w-full h-12 text-base font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                                style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                             >
                                 {plan.cta}
-                            </RaisedButton>
+                            </button>
                         ) : (
                             <button
                                 onClick={() => onOpenAuth("register")}

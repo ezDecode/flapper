@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { RaisedButton } from "@/components/ui/raised-button";
+
 import { TwitterXIcon, LinkedInIcon } from "@/components/ui/icons";
 
 export default function AuthPageWrapper() {
@@ -146,24 +146,24 @@ function AuthPage() {
 
           {/* OAuth buttons — shared */}
           <div className="flex flex-col gap-3">
-            <RaisedButton
+            <button
               type="button"
               onClick={() => oauth("twitter")}
+              className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
               style={{ backgroundColor: "#000000", color: "#ffffff" }}
-              className="w-full text-white"
             >
               <TwitterXIcon className="mr-2 h-5 w-5" />
               Sign in with Twitter
-            </RaisedButton>
-            <RaisedButton
+            </button>
+            <button
               type="button"
               onClick={() => oauth("linkedin_oidc")}
+              className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
               style={{ backgroundColor: "#0077B5", color: "#ffffff" }}
-              className="w-full text-white"
             >
               <LinkedInIcon className="mr-2 h-5 w-5" />
               Sign in with LinkedIn
-            </RaisedButton>
+            </button>
           </div>
 
           <div className="my-6 flex items-center gap-3">
@@ -220,14 +220,14 @@ function AuthPage() {
                 </p>
               )}
 
-              <RaisedButton
+              <button
                 type="submit"
                 disabled={loginLoading}
-                variant="primary"
-                className="w-full"
+                className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
+                style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
               >
                 {loginLoading ? "Logging in…" : "Log in"}
-              </RaisedButton>
+              </button>
             </form>
           )}
 
@@ -335,14 +335,14 @@ function AuthPage() {
                     </p>
                   )}
 
-                  <RaisedButton
+                  <button
                     type="submit"
                     disabled={regLoading}
-                    variant="primary"
-                    className="w-full"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
+                    style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
                   >
                     {regLoading ? "Creating your account…" : "Create account"}
-                  </RaisedButton>
+                  </button>
                 </form>
               )}
             </>
