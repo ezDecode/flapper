@@ -1,4 +1,4 @@
-import { createClient, type User } from "npm:@supabase/supabase-js@2.43.4";
+import { createClient, type User } from "@supabase/supabase-js";
 import type { Database } from "./database.types.ts";
 
 const supabaseUrl = Deno.env.get("NEXT_PUBLIC_SUPABASE_URL") ?? "";

@@ -1,0 +1,14 @@
+{
+    "deno.enable": true,
+    "deno.unstable": [
+        "kv"
+    ],
+    "deno.enablePaths": [
+        "supabase/functions"
+    ],
+    "deno.config": "./supabase/functions/deno.json",
+    "deno.lint": true,
+    "deno.suggest.imports.hosts": {
+        "https://deno.land": true
+    }
+}
