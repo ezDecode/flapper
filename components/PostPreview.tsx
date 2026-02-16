@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, Flex, Pill, Text } from "@maximeheckel/design-system";
-import { Twitter, Linkedin, Globe, MessageSquare } from "lucide-react";
+import { Twitter, MessageSquare } from "lucide-react";
 import { PLATFORM_CHAR_LIMITS, type Platform } from "@/lib/constants";
 
 type Props = {
@@ -18,18 +18,6 @@ const platformMeta: Record<
     label: "Twitter / X",
     color: "#1DA1F2",
     bgClass: "bg-[#E8F5FD]",
-  },
-  LINKEDIN: {
-    icon: <Linkedin size={16} />,
-    label: "LinkedIn",
-    color: "#0A66C2",
-    bgClass: "bg-[#E8F0FE]",
-  },
-  BLUESKY: {
-    icon: <Globe size={16} />,
-    label: "Bluesky",
-    color: "#0085FF",
-    bgClass: "bg-[#E8F4FF]",
   },
 };
 

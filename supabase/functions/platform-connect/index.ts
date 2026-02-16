@@ -28,6 +28,10 @@ Deno.serve(async (req) => {
       return err("platform is required");
     }
 
+    if (body.platform !== "TWITTER") {
+      return err("Only Twitter is supported at this time", 400);
+    }
+
     const platform = body.platform;
     const rawAccessToken =
       platform === "BLUESKY" ? body.bluesky_app_password ?? body.access_token ?? "" : body.access_token ?? "";

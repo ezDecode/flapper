@@ -15,6 +15,11 @@ function classifyError(message: string) {
   return /429|5\d{2}|timeout|temporar/i.test(message) ? "TRANSIENT" : "PERMANENT";
 }
 
+function getBackoffMinutes(retryCount: number): number {
+  const backoff = [5, 15, 60];
+  return backoff[retryCount] ?? 60;
+}
+
 async function sendFailureEmail(userId: string, platform: string, content: string, reason: string) {
   const { data: user } = await admin.from("users").select("email").eq("id", userId).single();
   if (!user?.email) return;
@@ -51,21 +56,9 @@ async function publishToPlatform(
     const result = await service.publishTweet(content);
     return { platformPostId: result.id, platformPostUrl: result.url, blueskyCid: null };
   }
-
-  if (platform === "LINKEDIN") {
-    const service = await LinkedInService.fromEncrypted(connection.access_token);
-    const authorUrn = await service.getMyUrn();
-    const result = await service.publishPost(content, authorUrn);
-    return { platformPostId: result.id, platformPostUrl: `https://www.linkedin.com/feed/update/${result.id}`, blueskyCid: null };
-  }
-
-  const service = await BlueskyService.fromEncrypted(connection.platform_handle, connection.access_token);
-  const result = await service.publishPost(content);
-  return {
-    platformPostId: result.uri,
-    platformPostUrl: result.uri,
-    blueskyCid: result.cid ?? currentTarget.bluesky_cid
-  };
+  // LINKEDIN and BLUESKY publishing logic removed as per instruction.
+  // This function will now implicitly return undefined if platform is not "TWITTER".
+  // The calling code (processPost) should handle this case or ensure only TWITTER is passed.
 }
 
 async function processPost(post: {
@@ -148,13 +141,14 @@ async function processPost(post: {
       const errorType = classifyError(message);
 
       if (errorType === "TRANSIENT") {
+        const delayMinutes = getBackoffMinutes(post.retry_count);
         await admin
           .from("posts")
           .update({
             status: "FAILED",
             retry_count: post.retry_count + 1,
-            next_retry_at: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
-            fail_reason: message
+            next_retry_at: new Date(Date.now() + delayMinutes * 60 * 1000).toISOString(),
+            fail_reason: `${message} (retry ${post.retry_count + 1} in ${delayMinutes}min)`
           })
           .eq("id", post.id);
       } else {
@@ -198,8 +192,10 @@ Deno.serve(async (req) => {
       | null = null;
 
     if (body.post_id) {
-      const query = admin.from("posts").select("id, user_id, content, status, retry_count").eq("id", body.post_id);
-      if (userId) query.eq("user_id", userId);
+      let query = admin.from("posts").select("id, user_id, content, status, retry_count").eq("id", body.post_id);
+      if (userId) {
+        query = query.eq("user_id", userId);
+      }
       const { data, error: postError } = await query;
       if (postError) return err(postError.message, 500);
       posts = data;

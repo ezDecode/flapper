@@ -22,7 +22,10 @@ Deno.serve(async (req) => {
       .single();
 
     if (!profile?.dodo_customer_id) {
-      return err("No Dodo Payments customer for user", 400);
+      return err(
+        "Billing profile not yet activated. If you just subscribed, please wait 30 seconds and try again.",
+        400
+      );
     }
 
     const session = await client.customers.customerPortal.create(

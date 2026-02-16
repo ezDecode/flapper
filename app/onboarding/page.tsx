@@ -18,7 +18,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Platform } from "@/lib/constants";
 
 
-const platformOptions: Platform[] = ["TWITTER", "LINKEDIN", "BLUESKY"];
+const platformOptions: Platform[] = ["TWITTER"];
 
 const platformMeta: Record<
   Platform,
@@ -29,18 +29,6 @@ const platformMeta: Record<
     label: "Twitter / X",
     color: "#1DA1F2",
     bgClass: "bg-[#E8F5FD]",
-  },
-  LINKEDIN: {
-    icon: <Linkedin size={18} />,
-    label: "LinkedIn",
-    color: "#0A66C2",
-    bgClass: "bg-[#E8F0FE]",
-  },
-  BLUESKY: {
-    icon: <Globe size={18} />,
-    label: "Bluesky",
-    color: "#0085FF",
-    bgClass: "bg-[#E8F4FF]",
   },
 };
 
@@ -142,40 +130,7 @@ export default function OnboardingPage() {
     });
   };
 
-  const connectBluesky = async () => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
 
-    if (!session?.access_token) {
-      setMessage("Login required.");
-      return;
-    }
-
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/platform-connect`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          platform: "BLUESKY",
-          access_token: "manual",
-          platform_user_id: "bluesky",
-          platform_handle: "bluesky",
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      setMessage("Could not connect Bluesky.");
-      return;
-    }
-
-    await refreshConnections();
-  };
 
   const submitStep2 = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -347,13 +302,7 @@ export default function OnboardingPage() {
                         {!isConnected && (
                           <Button
                             variant="secondary"
-                            onClick={() => {
-                              if (platform === "TWITTER")
-                                connectOAuth("twitter");
-                              else if (platform === "LINKEDIN")
-                                connectOAuth("linkedin_oidc");
-                              else connectBluesky();
-                            }}
+                            onClick={() => connectOAuth("twitter")}
                           >
                             Connect
                           </Button>

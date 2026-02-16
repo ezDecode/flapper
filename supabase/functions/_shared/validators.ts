@@ -1,9 +1,7 @@
-type Platform = "TWITTER" | "LINKEDIN" | "BLUESKY";
+type Platform = "TWITTER";
 
 const limits: Record<Platform, number> = {
-  TWITTER: 280,
-  LINKEDIN: 3000,
-  BLUESKY: 300
+  TWITTER: 280
 };
 
 export function validatePostContent(content: string, platform: Platform) {

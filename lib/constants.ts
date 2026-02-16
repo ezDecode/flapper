@@ -1,7 +1,5 @@
 export const PLATFORM_CHAR_LIMITS = {
-  TWITTER: 280,
-  LINKEDIN: 3000,
-  BLUESKY: 300
+  TWITTER: 280
 } as const;
 
 export const PLAN_LIMITS = {

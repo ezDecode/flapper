@@ -7,13 +7,13 @@ import { createClient } from "@/lib/supabase/client";
 
 type PlatformConnection = {
   id: string;
-  platform: "TWITTER" | "LINKEDIN" | "BLUESKY";
+  platform: "TWITTER";
   platform_handle: string;
   is_active: boolean;
 };
 
 const platformRows: Array<{
-  key: "TWITTER" | "LINKEDIN" | "BLUESKY";
+  key: "TWITTER";
   label: string;
   icon: React.ReactNode;
   color: string;
@@ -25,21 +25,7 @@ const platformRows: Array<{
       icon: <Twitter size={18} />,
       color: "#1DA1F2",
       bgClass: "bg-[#E8F5FD]",
-    },
-    {
-      key: "LINKEDIN",
-      label: "LinkedIn",
-      icon: <Linkedin size={18} />,
-      color: "#0A66C2",
-      bgClass: "bg-[#E8F0FE]",
-    },
-    {
-      key: "BLUESKY",
-      label: "Bluesky",
-      icon: <Globe size={18} />,
-      color: "#0085FF",
-      bgClass: "bg-[#E8F4FF]",
-    },
+    }
   ];
 
 export function PlatformConnector() {
@@ -47,8 +33,7 @@ export function PlatformConnector() {
   const [connections, setConnections] = useState<PlatformConnection[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [blueskyHandle, setBlueskyHandle] = useState("");
-  const [blueskyPassword, setBlueskyPassword] = useState("");
+
 
   const refresh = async () => {
     const { data } = await supabase
@@ -67,49 +52,7 @@ export function PlatformConnector() {
     await supabase.auth.signInWithOAuth({ provider, options: { redirectTo } });
   };
 
-  const connectBluesky = async () => {
-    setLoading(true);
-    setMessage("");
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    if (!session?.access_token) {
-      setMessage("You must be signed in to connect accounts.");
-      setLoading(false);
-      return;
-    }
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/platform-connect`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          platform: "BLUESKY",
-          platform_user_id: blueskyHandle,
-          platform_handle: blueskyHandle,
-          access_token: blueskyPassword,
-          bluesky_handle: blueskyHandle,
-          bluesky_app_password: blueskyPassword,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      setMessage("Could not connect Bluesky.");
-      setLoading(false);
-      return;
-    }
-
-    setMessage("Bluesky connected.");
-    setBlueskyHandle("");
-    setBlueskyPassword("");
-    await refresh();
-    setLoading(false);
-  };
 
   const disconnect = async (id: string) => {
     await supabase
@@ -166,39 +109,11 @@ export function PlatformConnector() {
                   >
                     Disconnect
                   </Button>
-                ) : row.key === "BLUESKY" ? (
-                  <Flex alignItems="center" gap="2" wrap="wrap">
-                    <input
-                      value={blueskyHandle}
-                      onChange={(e) => setBlueskyHandle(e.target.value)}
-                      className="h-8 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
-                      placeholder="handle.bsky.social"
-                    />
-                    <input
-                      value={blueskyPassword}
-                      onChange={(e) => setBlueskyPassword(e.target.value)}
-                      className="h-8 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
-                      placeholder="App password"
-                      type="password"
-                    />
-                    <Button
-                      variant="primary"
-                      startIcon={<Check size={14} />}
-                      onClick={connectBluesky}
-                      disabled={loading || !blueskyHandle || !blueskyPassword}
-                    >
-                      Connect
-                    </Button>
-                  </Flex>
                 ) : (
                   <Button
                     variant="primary"
                     startIcon={<Check size={14} />}
-                    onClick={() =>
-                      connectOAuth(
-                        row.key === "TWITTER" ? "twitter" : "linkedin_oidc"
-                      )
-                    }
+                    onClick={() => connectOAuth("twitter")}
                   >
                     Connect
                   </Button>

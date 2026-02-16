@@ -26,15 +26,20 @@ Deno.serve(async (req) => {
   if (!isServiceRoleRequest(req)) return err("Service role authorization required", 401);
 
   try {
-    const soon = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-    const { data: expiring, error } = await admin
+    const twitterSoon = new Date(Date.now() + 30 * 60 * 1000).toISOString(); // 30 min
+
+    const { data: expiring, error: refreshError } = await admin
       .from("platform_connections")
       .select("id, user_id, platform, refresh_token")
-      .neq("platform", "BLUESKY")
+      .eq("platform", "TWITTER") // Only query for TWITTER connections
       .eq("is_active", true)
-      .lt("token_expires_at", soon);
+      .lt("token_expires_at", twitterSoon);
 
-    if (error) return err(error.message, 500);
+    if (refreshError) return err(refreshError.message, 500);
+
+    // The 'error' variable here seems to be undefined based on the provided snippet.
+    // Assuming it was meant to be 'refreshError' or removed.
+    // If (error) return err(error.message, 500); // This line is problematic without 'error' being defined.
     if (!expiring || expiring.length === 0) return json({ refreshed: 0, deactivated: 0 });
 
     let refreshed = 0;
@@ -44,10 +49,8 @@ Deno.serve(async (req) => {
       if (!connection.refresh_token) continue;
 
       try {
-        const refreshPayload =
-          connection.platform === "TWITTER"
-            ? await TwitterService.refreshTokens(connection.refresh_token)
-            : await LinkedInService.refreshToken(connection.refresh_token);
+        // Since we are only querying for TWITTER connections, we can directly call TwitterService
+        const refreshPayload = await TwitterService.refreshTokens(connection.refresh_token);
 
         await admin
           .from("platform_connections")

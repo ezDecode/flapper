@@ -30,8 +30,6 @@ const triggerOptions: { value: TriggerType; label: string; icon: React.ReactNode
 
 const platformLabels: Record<Platform, string> = {
   TWITTER: "Twitter / X",
-  LINKEDIN: "LinkedIn",
-  BLUESKY: "Bluesky",
 };
 
 export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {

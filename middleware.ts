@@ -5,7 +5,7 @@ const protectedPaths = ["/dashboard", "/compose", "/schedule", "/analytics", "/s
 const authPages = ["/login", "/register"];
 
 export async function middleware(request: NextRequest) {
-  const { response, user } = await updateSession(request);
+  const { response, user, supabase } = await updateSession(request);
   const { pathname } = request.nextUrl;
 
   const needsAuth = protectedPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`));
@@ -16,6 +16,20 @@ export async function middleware(request: NextRequest) {
     redirectUrl.pathname = "/login";
     redirectUrl.searchParams.set("next", pathname);
     return NextResponse.redirect(redirectUrl);
+  }
+
+  if (user && needsAuth && !pathname.startsWith("/onboarding")) {
+    const { data: profile } = await supabase
+      .from("users")
+      .select("onboarding_step")
+      .eq("id", user.id)
+      .single();
+
+    if ((profile?.onboarding_step ?? 0) < 3) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = "/onboarding";
+      return NextResponse.redirect(redirectUrl);
+    }
   }
 
   if (user && isAuthPage) {

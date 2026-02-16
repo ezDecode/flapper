@@ -27,7 +27,9 @@ export const features = [
     {
         icon: Clock,
         title: "Smart Scheduling",
-        desc: "Queue posts across Twitter/X, LinkedIn, and Bluesky. Pick your time or let Flapr find the best slot.",
+        title: "Multi-Platform Sync",
+        desc: "Queue posts for Twitter/X. Pick your time or let Flapr find the best slot.",
+        icon: "zap",
         className: "md:col-span-2",
     },
     {
@@ -155,6 +157,7 @@ export const faqs = [
     },
     {
         q: "Which platforms are supported?",
-        a: "Twitter/X, LinkedIn, and Bluesky. More coming soon.",
+        q: "Which platforms do you support?",
+        a: "Twitter/X. More coming soon.",
     },
 ];

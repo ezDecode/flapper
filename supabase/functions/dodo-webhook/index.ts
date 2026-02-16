@@ -19,14 +19,25 @@ async function verifyWebhook(body: string, signature: string | null): Promise<bo
         encoder.encode(WEBHOOK_SECRET),
         { name: "HMAC", hash: "SHA-256" },
         false,
-        ["sign"]
+        ["sign", "verify"]
     );
-    const sig = await crypto.subtle.sign("HMAC", key, encoder.encode(body));
-    const computed = Array.from(new Uint8Array(sig))
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
 
-    return computed === signature;
+    // Parse the incoming hex signature back to bytes
+    const match = signature.match(/../g);
+    if (!match) return false;
+    
+    const sigBytes = new Uint8Array(
+        match.map((h) => parseInt(h, 16))
+    );
+
+    // crypto.subtle.verify is constant-time — no timing leak
+    const isValid = await crypto.subtle.verify(
+        "HMAC",
+        key,
+        sigBytes,
+        encoder.encode(body)
+    );
+    return isValid;
 }
 
 Deno.serve(async (req) => {

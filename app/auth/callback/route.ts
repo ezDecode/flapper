@@ -6,9 +6,8 @@ type OAuthSession = {
   provider_refresh_token?: string | null;
 };
 
-const providerMap: Record<string, "TWITTER" | "LINKEDIN" | null> = {
-  twitter: "TWITTER",
-  linkedin_oidc: "LINKEDIN"
+const providerMap: Record<string, "TWITTER" | null> = {
+  twitter: "TWITTER"
 };
 
 export async function GET(request: Request) {

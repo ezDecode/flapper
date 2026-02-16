@@ -26,8 +26,6 @@ const platforms = Object.keys(PLATFORM_CHAR_LIMITS) as Platform[];
 
 const defaultAutoPlug: AutoPlugState = {
   TWITTER: { triggerType: "LIKES", triggerValue: 100, plugContent: "" },
-  LINKEDIN: { triggerType: "LIKES", triggerValue: 100, plugContent: "" },
-  BLUESKY: { triggerType: "LIKES", triggerValue: 100, plugContent: "" },
 };
 
 const platformMeta: Record<
@@ -39,18 +37,6 @@ const platformMeta: Record<
     label: "Twitter / X",
     color: "#1DA1F2",
     bgClass: "bg-[#E8F5FD]",
-  },
-  LINKEDIN: {
-    icon: <Linkedin size={16} />,
-    label: "LinkedIn",
-    color: "#0A66C2",
-    bgClass: "bg-[#E8F0FE]",
-  },
-  BLUESKY: {
-    icon: <Globe size={16} />,
-    label: "Bluesky",
-    color: "#0085FF",
-    bgClass: "bg-[#E8F4FF]",
   },
 };
 
