@@ -6,7 +6,6 @@ import { Clock, Zap, BarChart3 } from "lucide-react";
 import { C } from "@/lib/landing-data";
 
 /* ── Config ─── */
-const DURATION = 5000;
 const SIZE = 56;
 const PADDING = 3;
 const RADIUS = 12;
@@ -37,21 +36,21 @@ const items = [
     {
         id: "scheduling",
         label: "Smart Scheduling",
-        description: "Queue posts for X — pick your time or let Flapr find the best slot.",
+        description: "Queue X/Twitter posts - pick a time or let Flapr optimize it.",
         color: "#3b82f6",
         icon: Clock,
     },
     {
         id: "autoplug",
         label: "Auto-Plug Engine",
-        description: "Set a like threshold. When your post hits it, Flapr auto-replies with your CTA — zero delay.",
+        description: "Set a like threshold. Flapr auto-replies with your CTA instantly.",
         color: "#8B5CF6",
         icon: Zap,
     },
     {
         id: "analytics",
         label: "Performance Analytics",
-        description: "Track impressions, engagement & conversions. Know exactly which posts drive results.",
+        description: "Track impressions & conversions. See exactly what drives results.",
         color: "#10b981",
         icon: BarChart3,
     },
@@ -161,38 +160,17 @@ const descVariants = {
 /* ── Main Component ─── */
 export function Features() {
     const [activeIndex, setActiveIndex] = useState(0);
-    const [progress, setProgress] = useState(0);
-    const startRef = useRef<number | null>(null);
-    const rafRef = useRef<number | null>(null);
     const [innerRef, bounds] = useMeasure();
 
-    useEffect(() => {
-        startRef.current = performance.now();
-        const tick = (now: number) => {
-            const p = Math.min((now - (startRef.current ?? now)) / DURATION, 1);
-            setProgress(p);
-            if (p < 1) {
-                rafRef.current = requestAnimationFrame(tick);
-            } else {
-                setActiveIndex((prev) => (prev + 1) % items.length);
-                setProgress(0);
-                startRef.current = performance.now();
-                rafRef.current = requestAnimationFrame(tick);
-            }
-        };
-        rafRef.current = requestAnimationFrame(tick);
-        return () => {
-            if (rafRef.current) cancelAnimationFrame(rafRef.current);
-        };
-    }, []);
+    // Auto-rotation removed as requested
 
     const active = items[activeIndex];
     const IconComponent = active.icon;
 
     return (
-        <section id="features" className="flex justify-center px-4 pb-20 md:px-8 md:pb-24">
+        <section id="features" className="flex justify-start px-4 pb-20 md:px-8 md:pb-24">
             <div
-                className="flex flex-row items-center gap-3 rounded-2xl border px-4 py-4 max-w-full sm:gap-4 sm:px-6"
+                className="flex flex-row items-center gap-2 rounded-full border px-3 py-2.5 sm:gap-3 sm:px-4"
                 style={{
                     background: C.surface,
                     borderColor: C.border,
@@ -226,7 +204,7 @@ export function Features() {
                                         style={{ color: "white" }}
                                     />
                                     <RoundedRectProgress
-                                        progress={progress}
+                                        progress={0}
                                         size={SIZE}
                                         padding={PADDING}
                                         radius={RADIUS}
@@ -247,8 +225,6 @@ export function Features() {
                                 key={item.id}
                                 onClick={() => {
                                     setActiveIndex(i);
-                                    setProgress(0);
-                                    startRef.current = performance.now();
                                 }}
                                 className="relative flex items-center justify-center shrink-0 transition-all duration-500 ease-out"
                                 style={{
@@ -267,7 +243,7 @@ export function Features() {
                                 />
                                 {isActive && (
                                     <RoundedRectProgress
-                                        progress={progress}
+                                        progress={0}
                                         size={SIZE}
                                         padding={PADDING}
                                         radius={RADIUS}
@@ -290,7 +266,7 @@ export function Features() {
                     <div
                         ref={innerRef}
                         className="sm:w-max"
-                        style={{ maxWidth: 360 }}
+                        style={{ maxWidth: 280 }}
                     >
                         <AnimatePresence mode="wait">
                             <motion.div key={active.id}>
@@ -299,7 +275,7 @@ export function Features() {
                                     initial="initial"
                                     animate="animate"
                                     exit="exit"
-                                    className="mb-1 text-sm font-medium whitespace-nowrap sm:text-base"
+                                    className="mb-0.5 text-sm font-medium whitespace-nowrap sm:text-base"
                                     style={{
                                         color: C.text,
                                         letterSpacing: "-0.01em",
@@ -317,7 +293,7 @@ export function Features() {
                                     className="text-xs leading-relaxed sm:text-sm"
                                     style={{
                                         color: C.textSoft,
-                                        maxWidth: 336,
+                                        maxWidth: 280,
                                         whiteSpace: "normal",
                                     }}
                                 >

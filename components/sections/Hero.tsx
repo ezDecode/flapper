@@ -50,7 +50,7 @@ export function PlatformCycler() {
 // ─── Fade-up motion variant ───────────────────────────────────────────────────
 const EASE = [0.19, 1, 0.22, 1] as const;
 
-const fadeUp = (delayMs: number) => ({
+const fadeUp = () => ({
     initial: { opacity: 0, y: 20, filter: "blur(6px)" },
     animate: {
         opacity: 1,
@@ -58,7 +58,6 @@ const fadeUp = (delayMs: number) => ({
         filter: "blur(0px)",
         transition: {
             duration: 0.6,
-            delay: delayMs / 1000,
             ease: EASE as unknown as [number, number, number, number],
         },
     },
@@ -73,7 +72,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
         <section className="relative flex flex-col items-start justify-center px-4 pt-40 pb-10 text-left md:px-8 md:pt-52 md:pb-16">
             {/* Badge */}
             <motion.div
-                {...fadeUp(200)}
+                {...fadeUp()}
                 className="mb-8 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-medium"
                 style={{
                     borderColor: C.border,
@@ -98,7 +97,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
 
             {/* CTA */}
             <motion.div
-                {...fadeUp(400)}
+                {...fadeUp()}
                 className="mt-10 flex flex-row items-center justify-start gap-3 sm:gap-4"
             >
                 <button
