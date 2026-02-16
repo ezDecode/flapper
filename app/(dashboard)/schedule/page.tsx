@@ -1,22 +1,21 @@
 "use client";
 
-import { Flex, H1, Text } from "@maximeheckel/design-system";
 import { CalendarDays } from "lucide-react";
 import { ScheduleCalendar } from "@/components/ScheduleCalendar";
 
 export default function SchedulePage() {
   return (
-    <Flex direction="column" gap="5">
-      <Flex alignItems="center" gap="3">
+    <div className="flex flex-col gap-5">
+      <div className="flex items-center gap-3">
         <CalendarDays size={24} className="text-[#7C3AED]" />
         <div>
-          <H1>Schedule</H1>
-          <Text size="2" variant="tertiary">
+          <h1 className="text-3xl font-semibold tracking-tight text-[#1A1A2E]">Schedule</h1>
+          <p className="text-sm text-[#6B6B7B]">
             Manage your content calendar and upcoming posts.
-          </Text>
+          </p>
         </div>
-      </Flex>
+      </div>
       <ScheduleCalendar />
-    </Flex>
+    </div>
   );
 }

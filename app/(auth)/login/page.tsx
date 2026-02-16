@@ -44,7 +44,7 @@ function AuthPage() {
     if (value?.startsWith("/")) setNextPath(value);
   }, [searchParams]);
 
-  const oauth = async (provider: "twitter" | "linkedin_oidc") => {
+  const oauth = async (provider: "twitter") => {
     const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
     await supabase.auth.signInWithOAuth({ provider, options: { redirectTo } });
   };

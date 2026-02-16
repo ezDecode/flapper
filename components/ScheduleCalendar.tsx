@@ -10,7 +10,7 @@ import {
 import { format, getDay, parse, startOfWeek } from "date-fns";
 import { enUS } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Card, Flex, Pill, Text } from "@maximeheckel/design-system";
+
 import { Clock } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -41,12 +41,12 @@ const statusColor: Record<string, string> = {
   FAILED: "#dc2626",
 };
 
-const statusPillVariant: Record<string, "info" | "success" | "danger" | "warning"> = {
-  DRAFT: "info",
-  SCHEDULED: "info",
-  PUBLISHING: "warning",
-  PUBLISHED: "success",
-  FAILED: "danger",
+const statusPillClasses: Record<string, string> = {
+  DRAFT: "bg-blue-500/10 text-blue-500",
+  SCHEDULED: "bg-blue-500/10 text-blue-500",
+  PUBLISHING: "bg-amber-500/10 text-amber-500",
+  PUBLISHED: "bg-green-500/10 text-green-500",
+  FAILED: "bg-red-500/10 text-red-500",
 };
 
 export function ScheduleCalendar() {
@@ -96,23 +96,23 @@ export function ScheduleCalendar() {
   );
 
   return (
-    <Card>
-      <Card.Header>
-        <Flex alignItems="center" justifyContent="space-between">
-          <Flex alignItems="center" gap="2">
+    <div className="rounded-xl border border-[#E8E8E4] bg-white">
+      <div className="border-b border-[#E8E8E4] px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
             <Clock size={16} className="text-[#6B6B6B]" />
-            <Text size="2" weight="4">
+            <p className="text-sm font-medium text-[#1A1A2E]">
               Post Calendar
-            </Text>
-          </Flex>
-          <Flex gap="2">
-            <Pill variant="info">Scheduled</Pill>
-            <Pill variant="success">Published</Pill>
-            <Pill variant="danger">Failed</Pill>
-          </Flex>
-        </Flex>
-      </Card.Header>
-      <Card.Body>
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-500/10 text-blue-500">Scheduled</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-500/10 text-green-500">Published</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-red-500/10 text-red-500">Failed</span>
+          </div>
+        </div>
+      </div>
+      <div className="p-6">
         <Calendar
           localizer={localizer}
           events={events}
@@ -129,27 +129,27 @@ export function ScheduleCalendar() {
 
         {selectedEvent ? (
           <div className="mt-4 rounded-xl border border-[#E8E8E4] bg-[#FAFAF8] p-4">
-            <Flex direction="column" gap="2">
-              <Flex alignItems="center" gap="2">
-                <Text size="2" weight="4">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium text-[#1A1A2E]">
                   Selected post
-                </Text>
-                <Pill
-                  variant={
-                    statusPillVariant[selectedEvent.resource.status] ?? "info"
-                  }
+                </p>
+                <span
+                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                    statusPillClasses[selectedEvent.resource.status] ?? "bg-blue-500/10 text-blue-500"
+                  }`}
                 >
                   {selectedEvent.resource.status}
-                </Pill>
-              </Flex>
-              <Text size="2">{selectedEvent.title}</Text>
-              <Text size="1" variant="tertiary">
+                </span>
+              </div>
+              <p className="text-sm">{selectedEvent.title}</p>
+              <p className="text-xs text-[#6B6B7B]">
                 {format(selectedEvent.start as Date, "PPpp")}
-              </Text>
-            </Flex>
+              </p>
+            </div>
           </div>
         ) : null}
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, Flex, Pill, Text } from "@maximeheckel/design-system";
 import { Twitter, MessageSquare } from "lucide-react";
 import { PLATFORM_CHAR_LIMITS, type Platform } from "@/lib/constants";
 
@@ -23,21 +22,21 @@ const platformMeta: Record<
 
 export function PostPreview({ content, selectedPlatforms }: Props) {
   return (
-    <Card>
-      <Card.Header>
-        <Flex alignItems="center" gap="2">
+    <div className="rounded-xl border border-[#E8E8E4] bg-white">
+      <div className="border-b border-[#E8E8E4] px-6 py-4">
+        <div className="flex items-center gap-2">
           <MessageSquare size={16} className="text-[#6B6B6B]" />
-          <Text size="2" weight="4">
+          <p className="text-sm font-medium text-[#1A1A2E]">
             Post Preview
-          </Text>
-        </Flex>
-      </Card.Header>
-      <Card.Body>
+          </p>
+        </div>
+      </div>
+      <div className="p-6">
         {selectedPlatforms.length === 0 ? (
           <div className="rounded-lg border border-dashed border-[#E8E8E4] px-6 py-10 text-center">
-            <Text size="2" variant="tertiary">
+            <p className="text-sm text-[#6B6B7B]">
               Select one or more platforms to preview your post.
-            </Text>
+            </p>
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-3">
@@ -51,44 +50,40 @@ export function PostPreview({ content, selectedPlatforms }: Props) {
                   key={platform}
                   className="rounded-xl border border-[#E8E8E4] bg-[#FAFAF8] p-4"
                 >
-                  <Flex
-                    alignItems="center"
-                    justifyContent="space-between"
-                    gap="2"
-                  >
-                    <Flex alignItems="center" gap="2">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
                       <div
                         className={`flex h-7 w-7 items-center justify-center rounded-full ${meta.bgClass}`}
                         style={{ color: meta.color }}
                       >
                         {meta.icon}
                       </div>
-                      <Text size="1" weight="4">
+                      <p className="text-xs font-medium text-[#1A1A2E]">
                         {meta.label}
-                      </Text>
-                    </Flex>
-                    <Pill
-                      variant={remaining < 0 ? "danger" : "info"}
+                      </p>
+                    </div>
+                    <span
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${remaining < 0 ? "bg-red-500/10 text-red-500" : "bg-blue-500/10 text-blue-500"}`}
                     >
                       {remaining}
-                    </Pill>
-                  </Flex>
+                    </span>
+                  </div>
 
                   <div className="mt-3 min-h-[80px] rounded-lg bg-white p-3 shadow-sm">
-                    <Text size="2" className="whitespace-pre-wrap">
+                    <p className="text-sm whitespace-pre-wrap">
                       {content || (
                         <span className="text-[#6B6B6B] italic">
                           Your post preview appears here…
                         </span>
                       )}
-                    </Text>
+                    </p>
                   </div>
                 </div>
               );
             })}
           </div>
         )}
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 }

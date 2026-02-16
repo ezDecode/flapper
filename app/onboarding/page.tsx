@@ -2,8 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-// Actually better to just remove the import as we will use native elements per my discovery
-// import { Button, Card, Flex, H1, H2, Pill, Text } from "@maximeheckel/design-system"; -> REMOVE
 import {
   Twitter,
   Globe,
@@ -122,7 +120,7 @@ export default function OnboardingPage() {
     void refreshConnections();
   }, [userId]);
 
-  const connectOAuth = async (provider: "twitter" | "linkedin_oidc") => {
+  const connectOAuth = async (provider: "twitter") => {
     const redirectTo = `${window.location.origin}/auth/callback?next=/onboarding`;
     await supabase.auth.signInWithOAuth({
       provider,

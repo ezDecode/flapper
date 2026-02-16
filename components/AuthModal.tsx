@@ -31,7 +31,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
   const [regError, setRegError] = useState("");
   const [regSuccess, setRegSuccess] = useState("");
 
-  const oauth = async (provider: "twitter" | "linkedin_oidc") => {
+  const oauth = async (provider: "twitter") => {
     const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent("/dashboard")}`;
     await supabase.auth.signInWithOAuth({ provider, options: { redirectTo } });
   };
