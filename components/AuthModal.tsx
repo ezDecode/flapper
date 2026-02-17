@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { C } from "@/lib/landing-data";
 
 import { TwitterXIcon } from "./ui/icons";
 
@@ -75,11 +76,11 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
   };
 
   const inputClass =
-    "w-full rounded-lg border px-3 py-2.5 text-sm font-normal outline-none transition-colors focus:border-[#8B5CF6]";
+    "w-full rounded-lg border px-3 py-2.5 text-sm font-normal outline-none transition-colors focus:border-emerald-500";
   const inputStyle = {
-    background: "#FAF8F5",
-    borderColor: "#E5E0D8",
-    color: "#1A1A2E",
+    background: C.surface,
+    borderColor: C.border,
+    color: C.text,
   };
 
   return (
@@ -87,7 +88,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
       className="fixed inset-0 flex items-center justify-center px-4"
       style={{
         zIndex: 100,
-        background: "rgba(0, 0, 0, 0.4)",
+        background: "rgba(0, 0, 0, 0.6)",
         backdropFilter: "blur(8px)",
         animation: "authModalFadeIn 0.2s ease-out",
       }}
@@ -102,7 +103,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
 
       <div
         className="relative w-full max-w-[420px] rounded-xl border p-8"
-        style={{ background: "#F2EFE9", borderColor: "#E5E0D8" }}
+        style={{ background: C.bgAlt, borderColor: C.border, boxShadow: "0 20px 40px -10px rgba(0,0,0,0.5)" }}
         onClick={(e) => e.stopPropagation()}
       >
 
@@ -110,15 +111,15 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
         {/* Tab switcher */}
         <div
           className="mb-6 flex rounded-full border p-1"
-          style={{ borderColor: "#E5E0D8", background: "#FAF8F5" }}
+          style={{ borderColor: C.border, background: C.surface }}
         >
           <button
             type="button"
             onClick={() => onTabChange("login")}
             className="flex-1 rounded-full py-2 text-sm font-medium transition-all"
             style={{
-              background: tab === "login" ? "#E5E0D8" : "transparent",
-              color: tab === "login" ? "#1A1A2E" : "#6B6B7B",
+              background: tab === "login" ? C.border : "transparent",
+              color: tab === "login" ? C.text : C.textMuted,
             }}
           >
             Log in
@@ -128,8 +129,8 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             onClick={() => onTabChange("register")}
             className="flex-1 rounded-full py-2 text-sm font-medium transition-all"
             style={{
-              background: tab === "register" ? "#E5E0D8" : "transparent",
-              color: tab === "register" ? "#1A1A2E" : "#6B6B7B",
+              background: tab === "register" ? C.border : "transparent",
+              color: tab === "register" ? C.text : C.textMuted,
             }}
           >
             Register
@@ -142,7 +143,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             type="button"
             onClick={() => oauth("twitter")}
             className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
-            style={{ backgroundColor: "#000000", color: "#ffffff" }}
+            style={{ backgroundColor: "#000000", color: "#ffffff", border: `1px solid ${C.border}` }}
           >
             <TwitterXIcon className="mr-2 h-5 w-5" />
             Sign in with Twitter
@@ -151,11 +152,11 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
         </div>
 
         <div className="my-6 flex items-center gap-3">
-          <div className="h-px flex-1" style={{ background: "#E5E0D8" }} />
-          <span className="text-xs font-normal" style={{ color: "#6B6B7B" }}>
+          <div className="h-px flex-1" style={{ background: C.border }} />
+          <span className="text-xs font-normal" style={{ color: C.textMuted }}>
             or sign in with email
           </span>
-          <div className="h-px flex-1" style={{ background: "#E5E0D8" }} />
+          <div className="h-px flex-1" style={{ background: C.border }} />
         </div>
 
         {/* ── LOGIN FORM ── */}
@@ -165,7 +166,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
               <label
                 htmlFor="modal-login-email"
                 className="mb-1.5 block text-xs font-medium"
-                style={{ color: "#6B6B7B" }}
+                style={{ color: C.textSoft }}
               >
                 Email
               </label>
@@ -183,7 +184,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
               <label
                 htmlFor="modal-login-password"
                 className="mb-1.5 block text-xs font-medium"
-                style={{ color: "#6B6B7B" }}
+                style={{ color: C.textSoft }}
               >
                 Password
               </label>
@@ -208,7 +209,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
               type="submit"
               disabled={loginLoading}
               className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
-              style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
+              style={{ backgroundColor: C.accent, color: "#fff" }}
             >
               {loginLoading ? "Logging in…" : "Log in"}
             </button>
@@ -233,7 +234,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                   <label
                     htmlFor="modal-reg-name"
                     className="mb-1.5 block text-xs font-medium"
-                    style={{ color: "#6B6B7B" }}
+                    style={{ color: C.textSoft }}
                   >
                     Full name
                   </label>
@@ -251,7 +252,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                   <label
                     htmlFor="modal-reg-beta"
                     className="mb-1.5 block text-xs font-medium"
-                    style={{ color: "#6B6B7B" }}
+                    style={{ color: C.textSoft }}
                   >
                     Invite code
                   </label>
@@ -280,7 +281,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                   <label
                     htmlFor="modal-reg-email"
                     className="mb-1.5 block text-xs font-medium"
-                    style={{ color: "#6B6B7B" }}
+                    style={{ color: C.textSoft }}
                   >
                     Email
                   </label>
@@ -298,7 +299,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                   <label
                     htmlFor="modal-reg-password"
                     className="mb-1.5 block text-xs font-medium"
-                    style={{ color: "#6B6B7B" }}
+                    style={{ color: C.textSoft }}
                   >
                     Password
                   </label>
@@ -323,7 +324,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                   type="submit"
                   disabled={regLoading}
                   className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
-                  style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
+                  style={{ backgroundColor: C.accent, color: "#fff" }}
                 >
                   {regLoading ? "Creating your account…" : "Create account"}
                 </button>
