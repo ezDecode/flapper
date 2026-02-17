@@ -43,8 +43,11 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                     Pricing
                 </div>
                 <h2
-                    className="text-3xl md:text-4xl font-medium tracking-[-0.02em] leading-[1.1]"
-                    style={{ color: C.text }}
+                    className="font-medium tracking-[-0.02em] leading-[1.1]"
+                    style={{ 
+                        color: C.text,
+                        fontSize: "clamp(28px, 4vw, 42px)",
+                    }}
                 >
                     Simple, transparent pricing
                 </h2>
@@ -147,8 +150,11 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                 <AnimatePresence mode="popLayout">
                                     <motion.span
                                         key={displayPrice}
-                                        className="text-4xl font-medium tracking-tight"
-                                        style={{ color: C.text }}
+                                        className="font-medium tracking-tight"
+                                        style={{ 
+                                            color: C.text,
+                                            fontSize: "clamp(32px, 5vw, 44px)",
+                                        }}
                                         initial={{ y: 12, opacity: 0, filter: "blur(4px)" }}
                                         animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
                                         exit={{ y: -12, opacity: 0, filter: "blur(4px)" }}

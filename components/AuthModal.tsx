@@ -76,7 +76,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
   };
 
   const inputClass =
-    "w-full rounded-lg border px-3 py-2.5 text-sm font-normal outline-none transition-colors focus:border-[#00AA45]";
+    `w-full rounded-lg border px-3 py-2.5 text-sm font-normal outline-none transition-colors focus:border-[${C.accent}]`;
   const inputStyle = {
     background: C.surface,
     borderColor: C.border,
@@ -118,8 +118,8 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             onClick={() => onTabChange("login")}
             className="flex-1 rounded-full py-2 text-sm font-medium transition-all"
             style={{
-              background: tab === "login" ? "#F0F0EC" : "transparent",
-              color: tab === "login" ? C.text : C.textMuted,
+              background: tab === "login" ? C.accentSoft : "transparent",
+              color: tab === "login" ? C.accent : C.textMuted,
             }}
           >
             Log in
@@ -129,8 +129,8 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             onClick={() => onTabChange("register")}
             className="flex-1 rounded-full py-2 text-sm font-medium transition-all"
             style={{
-              background: tab === "register" ? "#F0F0EC" : "transparent",
-              color: tab === "register" ? C.text : C.textMuted,
+              background: tab === "register" ? C.accentSoft : "transparent",
+              color: tab === "register" ? C.accent : C.textMuted,
             }}
           >
             Register
@@ -143,7 +143,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             type="button"
             onClick={() => oauth("twitter")}
             className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
-            style={{ backgroundColor: "#000000", color: "#ffffff", border: `1px solid ${C.border}` }}
+            style={{ backgroundColor: C.surface, color: C.text, border: `1px solid ${C.border}` }}
           >
             <TwitterXIcon className="mr-2 h-5 w-5" />
             Sign in with Twitter
@@ -222,9 +222,9 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             {regSuccess ? (
               <div
                 className="rounded-lg border px-4 py-3"
-                style={{ borderColor: "#BBF7D0", background: "#ECFDF5" }}
+                style={{ borderColor: `${C.accent}40`, background: C.accentSoft }}
               >
-                <p className="text-sm font-normal" style={{ color: "#166534" }}>
+                <p className="text-sm font-normal" style={{ color: C.accent }}>
                   {regSuccess}
                 </p>
               </div>

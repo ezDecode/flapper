@@ -203,10 +203,10 @@ export function NavbarWithMenu({
     };
 
     return (
-        <div className="fixed top-0 left-0 right-0 z-50 border-b border-[#232323] bg-[#0A0A0A]/95 backdrop-blur-md">
+        <div className="fixed top-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
             {/* biome-ignore lint/a11y/noStaticElementInteractions: Hover container for menu, not interactive content */}
             <div
-                className="relative mx-auto w-full max-w-[720px] px-6 md:px-8"
+                className="pointer-events-auto relative w-full max-w-[calc(100%-2rem)] md:max-w-2xl rounded-full border border-white/5 bg-[#0A0A0A]/80 backdrop-blur-md shadow-lg transition-all duration-300 px-6 md:px-8"
                 onMouseLeave={handleNavbarMouseLeave}
             >
                 <div

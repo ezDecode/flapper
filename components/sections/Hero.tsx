@@ -39,104 +39,95 @@ const INTERVAL = 3000;
 // Map icons to steps (assuming 3 steps in order)
 const STEP_ICONS = [PenTool, Zap, Rocket];
 
-function SmoothText({ text }: { text: string }) {
-    const letters = Array.from(text);
+// ─── Simple Notification Pill ─────────────────────────────────────
 
-    const container = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.015, delayChildren: 0.1 },
-        },
-    };
-
-    const child = {
-        hidden: { opacity: 0, y: 8, filter: "blur(4px)" },
-        visible: {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            transition: {
-                duration: 0.4,
-                ease: "easeOut",
-            },
-        },
-    };
-
-    return (
-        <motion.div
-            className="flex flex-wrap justify-center sm:justify-start" 
-            variants={container}
-            initial="hidden"
-            animate="visible"
-            key={text}
-        >
-            {letters.map((letter, index) => (
-                <motion.span 
-                    variants={child} 
-                    key={index}
-                    className="inline-block"
-                >
-                    {letter === " " ? "\u00A0" : letter}
-                </motion.span>
-            ))}
-        </motion.div>
-    );
-}
-
-function MergedStatusLine() {
+function SimpleWorkflow() {
     const [index, setIndex] = useState(0);
-    const current = steps[index];
-    const Icon = STEP_ICONS[index % STEP_ICONS.length];
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
+        if (isHovered) return;
         const timer = setInterval(() => {
-            setIndex((p) => (p + 1) % steps.length);
-        }, INTERVAL);
+            setIndex((prev) => (prev + 1) % steps.length);
+        }, 3500); // Slower cycle for readability
         return () => clearInterval(timer);
-    }, []);
+    }, [isHovered]);
+
+    const currentStep = steps[index];
+    const Icon = STEP_ICONS[index];
 
     return (
-        <div className="mt-12 w-full max-w-2xl px-6">
-            <div className="relative flex flex-col items-center justify-center min-h-[32px]">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={index}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                        className="flex flex-col sm:flex-row items-center justify-center gap-3 text-center"
-                    >
-                        {/* Description Text */}
-                        <div className="text-sm font-normal text-[#A0A0A0]">
-                            <SmoothText text={current.description} />
-                        </div>
-
-                        {/* Title Pill with Icon */}
-                        <motion.span
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ 
-                                opacity: 1, 
-                                scale: 1, 
-                                transition: { 
-                                    delay: 0.1, // Appear quickly
-                                    duration: 0.4,
-                                    ease: "easeOut"
-                                }
-                            }}
-                            className="flex items-center justify-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-medium tracking-wide uppercase whitespace-nowrap"
-                            style={{
-                                backgroundColor: C.accentSoft,
-                                color: C.accent,
-                                border: `1px solid ${C.accent}40`
-                            }}
+        <div 
+            className="mt-16 flex justify-center"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <motion.div
+                layout
+                className="relative flex items-center gap-4 rounded-full border border-white/5 bg-[#111]/80 px-2 py-2 pr-8 backdrop-blur-md shadow-2xl transition-colors hover:border-white/10 hover:bg-[#161616]"
+                style={{ 
+                    boxShadow: "0 0 0 1px rgba(0,0,0,0.4), 0 8px 32px -8px rgba(0,0,0,0.5)" 
+                }}
+            >
+                {/* Icon Circle */}
+                <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1A1A] border border-white/5 overflow-hidden">
+                     <AnimatePresence mode="popLayout" initial={false}>
+                        <motion.div
+                            key={index}
+                            className="absolute inset-0 flex items-center justify-center"
+                            initial={{ scale: 0.5, opacity: 0, rotate: -45 }}
+                            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                            exit={{ scale: 0.5, opacity: 0, rotate: 45 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
                         >
-                            <Icon className="h-3 w-3" />
-                            {current.title}
-                        </motion.span>
-                    </motion.div>
-                </AnimatePresence>
-            </div>
+                            <Icon className="h-5 w-5 text-[#F5F5F5]" />
+                        </motion.div>
+                    </AnimatePresence>
+                    
+                    {/* Subtle Progress Ring */}
+                    {!isHovered && (
+                        <svg className="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 48 48">
+                            <motion.circle
+                                key={index}
+                                cx="24"
+                                cy="24"
+                                r="23"
+                                fill="none"
+                                stroke={C.accent}
+                                strokeWidth="2"
+                                strokeDasharray="144.5" // 2 * PI * 23
+                                strokeDashoffset="144.5"
+                                initial={{ strokeDashoffset: 144.5 }}
+                                animate={{ strokeDashoffset: 0 }}
+                                transition={{ duration: 3.5, ease: "linear" }}
+                                className="opacity-80 drop-shadow-[0_0_2px_rgba(0,204,85,0.5)]"
+                                strokeLinecap="round"
+                            />
+                        </svg>
+                    )}
+                </div>
+
+                {/* Text Content */}
+                <div className="flex flex-col items-start justify-center h-10 overflow-hidden text-left min-w-[200px]">
+                    <AnimatePresence mode="popLayout" initial={false}>
+                        <motion.div
+                            key={index}
+                            initial={{ y: 20, opacity: 0, filter: "blur(4px)" }}
+                            animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                            exit={{ y: -20, opacity: 0, filter: "blur(4px)" }}
+                            transition={{ type: "spring", stiffness: 300, damping: 24, mass: 0.8 }}
+                            className="flex flex-col"
+                        >
+                            <span className="text-sm font-medium text-[#F5F5F5] leading-tight">
+                                {currentStep.title}
+                            </span>
+                            <span className="text-xs text-[#888] leading-tight mt-0.5">
+                                {currentStep.description}
+                            </span>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+            </motion.div>
         </div>
     );
 }
@@ -183,7 +174,10 @@ export function Hero({ onOpenAuth }: HeroProps) {
             {/* Headline */}
             <motion.h1
                 {...fadeUp(0.08)}
-                className="max-w-4xl text-5xl md:text-6xl lg:text-[64px] font-medium tracking-[-0.03em] leading-[1.05]"
+                className="max-w-4xl font-medium tracking-[-0.03em] leading-[1.05]"
+                style={{
+                    fontSize: "clamp(40px, 8vw, 76px)", // Fluid scaling from mobile to large screens
+                }}
             >
                 <span style={{ color: C.text }}>
                     Engage smarter.
@@ -226,9 +220,9 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 </a>
             </motion.div>
 
-            {/* Merged How It Works Line */}
-            <motion.div {...fadeUp(0.32)} className="w-full flex justify-center">
-                <MergedStatusLine />
+            {/* Simple Workflow Pill */}
+            <motion.div {...fadeUp(0.32)} className="w-full px-4">
+                <SimpleWorkflow />
             </motion.div>
         </section>
     );
