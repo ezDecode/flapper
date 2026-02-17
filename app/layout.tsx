@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import localFont from "next/font/local";
+import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = localFont({
-  src: "../public/fonts/InterVariable.ttf",
-  variable: "--font-inter",
+const instrumentSans = Instrument_Sans({
+  subsets: ["latin"],
+  variable: "--font-instrument",
   display: "swap",
-  weight: "400 500",
 });
 
 export const metadata: Metadata = {
@@ -20,10 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
       </head>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${instrumentSans.variable} font-sans antialiased`}>
         {children}
         <Analytics />
       </body>
-    </html >
+    </html>
   );
 }

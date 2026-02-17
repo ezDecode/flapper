@@ -176,7 +176,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 {...fadeUp(0.08)}
                 className="max-w-4xl font-medium tracking-[-0.03em] leading-[1.05]"
                 style={{
-                    fontSize: "clamp(40px, 8vw, 76px)", // Fluid scaling from mobile to large screens
+                    fontSize: "clamp(32px, 6vw, 56px)", // Compact scaling
                 }}
             >
                 <span style={{ color: C.text }}>

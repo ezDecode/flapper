@@ -6,7 +6,7 @@ const config: Config = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+				sans: ['var(--font-instrument)', 'system-ui', 'sans-serif'],
 				mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
 			},
 			colors: {

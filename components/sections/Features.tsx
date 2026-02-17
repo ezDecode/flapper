@@ -56,7 +56,7 @@ export function Features() {
                     className="font-medium tracking-[-0.02em] leading-[1.1]"
                     style={{ 
                         color: C.text,
-                        fontSize: "clamp(28px, 4vw, 42px)",
+                        fontSize: "clamp(24px, 4vw, 36px)",
                     }}
                 >
                     Everything you need to grow.

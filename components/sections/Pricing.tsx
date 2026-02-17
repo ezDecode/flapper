@@ -46,7 +46,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                     className="font-medium tracking-[-0.02em] leading-[1.1]"
                     style={{ 
                         color: C.text,
-                        fontSize: "clamp(28px, 4vw, 42px)",
+                        fontSize: "clamp(24px, 4vw, 36px)",
                     }}
                 >
                     Simple, transparent pricing
@@ -153,7 +153,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                         className="font-medium tracking-tight"
                                         style={{ 
                                             color: C.text,
-                                            fontSize: "clamp(32px, 5vw, 44px)",
+                                            fontSize: "clamp(28px, 5vw, 36px)",
                                         }}
                                         initial={{ y: 12, opacity: 0, filter: "blur(4px)" }}
                                         animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}

@@ -153,7 +153,7 @@ export function FAQ() {
                     className="mb-16 text-center font-medium tracking-[-0.02em]"
                     style={{ 
                         color: C.text,
-                        fontSize: "clamp(28px, 4vw, 36px)",
+                        fontSize: "clamp(24px, 4vw, 36px)",
                     }}
                 >
                     Common questions

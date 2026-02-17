@@ -45,7 +45,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                         className="font-medium tracking-[-0.02em]"
                         style={{ 
                             color: C.text,
-                            fontSize: "clamp(28px, 4vw, 36px)",
+                            fontSize: "clamp(24px, 4vw, 36px)",
                         }}
                     >
                         Ready to grow on autopilot?
