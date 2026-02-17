@@ -9,20 +9,20 @@ import {
 /* ── Palette ──────────────────────────────────────────── */
 
 export const C = {
-    bg: "#FFFFFF",
-    bgAlt: "#FAFAF8",
-    surface: "#FFFFFF",
-    surfaceHover: "#F5F5F3",
-    border: "#E8E8E4",
-    borderSubtle: "#F0F0EC",
-    text: "#000000",
-    textSoft: "#333333",
-    textMuted: "#6B6B6B",
-    accent: "#00AA45",
-    accentSoft: "rgba(0, 170, 69, 0.08)",
-    accentHover: "#009940",
+    bg: "#0A0A0A",
+    bgAlt: "#111111",
+    surface: "#161616",
+    surfaceHover: "#1C1C1C",
+    border: "#232323",
+    borderSubtle: "#1A1A1A",
+    text: "#F5F5F5",
+    textSoft: "#A0A0A0",
+    textMuted: "#555555",
+    accent: "#00CC55",
+    accentSoft: "rgba(0, 204, 85, 0.08)",
+    accentHover: "#00BB4A",
     warm: "#F59E0B",
-    warmSoft: "rgba(245, 158, 11, 0.08)",
+    warmSoft: "rgba(245, 158, 11, 0.12)",
 };
 
 /* ── Data ─────────────────────────────────────────────── */
@@ -64,18 +64,17 @@ export const steps = [
     {
         num: "01",
         title: "Draft & Schedule",
-        description: "Compose your tweet, pick the optimal time slot, and queue it.",
+        description: "Draft your tweet, set the time, and queue.",
     },
     {
         num: "02",
         title: "Set the Trigger",
-        description: "Define the engagement threshold that signals traction.",
+        description: "Set the engagement threshold to watch.",
     },
     {
         num: "03",
         title: "Auto-Plug Fires",
-        description:
-            "Flapr replies instantly with your CTA — while attention peaks.",
+        description: "Flapr replies with your CTA instantly.",
     },
 ];
 

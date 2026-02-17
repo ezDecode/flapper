@@ -4,14 +4,13 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { features, C } from "@/lib/landing-data";
 
-const INTERVAL = 4000; // ms per feature
+const INTERVAL = 4000;
 
 export function Features() {
     const [active, setActive] = useState(0);
     const [progress, setProgress] = useState(0);
     const [paused, setPaused] = useState(false);
 
-    // Auto-advance timer
     useEffect(() => {
         if (paused) return;
         setProgress(0);
@@ -46,7 +45,7 @@ export function Features() {
                 <div
                     className="mx-auto mb-4 inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-medium tracking-wide uppercase"
                     style={{
-                        borderColor: C.accent,
+                        borderColor: `rgba(0, 204, 85, 0.2)`,
                         color: C.accent,
                         background: C.accentSoft,
                     }}
@@ -54,7 +53,7 @@ export function Features() {
                     Features
                 </div>
                 <h2
-                    className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]"
+                    className="text-3xl md:text-4xl font-medium tracking-[-0.02em] leading-[1.1]"
                     style={{ color: C.text }}
                 >
                     Everything you need to grow.
@@ -82,7 +81,6 @@ export function Features() {
                 onMouseEnter={() => setPaused(true)}
                 onMouseLeave={() => setPaused(false)}
             >
-                {/* Content area */}
                 <div className="relative min-h-[220px] p-8 md:p-10">
                     <AnimatePresence mode="wait">
                         <motion.div
@@ -93,7 +91,6 @@ export function Features() {
                             transition={{ duration: 0.35, ease: "easeInOut" }}
                             className="flex flex-col items-center text-center gap-5"
                         >
-                            {/* Icon */}
                             <motion.div
                                 initial={{ scale: 0.6 }}
                                 animate={{ scale: 1 }}
@@ -106,7 +103,6 @@ export function Features() {
                                 className="flex h-14 w-14 items-center justify-center rounded-xl"
                                 style={{
                                     background: C.accentSoft,
-                                    boxShadow: `0 0 24px ${C.accentSoft}, 0 0 8px ${C.accentSoft}`,
                                 }}
                             >
                                 <Icon
@@ -115,15 +111,13 @@ export function Features() {
                                 />
                             </motion.div>
 
-                            {/* Title */}
                             <h3
-                                className="text-xl font-semibold tracking-tight"
+                                className="text-xl font-medium tracking-tight"
                                 style={{ color: C.text }}
                             >
                                 {current.title}
                             </h3>
 
-                            {/* Description */}
                             <p
                                 className="max-w-sm text-sm leading-relaxed"
                                 style={{ color: C.textSoft }}
@@ -150,7 +144,6 @@ export function Features() {
                             }}
                             aria-label={`Go to feature ${i + 1}`}
                         >
-                            {/* Progress fill on active pill */}
                             {i === active && (
                                 <motion.div
                                     className="absolute inset-y-0 left-0 rounded-full"

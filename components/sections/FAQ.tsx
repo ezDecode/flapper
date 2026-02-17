@@ -150,7 +150,7 @@ export function FAQ() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-                    className="mb-16 text-center text-3xl md:text-4xl font-semibold tracking-[-0.02em]"
+                    className="mb-16 text-center text-3xl md:text-4xl font-medium tracking-[-0.02em]"
                     style={{ color: C.text }}
                 >
                     Common questions

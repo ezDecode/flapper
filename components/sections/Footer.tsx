@@ -35,14 +35,14 @@ export function Footer({ onOpenAuth }: FooterProps) {
                     className="pointer-events-none absolute inset-0"
                     style={{
                         background:
-                            "radial-gradient(circle at 50% 60%, rgba(0,170,69,0.03) 0%, transparent 70%)",
+                            "radial-gradient(circle at 50% 60%, rgba(0,204,85,0.06) 0%, transparent 70%)",
                     }}
                 />
 
                 <div className="relative mx-auto flex max-w-2xl flex-col items-center text-center">
                     <motion.h2
                         {...fadeUp()}
-                        className="text-3xl md:text-4xl font-semibold tracking-[-0.02em]"
+                        className="text-3xl md:text-4xl font-medium tracking-[-0.02em]"
                         style={{ color: C.text }}
                     >
                         Ready to grow on autopilot?
@@ -59,9 +59,10 @@ export function Footer({ onOpenAuth }: FooterProps) {
                     <motion.button
                         {...fadeUp(0.2)}
                         onClick={() => onOpenAuth("register")}
-                        className="group mt-8 inline-flex h-12 cursor-pointer items-center gap-2 rounded-full px-8 text-sm font-semibold text-white transition-opacity hover:opacity-90 active:scale-[0.96] sm:text-base"
+                        className="group mt-8 inline-flex h-12 cursor-pointer items-center gap-2 rounded-full px-8 text-sm font-medium transition-opacity hover:opacity-90 active:scale-[0.96] sm:text-base"
                         style={{
                             background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
+                            color: "#000",
                         }}
                     >
                         Start for free
@@ -93,7 +94,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             <Link
                                 key={label}
                                 href={href}
-                                className="relative text-sm transition-colors hover:text-black after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-black after:transition-all hover:after:w-full"
+                                className="relative text-sm transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:transition-all hover:after:w-full"
                                 style={{ color: C.textMuted }}
                             >
                                 {label}
@@ -103,7 +104,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             href="https://twitter.com"
                             target="_blank"
                             rel="noreferrer"
-                            className="relative text-sm transition-colors hover:text-black after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-black after:transition-all hover:after:w-full"
+                            className="relative text-sm transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:transition-all hover:after:w-full"
                             style={{ color: C.textMuted }}
                         >
                             Twitter/X

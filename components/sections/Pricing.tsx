@@ -43,7 +43,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                     Pricing
                 </div>
                 <h2
-                    className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]"
+                    className="text-3xl md:text-4xl font-medium tracking-[-0.02em] leading-[1.1]"
                     style={{ color: C.text }}
                 >
                     Simple, transparent pricing
@@ -96,7 +96,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                 >
                     Annual{" "}
                     <span
-                        className="ml-1 rounded-full px-2 py-0.5 text-[11px] font-semibold"
+                        className="ml-1 rounded-full px-2 py-0.5 text-[11px] font-medium"
                         style={{ background: C.warmSoft, color: C.warm }}
                     >
                         Save 20%
@@ -121,7 +121,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                             {/* Badge */}
                             {isPro && (
                                 <div
-                                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-semibold tracking-wide uppercase shadow-lg"
+                                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-medium tracking-wide uppercase shadow-lg"
                                     style={{
                                         background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
                                         color: "#fff",
@@ -134,7 +134,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
 
                             {/* Plan name */}
                             <h3
-                                className="text-sm font-semibold tracking-wide uppercase"
+                                className="text-sm font-medium tracking-wide uppercase"
                                 style={{
                                     color: isPro ? C.accent : C.textMuted,
                                 }}
@@ -147,7 +147,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                 <AnimatePresence mode="popLayout">
                                     <motion.span
                                         key={displayPrice}
-                                        className="text-4xl font-semibold tracking-tight"
+                                        className="text-4xl font-medium tracking-tight"
                                         style={{ color: C.text }}
                                         initial={{ y: 12, opacity: 0, filter: "blur(4px)" }}
                                         animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
@@ -226,12 +226,12 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                             {/* CTA */}
                             <button
                             onClick={() => onOpenAuth("register")}
-                            className="inline-flex w-full cursor-pointer items-center justify-center rounded-lg h-12 text-sm font-semibold tracking-wide transition-all duration-200 active:scale-[0.97]"
+                            className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors cursor-pointer hover:bg-white/5 active:scale-[0.96]"
                                 style={
                                     isPro
                                         ? {
                                               background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
-                                              color: "#fff",
+                                              color: "#000",
                                               boxShadow: "0 4px 12px rgba(0,170,69,0.15)",
                                           }
                                         : {
@@ -243,7 +243,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                 onMouseEnter={(e) => {
                                     if (!isPro)
                                         e.currentTarget.style.borderColor =
-                                            C.textMuted;
+                                            C.textSoft;
                                 }}
                                 onMouseLeave={(e) => {
                                     if (!isPro)
