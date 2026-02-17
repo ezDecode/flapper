@@ -1,184 +1,161 @@
 "use client";
 
-import { useRef, useMemo } from "react";
-import { motion, useScroll, useTransform, useSpring } from "motion/react";
+import { useState } from "react";
+import { motion } from "motion/react";
 import { steps, C } from "@/lib/landing-data";
 
 export function HowItWorks() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start start", "end end"],
-    });
-
-    // Smooth out the scroll progress
-    const scrollProgress = useSpring(scrollYProgress, {
-        stiffness: 200,
-        damping: 30,
-        restDelta: 0.001,
-    });
-
     return (
         <section
             id="how-it-works"
-            ref={containerRef}
-            className="relative"
-            style={{ height: "300vh" }} // Tall height to allow scrolling
+            className="noise-bg relative overflow-hidden py-28 md:py-36"
+            style={{
+                background: `
+                    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(16,185,129,0.04), transparent),
+                    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(16,185,129,0.02), transparent),
+                    ${C.bg}
+                `,
+            }}
         >
-            <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden px-4 md:px-8">
-                <div className="grid w-full max-w-6xl gap-12 lg:grid-cols-2 lg:gap-24">
-                    {/* ─── Left: Title & Static Info ─── */}
-                    <div className="flex flex-col justify-center">
-                        <motion.h2
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, ease: "easeOut" }}
-                            className="text-[clamp(2.5rem,5vw,4rem)] font-medium tracking-tight leading-[1] md:leading-[1.05]"
-                            style={{ color: C.text }}
-                        >
-                            Three steps.
-                            <br />
-                            <span style={{ color: C.textMuted }}>
-                                Zero friction.
-                            </span>
-                        </motion.h2>
+            <div className="container mx-auto px-5 md:px-8 lg:px-12">
+                {/* Section Header */}
+                <div className="mb-16 md:mb-20 max-w-2xl">
+                    <motion.h2
+                        initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
+                        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl mb-5"
+                    >
+                        <span style={{ color: C.text }}>Three steps.</span>{" "}
+                        <span style={{ color: C.textMuted }}>Zero friction.</span>
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+                        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                        className="text-base md:text-lg leading-relaxed max-w-xl"
+                        style={{ color: C.textSoft }}
+                    >
+                        From draft to conversion — one seamless workflow.
+                        No more stitching together half a dozen tools.
+                    </motion.p>
+                </div>
 
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{
-                                duration: 0.6,
-                                ease: "easeOut",
-                                delay: 0.1,
-                            }}
-                            className="mt-6 max-w-md text-lg font-normal leading-relaxed"
-                            style={{ color: C.textSoft }}
-                        >
-                            Stop gluing together Zapier, Buffer, and makeshift
-                            scripts. Flapr handles the entire lifecycle of a
-                            viral post in one cohesive workflow.
-                        </motion.p>
-                    </div>
+                {/* Connecting Line */}
+                <motion.div
+                    className="hidden md:block h-px origin-left"
+                    style={{
+                        background: `linear-gradient(90deg, ${C.accent}, ${C.accent}44, transparent)`,
+                    }}
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+                />
 
-/* ─── Right: Interactive Steps ─── */
-                    <div className="relative flex min-h-[400px] w-full items-center justify-center">
-                        {/* Progress Bar (Vertical) */}
-                        <div className="absolute -left-6 top-10 bottom-10 w-0.5 rounded-full bg-white/5 md:-left-12">
-                            <motion.div
-                                className="w-full origin-top rounded-full"
-                                style={{
-                                    height: "100%",
-                                    background: C.accent,
-                                    scaleY: scrollProgress,
-                                }}
-                            />
-                        </div>
-
-                        {steps.map((step, index) => (
-                            <StepItem
-                                key={index}
-                                step={step}
-                                index={index}
-                                total={steps.length}
-                                progress={scrollProgress}
-                            />
-                        ))}
-                    </div>
+                {/* Bento Grid */}
+                <div
+                    className="grid grid-cols-1 md:grid-cols-3 border"
+                    style={{ borderColor: C.border }}
+                >
+                    {steps.map((step, index) => (
+                        <StepCard
+                            key={step.num}
+                            step={step}
+                            index={index}
+                            isLast={index === steps.length - 1}
+                        />
+                    ))}
                 </div>
             </div>
         </section>
     );
 }
 
-function StepItem({
+function StepCard({
     step,
     index,
-    total,
-    progress,
+    isLast,
 }: {
     step: (typeof steps)[0];
     index: number;
-    total: number;
-    progress: any;
+    isLast: boolean;
 }) {
-    // Determine active range for this step
-    // Each step gets a segment of the scroll
-    const start = index / total;
-    const end = (index + 1) / total;
-
-    // Opacity: Fade in when entering start, fade out when leaving end
-    const opacity = useTransform(
-        progress,
-        [start, start + 0.1, end - 0.1, end],
-        [0, 1, 1, 0]
-    );
-
-    // Scale: Subtle zoom in
-    const scale = useTransform(
-        progress,
-        [start, start + 0.1, end - 0.1, end],
-        [0.8, 1, 1, 0.8]
-    );
-    
-    // Y Position: Slide up slightly
-    const y = useTransform(
-        progress,
-        [start, end],
-        [50, -50]
-    );
-
-    // Filter blur
-    const filter = useTransform(
-        progress,
-         [start, start + 0.1, end - 0.1, end],
-        ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]
-    );
+    const [hovered, setHovered] = useState(false);
 
     return (
         <motion.div
-            style={{
-                opacity,
-                scale,
-                filter,
-                y,
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
+            initial={{ opacity: 0, y: 32, filter: "blur(6px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{
+                duration: 0.6,
+                delay: 0.15 + index * 0.12,
+                ease: "easeOut",
             }}
-            className="rounded-3xl border p-8 md:p-10"
+            whileHover={{ y: -2, transition: { type: "spring", stiffness: 400, damping: 25 } }}
+            onHoverStart={() => setHovered(true)}
+            onHoverEnd={() => setHovered(false)}
+            className="relative flex flex-col gap-8 p-8 md:p-10 lg:p-12"
+            style={{
+                borderRight: isLast ? "none" : `1px solid ${C.border}`,
+                borderBottom: isLast ? "none" : undefined,
+                background: hovered ? C.surfaceHover : C.bgAlt,
+                transition: "background 0.3s ease",
+            }}
         >
-             <div
-                className="absolute inset-0 rounded-3xl"
+            {/* Mobile connecting line */}
+            <motion.div
+                className="md:hidden absolute top-0 left-8 right-8 h-px origin-left"
                 style={{
-                    background: C.surface,
-                    borderColor: C.border,
-                    borderWidth: 1, 
+                    background: `linear-gradient(90deg, ${C.accent}, transparent)`,
                 }}
-             />
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3 + index * 0.1 }}
+            />
 
-            <div className="relative z-10">
+            {/* Mobile divider (bottom border for stacked cards) */}
+            {!isLast && (
+                <div
+                    className="md:hidden absolute bottom-0 left-0 right-0 h-px"
+                    style={{ background: C.border }}
+                />
+            )}
+
+            <div className="relative z-10 flex flex-col gap-6">
+                {/* Step Number */}
                 <span
-                    className="mb-4 block text-xs font-medium uppercase tracking-wider"
-                    style={{ color: C.accent }}
+                    className="inline-flex items-center justify-center w-12 h-12 text-sm font-mono font-medium tracking-wider"
+                    style={{
+                        border: `1.5px solid ${hovered ? C.accent : C.border}`,
+                        color: hovered ? C.accent : C.textSoft,
+                        boxShadow: hovered
+                            ? `0 0 16px ${C.accentSoft}, inset 0 0 8px ${C.accentSoft}`
+                            : "none",
+                        transition: "border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease",
+                    }}
                 >
-                    Step {step.num}
+                    {step.num}
                 </span>
 
+                {/* Title */}
                 <h3
-                    className="mb-4 text-3xl font-medium md:text-4xl"
+                    className="text-xl md:text-2xl font-semibold tracking-tight"
                     style={{ color: C.text }}
                 >
                     {step.title}
                 </h3>
 
+                {/* Description */}
                 <p
-                    className="text-lg font-normal leading-relaxed text-pretty"
+                    className="text-sm md:text-base leading-relaxed"
                     style={{ color: C.textSoft }}
                 >
-                     {step.description.replace(/—/g, "-")}
+                    {step.description}
                 </p>
             </div>
         </motion.div>

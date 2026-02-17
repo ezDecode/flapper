@@ -9,16 +9,20 @@ import {
 /* ── Palette ──────────────────────────────────────────── */
 
 export const C = {
-    bg: "#0C0C0E",
-    bgAlt: "#131316",
-    surface: "#1A1A1E",
-    surfaceHover: "#222226",
-    border: "#27272B",
-    text: "#F1F1F3",
+    bg: "#09090B",
+    bgAlt: "#0F0F12",
+    surface: "#18181B",
+    surfaceHover: "#1F1F23",
+    border: "#27272A",
+    borderSubtle: "#1E1E21",
+    text: "#FAFAFA",
     textSoft: "#A1A1AA",
-    textMuted: "#63636E",
-    accent: "#8B5CF6",
-    accentSoft: "rgba(139, 92, 246, 0.12)",
+    textMuted: "#52525B",
+    accent: "#10B981",
+    accentSoft: "rgba(16, 185, 129, 0.10)",
+    accentHover: "#059669",
+    warm: "#F59E0B",
+    warmSoft: "rgba(245, 158, 11, 0.10)",
 };
 
 /* ── Data ─────────────────────────────────────────────── */
@@ -27,7 +31,7 @@ export const features = [
     {
         icon: Clock,
         title: "Smart Scheduling",
-        desc: "Queue posts for Twitter/X. Pick your time or let Flapr find the best slot.",
+        desc: "Queue posts for optimal reach. Pick your time or let Flapr find the highest-engagement window.",
         className: "md:col-span-2",
     },
     {
@@ -39,19 +43,19 @@ export const features = [
     {
         icon: BarChart3,
         title: "Performance Analytics",
-        desc: "Track impressions, engagement, and conversions. Know exactly which posts drive results.",
+        desc: "Track impressions, engagement rate, and conversions. Know exactly which posts drive results.",
         className: "md:col-span-1",
     },
     {
         icon: MessageSquare,
         title: "CTA Templates",
-        desc: "Pre-write your plugs once. Reuse across posts. A/B test different CTAs to optimize clicks.",
+        desc: "Pre-write your plugs once. Reuse across posts. A/B test different CTAs to optimize click-through.",
         className: "md:col-span-2",
     },
     {
         icon: Shield,
-        title: "Twitter Focused",
-        desc: "Built specifically to grow your X audience. No distractions, just tools that work.",
+        title: "Built for 𝕏",
+        desc: "Deep Twitter/X integration — tweets, threads, and real-time engagement metrics. More platforms soon.",
         className: "md:col-span-3",
     },
 ];
@@ -60,39 +64,18 @@ export const steps = [
     {
         num: "01",
         title: "Draft & Schedule",
-        description: "Write once and publish across platforms at the right time.",
+        description: "Compose your tweet, pick the optimal time slot, and queue it.",
     },
     {
         num: "02",
-        title: "Set the trigger",
-        description: "Choose the signal that means your post is gaining traction.",
+        title: "Set the Trigger",
+        description: "Define the engagement threshold that signals traction.",
     },
     {
         num: "03",
-        title: "Auto-plug fires",
+        title: "Auto-Plug Fires",
         description:
-            "Flapr replies instantly with your CTA — while attention is highest.",
-    },
-];
-
-export const testimonials = [
-    {
-        quote:
-            "Scheduled a post and stepped away for the weekend. Came back to new customers from the auto-plug.",
-        name: "Sarah Chen",
-        role: "Indie maker · 12K followers",
-    },
-    {
-        quote:
-            "I used to manually reply to my own viral tweets. Now Flapr does it in milliseconds. Game changer.",
-        name: "Marcus Rivera",
-        role: "SaaS founder · 8K followers",
-    },
-    {
-        quote:
-            "The ROI is insane. $19/mo and it's already paid for itself ten times over from auto-plug conversions.",
-        name: "Priya Sharma",
-        role: "Content creator · 22K followers",
+            "Flapr replies instantly with your CTA — while attention peaks.",
     },
 ];
 
@@ -126,24 +109,23 @@ export const plans = [
         cta: "Start 14-day trial",
         highlighted: true,
     },
-
 ];
 
 export const faqs = [
     {
         q: "Is there a free plan?",
-        a: "Yes. Start free — no credit card required.",
+        a: "Yes — start free, no credit card required. Upgrade only when Flapr proves its value.",
     },
     {
         q: "Can I cancel anytime?",
-        a: "Yes. Upgrade, downgrade, or cancel anytime.",
+        a: "Absolutely. Upgrade, downgrade, or cancel with one click — no lock-in.",
     },
     {
         q: "How does the auto-plug work?",
-        a: "Set a threshold (like 50 likes). When it’s reached, Flapr replies with your CTA automatically.",
+        a: "Set an engagement threshold (e.g. 50 likes). When reached, Flapr auto-replies with your pre-written CTA.",
     },
     {
-        q: "Which platforms do you support?",
-        a: "Twitter/X. More coming soon.",
+        q: "Which platforms are supported?",
+        a: "Twitter/X with deep integration. More platforms shipping soon.",
     },
 ];

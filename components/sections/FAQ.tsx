@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { faqs, C } from "@/lib/landing-data";
 
+const spring = { type: "spring" as const, stiffness: 300, damping: 30 };
+
 const FAQItem = ({
     q,
     a,
@@ -21,66 +23,70 @@ const FAQItem = ({
 }) => {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{
-                duration: 0.45,
-                delay: index * 0.07,
+                duration: 0.5,
+                delay: index * 0.08,
                 ease: [0.21, 0.47, 0.32, 0.98],
             }}
         >
             <motion.div
                 animate={{
-                    backgroundColor: isOpen
-                        ? "rgba(255,255,255,0.05)"
-                        : "rgba(255,255,255,0)",
+                    backgroundColor: isOpen ? C.surface : "transparent",
                     borderColor: isOpen ? C.border : "transparent",
                 }}
-                transition={{ duration: 0.25, ease: "easeInOut" }}
-                className="overflow-hidden rounded-2xl border"
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className="overflow-hidden rounded-xl border"
             >
                 <button
                     onClick={onToggle}
-                    className="group flex w-full items-center justify-between px-6 py-5 text-left"
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
                 >
                     <span
-                        className="text-lg font-medium transition-colors duration-200"
+                        className="text-[15px] font-medium leading-snug transition-colors duration-200 sm:text-base"
                         style={{ color: isOpen ? C.accent : C.text }}
                     >
                         {q}
                     </span>
 
                     <motion.div
-                        animate={{ rotate: isOpen ? 180 : 0 }}
-                        transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-                        className="relative ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+                        animate={{ rotate: isOpen ? 90 : 0 }}
+                        transition={spring}
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
                         style={{
-                            backgroundColor: isOpen
-                                ? `${C.accent}22`
-                                : "rgba(255,255,255,0.05)",
+                            backgroundColor: isOpen ? C.accentSoft : C.surfaceHover,
                         }}
                     >
                         <AnimatePresence mode="wait" initial={false}>
                             {isOpen ? (
                                 <motion.span
                                     key="minus"
-                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    initial={{ opacity: 0, scale: 0.4 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.5 }}
-                                    transition={{ duration: 0.15 }}
+                                    exit={{ opacity: 0, scale: 0.4 }}
+                                    transition={{ duration: 0.12 }}
+                                    className="flex items-center justify-center"
                                 >
-                                    <Minus className="h-4 w-4" style={{ color: C.accent }} />
+                                    <Minus
+                                        className="h-3.5 w-3.5"
+                                        style={{ color: C.accent }}
+                                    />
                                 </motion.span>
                             ) : (
                                 <motion.span
                                     key="plus"
-                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    initial={{ opacity: 0, scale: 0.4 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.5 }}
-                                    transition={{ duration: 0.15 }}
+                                    exit={{ opacity: 0, scale: 0.4 }}
+                                    transition={{ duration: 0.12 }}
+                                    className="flex items-center justify-center"
                                 >
-                                    <Plus className="h-4 w-4" style={{ color: C.textSoft }} />
+                                    <Plus
+                                        className="h-3.5 w-3.5"
+                                        style={{ color: C.textSoft }}
+                                    />
                                 </motion.span>
                             )}
                         </AnimatePresence>
@@ -95,8 +101,8 @@ const FAQItem = ({
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
                             transition={{
-                                height: { duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] },
-                                opacity: { duration: 0.25, ease: "easeInOut" },
+                                height: spring,
+                                opacity: { duration: 0.2, ease: "easeInOut" },
                             }}
                             className="overflow-hidden"
                         >
@@ -105,19 +111,18 @@ const FAQItem = ({
                                 animate={{ scaleX: 1 }}
                                 exit={{ scaleX: 0 }}
                                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                                className="mx-6 origin-left"
+                                className="mx-5 origin-left"
                                 style={{
                                     height: "1px",
                                     backgroundColor: C.border,
-                                    opacity: 0.5,
                                 }}
                             />
                             <motion.p
-                                initial={{ y: -8 }}
+                                initial={{ y: -6 }}
                                 animate={{ y: 0 }}
-                                exit={{ y: -8 }}
-                                transition={{ duration: 0.3, ease: "easeOut" }}
-                                className="px-6 pb-6 pt-4 text-base leading-relaxed font-normal"
+                                exit={{ y: -6 }}
+                                transition={{ duration: 0.25, ease: "easeOut" }}
+                                className="px-5 pb-5 pt-3.5 text-sm leading-relaxed sm:text-[15px] sm:leading-7"
                                 style={{ color: C.textSoft }}
                             >
                                 {a}
@@ -139,19 +144,19 @@ export function FAQ() {
 
     return (
         <section className="px-4 py-20 md:px-8 md:py-24">
-            <div className="mx-auto max-w-3xl">
+            <div className="mx-auto max-w-2xl">
                 <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-                    className="mb-12 text-center text-[clamp(2rem,4vw,2.5rem)] font-medium tracking-tight leading-[1.034]"
+                    className="mb-10 text-center text-3xl font-semibold tracking-tight sm:text-4xl"
                     style={{ color: C.text }}
                 >
-                    Common Questions
+                    Common questions
                 </motion.h2>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                     {faqs.map((faq, i) => (
                         <FAQItem
                             key={i}

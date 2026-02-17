@@ -10,8 +10,8 @@ import { NavbarWithMenu } from "@/components/ui/navbar-menu";
 import { C } from "@/lib/landing-data";
 
 import { Hero } from "@/components/sections/Hero";
+import { Features } from "@/components/sections/Features";
 import { HowItWorks } from "@/components/sections/HowItWorks";
-import { Testimonials } from "@/components/sections/Testimonials";
 import { Pricing } from "@/components/sections/Pricing";
 import { FAQ } from "@/components/sections/FAQ";
 import { Footer } from "@/components/sections/Footer";
@@ -85,7 +85,7 @@ function LandingPageInner() {
                 <button
                   onClick={() => openAuth("register")}
                   className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-5 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
-                  style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
+                  style={{ backgroundColor: "#10B981", color: "#fff" }}
                 >
                   Start free
                 </button>
@@ -94,11 +94,11 @@ function LandingPageInner() {
           />
 
           <Hero onOpenAuth={openAuth} />
+          <Features />
           <HowItWorks />
-          <Testimonials />
           <Pricing onOpenAuth={openAuth} />
           <FAQ />
-          <Footer />
+          <Footer onOpenAuth={openAuth} />
         </div>
       </main>
 

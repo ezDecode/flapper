@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Check, Sparkles } from "lucide-react";
 
 import { plans, C } from "@/lib/landing-data";
@@ -51,8 +52,8 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                     className="mx-auto mt-4 max-w-md text-base font-normal leading-relaxed"
                     style={{ color: C.textSoft }}
                 >
-                    Start free — no credit card needed. Upgrade only when Flapr proves its
-                    value.
+                    Start free — no credit card needed. Upgrade only when Flapr
+                    proves its value.
                 </p>
             </div>
 
@@ -74,11 +75,18 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                         border: `1px solid ${isAnnual ? C.accent : C.border}`,
                     }}
                 >
-                    <div
-                        className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full transition-all duration-200"
-                        style={{
-                            background: "#fff",
-                            left: isAnnual ? "calc(100% - 1.25rem - 2px)" : "2px",
+                    <motion.div
+                        className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full"
+                        style={{ background: "#fff" }}
+                        animate={{
+                            left: isAnnual
+                                ? "calc(100% - 1.25rem - 2px)"
+                                : "2px",
+                        }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 500,
+                            damping: 30,
                         }}
                     />
                 </button>
@@ -89,7 +97,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                     Annual{" "}
                     <span
                         className="ml-1 rounded-full px-2 py-0.5 text-[11px] font-semibold"
-                        style={{ background: C.accentSoft, color: C.accent }}
+                        style={{ background: C.warmSoft, color: C.warm }}
                     >
                         Save 20%
                     </span>
@@ -98,23 +106,16 @@ export function Pricing({ onOpenAuth }: PricingProps) {
 
             {/* Cards */}
             <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
-                {plans.map((plan) => {
+                {plans.map((plan, i) => {
                     const isPro = plan.highlighted;
                     const displayPrice = getPrice(plan.price, isAnnual);
                     const displayPeriod = getPeriod(plan.period, isAnnual);
 
-                    return (
+                    const card = (
                         <div
-                            key={plan.name}
-                            className="relative flex flex-col rounded-2xl border p-8 transition-shadow duration-300"
+                            className="flex h-full flex-col rounded-2xl p-8"
                             style={{
-                                background: isPro
-                                    ? `linear-gradient(170deg, ${C.surfaceHover} 0%, ${C.surface} 100%)`
-                                    : C.surface,
-                                borderColor: isPro ? C.accent : C.border,
-                                boxShadow: isPro
-                                    ? `0 0 40px ${C.accentSoft}, 0 8px 32px rgba(0,0,0,.4)`
-                                    : "0 2px 12px rgba(0,0,0,.2)",
+                                background: C.surface,
                             }}
                         >
                             {/* Badge */}
@@ -122,7 +123,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                 <div
                                     className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-semibold tracking-wide uppercase shadow-lg"
                                     style={{
-                                        background: `linear-gradient(135deg, ${C.accent}, #6D28D9)`,
+                                        background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
                                         color: "#fff",
                                         boxShadow: `0 4px 14px ${C.accentSoft}`,
                                     }}
@@ -134,19 +135,32 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                             {/* Plan name */}
                             <h3
                                 className="text-sm font-semibold tracking-wide uppercase"
-                                style={{ color: isPro ? C.accent : C.textMuted }}
+                                style={{
+                                    color: isPro ? C.accent : C.textMuted,
+                                }}
                             >
                                 {plan.name}
                             </h3>
 
                             {/* Price */}
                             <div className="mt-5 flex items-end gap-1">
-                                <span
-                                    className="text-5xl font-semibold tracking-tight"
-                                    style={{ color: C.text }}
-                                >
-                                    {displayPrice}
-                                </span>
+                                <AnimatePresence mode="popLayout">
+                                    <motion.span
+                                        key={displayPrice}
+                                        className="text-5xl font-semibold tracking-tight"
+                                        style={{ color: C.text }}
+                                        initial={{ y: 12, opacity: 0, filter: "blur(4px)" }}
+                                        animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                                        exit={{ y: -12, opacity: 0, filter: "blur(4px)" }}
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 300,
+                                            damping: 25,
+                                        }}
+                                    >
+                                        {displayPrice}
+                                    </motion.span>
+                                </AnimatePresence>
                                 <span
                                     className="mb-1.5 text-sm font-normal"
                                     style={{ color: C.textMuted }}
@@ -190,12 +204,18 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                         <span
                                             className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
                                             style={{
-                                                background: isPro ? C.accentSoft : C.surfaceHover,
+                                                background: isPro
+                                                    ? C.accentSoft
+                                                    : C.surfaceHover,
                                             }}
                                         >
                                             <Check
                                                 className="h-3 w-3"
-                                                style={{ color: isPro ? C.accent : C.textSoft }}
+                                                style={{
+                                                    color: isPro
+                                                        ? C.accent
+                                                        : C.textSoft,
+                                                }}
                                             />
                                         </span>
                                         {f}
@@ -206,13 +226,13 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                             {/* CTA */}
                             <button
                                 onClick={() => onOpenAuth("register")}
-                                className="inline-flex items-center justify-center rounded-xl w-full h-12 text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer active:scale-[0.97]"
+                                className="inline-flex w-full cursor-pointer items-center justify-center rounded-xl h-12 text-sm font-semibold tracking-wide transition-all duration-200 active:scale-[0.97]"
                                 style={
                                     isPro
                                         ? {
-                                              background: `linear-gradient(135deg, ${C.accent}, #6D28D9)`,
+                                              background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
                                               color: "#fff",
-                                              boxShadow: `0 4px 20px ${C.accentSoft}`,
+                                              boxShadow: `0 4px 20px ${C.accentSoft}, 0 0 40px ${C.accentSoft}`,
                                           }
                                         : {
                                               background: "transparent",
@@ -221,15 +241,58 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                           }
                                 }
                                 onMouseEnter={(e) => {
-                                    if (!isPro) e.currentTarget.style.borderColor = C.textMuted;
+                                    if (!isPro)
+                                        e.currentTarget.style.borderColor =
+                                            C.textMuted;
                                 }}
                                 onMouseLeave={(e) => {
-                                    if (!isPro) e.currentTarget.style.borderColor = C.border;
+                                    if (!isPro)
+                                        e.currentTarget.style.borderColor =
+                                            C.border;
                                 }}
                             >
                                 {plan.cta}
                             </button>
                         </div>
+                    );
+
+                    return (
+                        <motion.div
+                            key={plan.name}
+                            className="relative"
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{
+                                duration: 0.5,
+                                delay: i * 0.15,
+                                ease: [0.25, 0.1, 0.25, 1],
+                            }}
+                        >
+                            {isPro ? (
+                                /* Gradient border wrapper for Pro */
+                                <div
+                                    className="rounded-2xl p-px"
+                                    style={{
+                                        background: `linear-gradient(170deg, ${C.accent}, ${C.accentHover}, ${C.border})`,
+                                        boxShadow: `0 0 40px ${C.accentSoft}, 0 8px 32px rgba(0,0,0,.4)`,
+                                    }}
+                                >
+                                    {card}
+                                </div>
+                            ) : (
+                                <div
+                                    className="rounded-2xl border"
+                                    style={{
+                                        borderColor: C.border,
+                                        boxShadow:
+                                            "0 2px 12px rgba(0,0,0,.2)",
+                                    }}
+                                >
+                                    {card}
+                                </div>
+                            )}
+                        </motion.div>
                     );
                 })}
             </div>

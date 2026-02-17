@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 
 import { C } from "@/lib/landing-data";
 
-// Inline SVGs to avoid extra icon component dependencies
+// Inline SVG to avoid extra icon component dependencies
 const XIcon = ({ className }: { className?: string }) => (
     <svg className={className} viewBox="0 0 1200 1226.37" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path d="M714.163 519.284L1160.89 0h-105.86L667.137 450.887 357.328 0H0l468.492 681.821L0 1226.37h105.866l409.625-476.152 327.181 476.152H1200L714.137 519.284zM569.165 687.828l-47.468-67.894-377.686-540.24h162.604l304.797 435.991 47.468 67.894 396.2 566.721H892.476L569.165 687.854z" />
@@ -34,10 +34,10 @@ export function PlatformCycler() {
 function RotatingBadge() {
     const [index, setIndex] = useState(0);
     const badges = [
-        { text: "Smart Scheduling", icon: Clock, color: "#38bdf8", bg: "rgba(56, 189, 248, 0.1)", border: "rgba(56, 189, 248, 0.2)" },
-        { text: "Auto-Plug Engine", icon: Zap, color: "#a78bfa", bg: "rgba(139, 92, 246, 0.1)", border: "rgba(139, 92, 246, 0.2)" },
-        { text: "Analytics & Insights", icon: BarChart3, color: "#34d399", bg: "rgba(52, 211, 153, 0.1)", border: "rgba(52, 211, 153, 0.2)" },
-        { text: "Growth Tools", icon: TrendingUp, color: "#fb7185", bg: "rgba(251, 113, 133, 0.1)", border: "rgba(251, 113, 133, 0.2)" },
+        { text: "Smart Scheduling", icon: Clock, color: "#10B981", bg: "rgba(16, 185, 129, 0.10)", border: "rgba(16, 185, 129, 0.20)" },
+        { text: "Auto-Plug Engine", icon: Zap, color: "#F59E0B", bg: "rgba(245, 158, 11, 0.10)", border: "rgba(245, 158, 11, 0.20)" },
+        { text: "Analytics & Insights", icon: BarChart3, color: "#06B6D4", bg: "rgba(6, 182, 212, 0.10)", border: "rgba(6, 182, 212, 0.20)" },
+        { text: "Growth Tools", icon: TrendingUp, color: "#F43F5E", bg: "rgba(244, 63, 94, 0.10)", border: "rgba(244, 63, 94, 0.20)" },
     ];
 
     useEffect(() => {
@@ -52,7 +52,7 @@ function RotatingBadge() {
 
     return (
         <div className="mt-8 flex items-center gap-3">
-            <span className="text-base font-medium" style={{ color: C.textSoft }}>
+            <span className="text-sm font-medium" style={{ color: C.textMuted }}>
                 Powering
             </span>
             <motion.div
@@ -62,27 +62,23 @@ function RotatingBadge() {
                     borderColor: current.border,
                     backgroundColor: current.bg,
                     color: current.color,
-                    boxShadow: `0 0 12px ${current.bg}`,
+                    boxShadow: `0 0 16px ${current.bg}, 0 0 4px ${current.bg}`,
                 }}
                 transition={{
-                    duration: 0.3,
+                    duration: 0.35,
                     ease: "easeInOut",
-                    // Animate colors smoothly too
-                    backgroundColor: { duration: 0.3 },
-                    borderColor: { duration: 0.3 },
-                    color: { duration: 0.3 },
+                    backgroundColor: { duration: 0.35 },
+                    borderColor: { duration: 0.35 },
+                    color: { duration: 0.35 },
                 }}
             >
                 <AnimatePresence mode="popLayout" initial={false}>
                     <motion.div
                         key={index}
-                        initial={{ opacity: 0, filter: "blur(4px)", y: 5 }}
+                        initial={{ opacity: 0, filter: "blur(4px)", y: 6 }}
                         animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                        exit={{ opacity: 0, filter: "blur(4px)", y: -5 }}
-                        transition={{
-                            duration: 0.3,
-                            ease: "easeInOut",
-                        }}
+                        exit={{ opacity: 0, filter: "blur(4px)", y: -6 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="flex items-center gap-2 whitespace-nowrap text-sm font-medium tracking-wide"
                     >
                         <CurrentIcon className="h-3.5 w-3.5" />
@@ -94,20 +90,18 @@ function RotatingBadge() {
     );
 }
 
-// ─── Fade-up motion variant ───────────────────────────────────────────────────
-const EASE = [0.19, 1, 0.22, 1] as const;
+// ─── Staggered fade-up with blur dissolve ─────────────────────────────────────
+const spring = { type: "spring", damping: 30, stiffness: 200 } as const;
 
-const fadeUp = () => ({
-    initial: { opacity: 0, y: 20, filter: "blur(6px)" },
+const fadeUp = (delay: number = 0) => ({
+    initial: { opacity: 0, y: 24, filter: "blur(8px)" },
     animate: {
         opacity: 1,
         y: 0,
         filter: "blur(0px)",
-        transition: {
-            duration: 0.6,
-            ease: EASE as unknown as [number, number, number, number],
-        },
+        transition: { ...spring, delay },
     },
+    viewport: { once: true },
 });
 
 interface HeroProps {
@@ -116,44 +110,103 @@ interface HeroProps {
 
 export function Hero({ onOpenAuth }: HeroProps) {
     return (
-        <section className="relative flex flex-col items-start justify-center px-4 pt-40 pb-10 text-left md:px-8 md:pt-52 md:pb-16">
-            {/* Badge */}
+        <section className="relative flex flex-col items-start justify-center px-4 pt-40 pb-10 text-left md:px-8 md:pt-52 md:pb-16 overflow-hidden">
+            {/* ── Ambient glow ── */}
+            <div
+                className="pointer-events-none absolute -top-40 -right-40 h-[700px] w-[700px] md:h-[900px] md:w-[900px]"
+                style={{
+                    background:
+                        "radial-gradient(circle at center, rgba(16, 185, 129, 0.07) 0%, rgba(16, 185, 129, 0.03) 35%, transparent 70%)",
+                }}
+                aria-hidden
+            />
+
+            {/* ── Badge pill ── */}
             <motion.div
-                {...fadeUp()}
+                {...fadeUp(0)}
                 className="mb-8 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-medium"
                 style={{
-                    borderColor: C.border,
-                    color: C.textSoft,
-                    background: C.surface,
+                    borderColor: "rgba(16, 185, 129, 0.20)",
+                    color: C.accent,
+                    background: "rgba(16, 185, 129, 0.05)",
+                    boxShadow: "0 0 20px rgba(16, 185, 129, 0.08), inset 0 0 12px rgba(16, 185, 129, 0.04)",
                 }}
             >
+                <span
+                    className="relative flex h-2 w-2"
+                    aria-hidden
+                >
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ backgroundColor: C.accent }} />
+                    <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: C.accent }} />
+                </span>
                 <PlatformCycler />
                 Now in public beta
             </motion.div>
 
-            {/* Heading */}
-            <h1 className="max-w-4xl text-[clamp(2.5rem,8vw,5rem)] font-medium tracking-tighter leading-[1.15] md:leading-[1.1]">
-                Engage smarter.
-                <br />
-                <span style={{ color: C.textMuted }}>
-                    Convert on autopilot.
+            {/* ── Headline ── */}
+            <motion.h1
+                {...fadeUp(0.08)}
+                className="max-w-4xl text-[clamp(2.5rem,8vw,5rem)] font-semibold tracking-tighter leading-[1.1]"
+            >
+                <span
+                    style={{
+                        background: "linear-gradient(180deg, #FAFAFA 40%, #A1A1AA 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                    }}
+                >
+                    Engage smarter.
                 </span>
-            </h1>
+                <br />
+                <span
+                    style={{
+                        background: "linear-gradient(180deg, #71717A 20%, #3F3F46 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                    }}
+                >
+                    Convert on{" "}
+                </span>
+                <span
+                    style={{
+                        background: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                    }}
+                >
+                    autopilot.
+                </span>
+            </motion.h1>
 
-            {/* Rotating Feature Badge */}
-            <RotatingBadge />
+            {/* ── Rotating Feature Badge ── */}
+            <motion.div {...fadeUp(0.16)}>
+                <RotatingBadge />
+            </motion.div>
 
-
-
-            {/* CTA */}
+            {/* ── CTA Buttons ── */}
             <motion.div
-                {...fadeUp()}
+                {...fadeUp(0.24)}
                 className="mt-10 flex flex-row items-center justify-start gap-3 sm:gap-4"
             >
                 <button
                     onClick={() => onOpenAuth("register")}
-                    className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-5 text-sm font-medium sm:h-12 sm:px-8 sm:text-base transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
-                    style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
+                    className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-5 text-sm font-medium sm:h-12 sm:px-8 sm:text-base transition-all cursor-pointer active:scale-[0.96]"
+                    style={{
+                        background: "linear-gradient(135deg, #10B981, #059669)",
+                        color: "#fff",
+                        boxShadow: "0 0 24px rgba(16, 185, 129, 0.25), 0 0 8px rgba(16, 185, 129, 0.15)",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.boxShadow =
+                            "0 0 32px rgba(16, 185, 129, 0.35), 0 0 12px rgba(16, 185, 129, 0.25)";
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow =
+                            "0 0 24px rgba(16, 185, 129, 0.25), 0 0 8px rgba(16, 185, 129, 0.15)";
+                    }}
                 >
                     Start for free
                     <ArrowRight className="h-4 w-4" />
