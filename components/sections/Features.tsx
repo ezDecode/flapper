@@ -1,120 +1,169 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { features, C } from "@/lib/landing-data";
 
+const INTERVAL = 4000; // ms per feature
+
 export function Features() {
+    const [active, setActive] = useState(0);
+    const [progress, setProgress] = useState(0);
+    const [paused, setPaused] = useState(false);
+
+    // Auto-advance timer
+    useEffect(() => {
+        if (paused) return;
+        setProgress(0);
+
+        const startTime = Date.now();
+        const frame = () => {
+            const elapsed = Date.now() - startTime;
+            const pct = Math.min(elapsed / INTERVAL, 1);
+            setProgress(pct);
+            if (pct < 1) {
+                rafId = requestAnimationFrame(frame);
+            } else {
+                setActive((prev) => (prev + 1) % features.length);
+            }
+        };
+        let rafId = requestAnimationFrame(frame);
+        return () => cancelAnimationFrame(rafId);
+    }, [active, paused]);
+
+    const goTo = useCallback((i: number) => {
+        setActive(i);
+        setProgress(0);
+    }, []);
+
+    const current = features[active];
+    const Icon = current.icon;
+
     return (
-        <section id="features" className="py-24 md:py-32">
-            <div>
-                {/* Header */}
-                <div className="mb-16 text-center">
-                    <div
-                        className="mx-auto mb-4 inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-medium tracking-wide uppercase"
-                        style={{
-                            borderColor: C.accent,
-                            color: C.accent,
-                            background: C.accentSoft,
-                        }}
-                    >
-                        Features
-                    </div>
-                    <h2
-                        className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]"
-                        style={{ color: C.text }}
-                    >
-                        Everything you need to grow.
-                    </h2>
-                    <p
-                        className="mx-auto mt-4 max-w-md text-base font-normal leading-relaxed"
-                        style={{ color: C.textSoft }}
-                    >
-                        Powerful tools designed to help you schedule, engage, and
-                        convert — all on autopilot.
-                    </p>
+        <section id="features" className="py-12 md:py-20">
+            {/* Header */}
+            <div className="mb-12 text-center">
+                <div
+                    className="mx-auto mb-4 inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-medium tracking-wide uppercase"
+                    style={{
+                        borderColor: C.accent,
+                        color: C.accent,
+                        background: C.accentSoft,
+                    }}
+                >
+                    Features
                 </div>
+                <h2
+                    className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]"
+                    style={{ color: C.text }}
+                >
+                    Everything you need to grow.
+                </h2>
+                <p
+                    className="mx-auto mt-4 max-w-md text-base font-normal leading-relaxed"
+                    style={{ color: C.textSoft }}
+                >
+                    Powerful tools designed to help you schedule, engage, and
+                    convert — all on autopilot.
+                </p>
+            </div>
 
-                {/* Bento Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {features.map((feature, index) => {
-                        const Icon = feature.icon;
-                        const isFullWidth =
-                            feature.className === "md:col-span-3";
-
-                        return (
+            {/* Spotlight Card */}
+            <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="relative rounded-2xl border overflow-hidden"
+                style={{
+                    borderColor: C.border,
+                    background: C.surface,
+                }}
+                onMouseEnter={() => setPaused(true)}
+                onMouseLeave={() => setPaused(false)}
+            >
+                {/* Content area */}
+                <div className="relative min-h-[220px] p-8 md:p-10">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={active}
+                            initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
+                            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                            exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}
+                            transition={{ duration: 0.35, ease: "easeInOut" }}
+                            className="flex flex-col items-center text-center gap-5"
+                        >
+                            {/* Icon */}
                             <motion.div
-                                key={feature.title}
-                                initial={{
-                                    opacity: 0,
-                                    y: 24,
-                                    filter: "blur(6px)",
-                                }}
-                                whileInView={{
-                                    opacity: 1,
-                                    y: 0,
-                                    filter: "blur(0px)",
-                                }}
-                                viewport={{ once: true }}
+                                initial={{ scale: 0.6 }}
+                                animate={{ scale: 1 }}
                                 transition={{
-                                    duration: 0.5,
-                                    delay: index * 0.08,
-                                    ease: "easeOut",
+                                    type: "spring",
+                                    stiffness: 400,
+                                    damping: 20,
+                                    delay: 0.05,
                                 }}
-                                className={`group relative rounded-xl p-6 md:p-8 transition-all duration-300 hover:-translate-y-0.5 ${feature.className}`}
+                                className="flex h-14 w-14 items-center justify-center rounded-xl"
                                 style={{
-                                    background: "#FFFFFF",
-                                    border: isFullWidth
-                                        ? `1px solid ${C.accent}`
-                                        : `1px solid ${C.border}`,
-                                }}
-                                onMouseEnter={(e) => {
-                                    if (!isFullWidth) {
-                                        e.currentTarget.style.borderColor =
-                                            C.accent;
-                                    }
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!isFullWidth) {
-                                        e.currentTarget.style.borderColor =
-                                            C.border;
-                                    }
+                                    background: C.accentSoft,
+                                    boxShadow: `0 0 24px ${C.accentSoft}, 0 0 8px ${C.accentSoft}`,
                                 }}
                             >
-                                <div className="relative z-10">
-                                    {/* Icon */}
-                                    <div
-                                        className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg transition-shadow duration-300 group-hover:shadow-[0_0_12px_rgba(0,170,69,0.15)]"
-                                        style={{
-                                            background: C.accentSoft,
-                                        }}
-                                    >
-                                        <Icon
-                                            className="h-5 w-5"
-                                            style={{ color: C.accent }}
-                                        />
-                                    </div>
-
-                                    {/* Title */}
-                                    <h3
-                                        className="mb-2 text-lg font-semibold"
-                                        style={{ color: C.text }}
-                                    >
-                                        {feature.title}
-                                    </h3>
-
-                                    {/* Description */}
-                                    <p
-                                        className="text-sm leading-relaxed"
-                                        style={{ color: C.textSoft }}
-                                    >
-                                        {feature.desc}
-                                    </p>
-                                </div>
+                                <Icon
+                                    className="h-7 w-7"
+                                    style={{ color: C.accent }}
+                                />
                             </motion.div>
-                        );
-                    })}
+
+                            {/* Title */}
+                            <h3
+                                className="text-xl font-semibold tracking-tight"
+                                style={{ color: C.text }}
+                            >
+                                {current.title}
+                            </h3>
+
+                            {/* Description */}
+                            <p
+                                className="max-w-sm text-sm leading-relaxed"
+                                style={{ color: C.textSoft }}
+                            >
+                                {current.desc}
+                            </p>
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
-            </div>
+
+                {/* Indicator row */}
+                <div className="flex items-center justify-center gap-2 pb-6">
+                    {features.map((_, i) => (
+                        <button
+                            key={i}
+                            onClick={() => goTo(i)}
+                            className="relative h-1.5 cursor-pointer rounded-full overflow-hidden transition-all duration-300"
+                            style={{
+                                width: i === active ? 32 : 12,
+                                background:
+                                    i === active
+                                        ? C.border
+                                        : C.surfaceHover,
+                            }}
+                            aria-label={`Go to feature ${i + 1}`}
+                        >
+                            {/* Progress fill on active pill */}
+                            {i === active && (
+                                <motion.div
+                                    className="absolute inset-y-0 left-0 rounded-full"
+                                    style={{
+                                        background: C.accent,
+                                        width: `${progress * 100}%`,
+                                    }}
+                                />
+                            )}
+                        </button>
+                    ))}
+                </div>
+            </motion.div>
         </section>
     );
 }

@@ -55,7 +55,7 @@ function LandingPageInner() {
         style={{ background: C.bg, color: C.text }}
       >
         {/* ─── THE RESPONSIVE CONTAINER ─── */}
-        <div className="mx-auto min-h-screen w-full max-w-[1080px] px-6 md:px-8">
+        <div className="mx-auto min-h-screen w-full max-w-[640px] px-6 md:px-8">
           {/* ─── NAV ─── */}
           <NavbarWithMenu
             navItems={[

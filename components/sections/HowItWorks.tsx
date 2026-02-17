@@ -1,159 +1,212 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { steps, C } from "@/lib/landing-data";
 
+const STEP_DURATION = 3500;
+
 export function HowItWorks() {
+    const [active, setActive] = useState(0);
+    const [progress, setProgress] = useState(0);
+    const [paused, setPaused] = useState(false);
+
+    // Auto-advance with progress
+    useEffect(() => {
+        if (paused) return;
+        setProgress(0);
+        const start = Date.now();
+        let raf: number;
+
+        const tick = () => {
+            const elapsed = Date.now() - start;
+            const pct = Math.min(elapsed / STEP_DURATION, 1);
+            setProgress(pct);
+            if (pct < 1) {
+                raf = requestAnimationFrame(tick);
+            } else {
+                setActive((p) => (p + 1) % steps.length);
+            }
+        };
+        raf = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(raf);
+    }, [active, paused]);
+
+    const goTo = useCallback((i: number) => {
+        setActive(i);
+        setProgress(0);
+    }, []);
+
     return (
-        <section
-            id="how-it-works"
-            className="relative overflow-hidden py-28 md:py-36"
-            style={{
-                background: C.bgAlt,
-            }}
-        >
-            <div className="mx-auto max-w-[1080px] px-6 md:px-8">
-                {/* Section Header */}
-                <div className="mb-16 md:mb-20 max-w-2xl">
+        <section id="how-it-works" className="py-12 md:py-20">
+            <div>
+                {/* Header */}
+                <div className="mb-12 max-w-2xl mx-auto text-center">
                     <motion.h2
                         initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
                         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="text-3xl md:text-4xl lg:text-[40px] font-semibold tracking-[-0.02em] mb-5"
+                        className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] mb-4"
                     >
                         <span style={{ color: C.text }}>Three steps.</span>{" "}
-                        <span style={{ color: C.textMuted }}>Zero friction.</span>
+                        <span style={{ color: C.textMuted }}>
+                            Zero friction.
+                        </span>
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
                         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.1 }}
-                        className="text-base md:text-lg leading-relaxed max-w-xl"
+                        className="text-base md:text-lg leading-relaxed max-w-xl mx-auto"
                         style={{ color: C.textSoft }}
                     >
                         From draft to conversion — one seamless workflow.
-                        No more stitching together half a dozen tools.
                     </motion.p>
                 </div>
 
-                {/* Connecting Line */}
+                {/* Stepper */}
                 <motion.div
-                    className="hidden md:block h-px origin-left"
-                    style={{
-                        background: `linear-gradient(90deg, #00AA45, rgba(0,170,69,0.3), transparent)`,
-                    }}
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-                />
-
-                {/* Bento Grid */}
-                <div
-                    className="grid grid-cols-1 md:grid-cols-3 border"
-                    style={{ borderColor: C.border }}
+                    transition={{ duration: 0.5 }}
+                    className="flex flex-col gap-0"
+                    onMouseEnter={() => setPaused(true)}
+                    onMouseLeave={() => setPaused(false)}
                 >
-                    {steps.map((step, index) => (
-                        <StepCard
-                            key={step.num}
-                            step={step}
-                            index={index}
-                            isLast={index === steps.length - 1}
-                        />
-                    ))}
-                </div>
+                    {steps.map((step, i) => {
+                        const isActive = i === active;
+                        const isDone =
+                            i < active || (i === active && progress === 1);
+
+                        return (
+                            <button
+                                key={step.num}
+                                onClick={() => goTo(i)}
+                                className="relative text-left cursor-pointer transition-all duration-300"
+                                style={{
+                                    borderBottom:
+                                        i < steps.length - 1
+                                            ? `1px solid ${C.border}`
+                                            : "none",
+                                }}
+                            >
+                                {/* Progress fill background */}
+                                {isActive && (
+                                    <motion.div
+                                        className="absolute inset-0 origin-left"
+                                        style={{
+                                            background: C.accentSoft,
+                                            scaleX: progress,
+                                            transformOrigin: "left",
+                                        }}
+                                    />
+                                )}
+
+                                <div
+                                    className="relative flex items-start gap-5 px-5 md:px-6 transition-all duration-300"
+                                    style={{
+                                        paddingTop: isActive ? 24 : 16,
+                                        paddingBottom: isActive ? 24 : 16,
+                                    }}
+                                >
+                                    {/* Step indicator */}
+                                    <div className="shrink-0 pt-0.5">
+                                        <div
+                                            className="flex items-center justify-center w-8 h-8 rounded-full text-xs font-mono font-bold transition-all duration-300"
+                                            style={{
+                                                background: isActive
+                                                    ? C.accent
+                                                    : isDone
+                                                      ? C.accent
+                                                      : "transparent",
+                                                color:
+                                                    isActive || isDone
+                                                        ? "#fff"
+                                                        : C.textMuted,
+                                                border:
+                                                    isActive || isDone
+                                                        ? "none"
+                                                        : `1.5px solid ${C.border}`,
+                                                boxShadow: isActive
+                                                    ? "0 0 12px rgba(0,170,69,0.2)"
+                                                    : "none",
+                                            }}
+                                        >
+                                            {isDone && !isActive ? (
+                                                <svg
+                                                    width="12"
+                                                    height="12"
+                                                    viewBox="0 0 12 12"
+                                                    fill="none"
+                                                >
+                                                    <path
+                                                        d="M2 6L5 9L10 3"
+                                                        stroke="currentColor"
+                                                        strokeWidth="1.5"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </svg>
+                                            ) : (
+                                                step.num
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="flex-1 min-w-0">
+                                        <h3
+                                            className="text-base font-semibold tracking-tight transition-colors duration-200"
+                                            style={{
+                                                color: isActive
+                                                    ? C.text
+                                                    : C.textMuted,
+                                            }}
+                                        >
+                                            {step.title}
+                                        </h3>
+
+                                        <AnimatePresence initial={false}>
+                                            {isActive && (
+                                                <motion.p
+                                                    initial={{
+                                                        height: 0,
+                                                        opacity: 0,
+                                                        marginTop: 0,
+                                                    }}
+                                                    animate={{
+                                                        height: "auto",
+                                                        opacity: 1,
+                                                        marginTop: 8,
+                                                    }}
+                                                    exit={{
+                                                        height: 0,
+                                                        opacity: 0,
+                                                        marginTop: 0,
+                                                    }}
+                                                    transition={{
+                                                        duration: 0.25,
+                                                        ease: "easeInOut",
+                                                    }}
+                                                    className="text-sm leading-relaxed overflow-hidden"
+                                                    style={{
+                                                        color: C.textSoft,
+                                                    }}
+                                                >
+                                                    {step.description}
+                                                </motion.p>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
+                                </div>
+                            </button>
+                        );
+                    })}
+                </motion.div>
             </div>
         </section>
-    );
-}
-
-function StepCard({
-    step,
-    index,
-    isLast,
-}: {
-    step: (typeof steps)[0];
-    index: number;
-    isLast: boolean;
-}) {
-    const [hovered, setHovered] = useState(false);
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 32, filter: "blur(6px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true }}
-            transition={{
-                duration: 0.6,
-                delay: 0.15 + index * 0.12,
-                ease: "easeOut",
-            }}
-            whileHover={{ y: -2, transition: { type: "spring", stiffness: 400, damping: 25 } }}
-            onHoverStart={() => setHovered(true)}
-            onHoverEnd={() => setHovered(false)}
-            className="relative flex flex-col gap-8 p-6 md:p-8 lg:p-10"
-            style={{
-                borderRight: isLast ? "none" : `1px solid ${C.border}`,
-                borderBottom: isLast ? "none" : undefined,
-                background: hovered ? C.surfaceHover : C.bgAlt,
-                transition: "background 0.3s ease",
-            }}
-        >
-            {/* Mobile connecting line */}
-            <motion.div
-                className="md:hidden absolute top-0 left-8 right-8 h-px origin-left"
-                style={{
-                    background: `linear-gradient(90deg, ${C.accent}, transparent)`,
-                }}
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3 + index * 0.1 }}
-            />
-
-            {/* Mobile divider (bottom border for stacked cards) */}
-            {!isLast && (
-                <div
-                    className="md:hidden absolute bottom-0 left-0 right-0 h-px"
-                    style={{ background: C.border }}
-                />
-            )}
-
-            <div className="relative z-10 flex flex-col gap-6">
-                {/* Step Number */}
-                <span
-                    className="inline-flex items-center justify-center w-12 h-12 text-sm font-mono font-medium tracking-wider"
-                    style={{
-                        border: `1.5px solid ${hovered ? C.accent : C.border}`,
-                        color: hovered ? C.accent : C.textSoft,
-                        boxShadow: hovered
-                            ? "0 0 0 3px rgba(0,170,69,0.1)"
-                            : "none",
-                        transition: "border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease",
-                    }}
-                >
-                    {step.num}
-                </span>
-
-                {/* Title */}
-                <h3
-                    className="text-xl font-semibold tracking-tight"
-                    style={{ color: C.text }}
-                >
-                    {step.title}
-                </h3>
-
-                {/* Description */}
-                <p
-                    className="text-sm md:text-base leading-relaxed"
-                    style={{ color: C.textSoft }}
-                >
-                    {step.description}
-                </p>
-            </div>
-        </motion.div>
     );
 }

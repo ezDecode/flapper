@@ -206,7 +206,7 @@ export function NavbarWithMenu({
         <div className="fixed top-0 left-0 right-0 z-50 border-b border-[#E8E8E4] bg-white/95 backdrop-blur-md">
             {/* biome-ignore lint/a11y/noStaticElementInteractions: Hover container for menu, not interactive content */}
             <div
-                className="relative mx-auto w-full max-w-[1080px] px-6 md:px-8"
+                className="relative mx-auto w-full max-w-[640px] px-6 md:px-8"
                 onMouseLeave={handleNavbarMouseLeave}
             >
                 <div

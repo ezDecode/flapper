@@ -110,7 +110,7 @@ interface HeroProps {
 
 export function Hero({ onOpenAuth }: HeroProps) {
     return (
-        <section className="relative flex flex-col items-start justify-center pt-32 pb-10 text-left md:pt-40 md:pb-16 overflow-hidden">
+        <section className="relative flex flex-col items-center justify-center pt-24 pb-8 text-center md:pt-32 md:pb-12 overflow-hidden">
             {/* ── Badge pill ── */}
             <motion.div
                 {...fadeUp(0)}

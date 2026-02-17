@@ -27,7 +27,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
         <>
             {/* ── Final CTA Band ─────────────────────────── */}
             <section
-                className="relative overflow-hidden py-24 md:py-32"
+                className="relative overflow-hidden py-12 md:py-16"
                 style={{ backgroundColor: C.bg }}
             >
                 {/* Subtle glow */}

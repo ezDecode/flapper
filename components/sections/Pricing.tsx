@@ -28,7 +28,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
     const [isAnnual, setIsAnnual] = useState(false);
 
     return (
-        <section id="pricing" className="py-24 md:py-32">
+        <section id="pricing" className="py-12 md:py-16">
             {/* Header */}
             <div className="mb-6 text-center">
                 <div
@@ -58,7 +58,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
             </div>
 
             {/* Monthly / Annual toggle */}
-            <div className="mb-14 flex items-center justify-center gap-3">
+            <div className="mb-16 flex items-center justify-center gap-3">
                 <span
                     className="text-sm font-medium"
                     style={{ color: isAnnual ? C.textMuted : C.text }}
