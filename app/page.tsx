@@ -55,7 +55,7 @@ function LandingPageInner() {
         style={{ background: C.bg, color: C.text }}
       >
         {/* ─── THE RESPONSIVE CONTAINER ─── */}
-        <div className="mx-auto min-h-screen w-full md:w-[90%] lg:w-[80%] xl:w-[70%]">
+        <div className="mx-auto min-h-screen w-full max-w-[1080px] px-6 md:px-8">
           {/* ─── NAV ─── */}
           <NavbarWithMenu
             navItems={[
@@ -77,7 +77,7 @@ function LandingPageInner() {
               <>
                 <button
                   onClick={() => openAuth("login")}
-                  className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors cursor-pointer hover:bg-zinc-800 active:scale-[0.96]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors cursor-pointer hover:bg-gray-100 active:scale-[0.96]"
                   style={{ color: "inherit" }}
                 >
                   Log in
@@ -85,7 +85,7 @@ function LandingPageInner() {
                 <button
                   onClick={() => openAuth("register")}
                   className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-5 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
-                  style={{ backgroundColor: "#10B981", color: "#fff" }}
+                  style={{ backgroundColor: "#00AA45", color: "#fff" }}
                 >
                   Start free
                 </button>

@@ -9,20 +9,20 @@ import {
 /* ── Palette ──────────────────────────────────────────── */
 
 export const C = {
-    bg: "#09090B",
-    bgAlt: "#0F0F12",
-    surface: "#18181B",
-    surfaceHover: "#1F1F23",
-    border: "#27272A",
-    borderSubtle: "#1E1E21",
-    text: "#FAFAFA",
-    textSoft: "#A1A1AA",
-    textMuted: "#52525B",
-    accent: "#10B981",
-    accentSoft: "rgba(16, 185, 129, 0.10)",
-    accentHover: "#059669",
+    bg: "#FFFFFF",
+    bgAlt: "#FAFAF8",
+    surface: "#FFFFFF",
+    surfaceHover: "#F5F5F3",
+    border: "#E8E8E4",
+    borderSubtle: "#F0F0EC",
+    text: "#000000",
+    textSoft: "#333333",
+    textMuted: "#6B6B6B",
+    accent: "#00AA45",
+    accentSoft: "rgba(0, 170, 69, 0.08)",
+    accentHover: "#009940",
     warm: "#F59E0B",
-    warmSoft: "rgba(245, 158, 11, 0.10)",
+    warmSoft: "rgba(245, 158, 11, 0.08)",
 };
 
 /* ── Data ─────────────────────────────────────────────── */

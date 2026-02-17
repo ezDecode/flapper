@@ -76,7 +76,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
   };
 
   const inputClass =
-    "w-full rounded-lg border px-3 py-2.5 text-sm font-normal outline-none transition-colors focus:border-emerald-500";
+    "w-full rounded-lg border px-3 py-2.5 text-sm font-normal outline-none transition-colors focus:border-[#00AA45]";
   const inputStyle = {
     background: C.surface,
     borderColor: C.border,
@@ -103,7 +103,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
 
       <div
         className="relative w-full max-w-[420px] rounded-xl border p-8"
-        style={{ background: C.bgAlt, borderColor: C.border, boxShadow: "0 20px 40px -10px rgba(0,0,0,0.5)" }}
+        style={{ background: C.bgAlt, borderColor: C.border, boxShadow: "0 20px 60px -15px rgba(0,0,0,0.2)" }}
         onClick={(e) => e.stopPropagation()}
       >
 
@@ -118,7 +118,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             onClick={() => onTabChange("login")}
             className="flex-1 rounded-full py-2 text-sm font-medium transition-all"
             style={{
-              background: tab === "login" ? C.border : "transparent",
+              background: tab === "login" ? "#F0F0EC" : "transparent",
               color: tab === "login" ? C.text : C.textMuted,
             }}
           >
@@ -129,7 +129,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             onClick={() => onTabChange("register")}
             className="flex-1 rounded-full py-2 text-sm font-medium transition-all"
             style={{
-              background: tab === "register" ? C.border : "transparent",
+              background: tab === "register" ? "#F0F0EC" : "transparent",
               color: tab === "register" ? C.text : C.textMuted,
             }}
           >
@@ -222,9 +222,9 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             {regSuccess ? (
               <div
                 className="rounded-lg border px-4 py-3"
-                style={{ borderColor: "#1A4A2E", background: "#0D2818" }}
+                style={{ borderColor: "#BBF7D0", background: "#ECFDF5" }}
               >
-                <p className="text-sm font-normal" style={{ color: "#4ADE80" }}>
+                <p className="text-sm font-normal" style={{ color: "#166534" }}>
                   {regSuccess}
                 </p>
               </div>

@@ -34,10 +34,10 @@ export function PlatformCycler() {
 function RotatingBadge() {
     const [index, setIndex] = useState(0);
     const badges = [
-        { text: "Smart Scheduling", icon: Clock, color: "#10B981", bg: "rgba(16, 185, 129, 0.10)", border: "rgba(16, 185, 129, 0.20)" },
-        { text: "Auto-Plug Engine", icon: Zap, color: "#F59E0B", bg: "rgba(245, 158, 11, 0.10)", border: "rgba(245, 158, 11, 0.20)" },
-        { text: "Analytics & Insights", icon: BarChart3, color: "#06B6D4", bg: "rgba(6, 182, 212, 0.10)", border: "rgba(6, 182, 212, 0.20)" },
-        { text: "Growth Tools", icon: TrendingUp, color: "#F43F5E", bg: "rgba(244, 63, 94, 0.10)", border: "rgba(244, 63, 94, 0.20)" },
+        { text: "Smart Scheduling", icon: Clock, color: "#00AA45", bg: "rgba(0, 170, 69, 0.06)", border: "rgba(0, 170, 69, 0.15)" },
+        { text: "Auto-Plug Engine", icon: Zap, color: "#F59E0B", bg: "rgba(245, 158, 11, 0.06)", border: "rgba(245, 158, 11, 0.15)" },
+        { text: "Analytics & Insights", icon: BarChart3, color: "#06B6D4", bg: "rgba(6, 182, 212, 0.06)", border: "rgba(6, 182, 212, 0.15)" },
+        { text: "Growth Tools", icon: TrendingUp, color: "#F43F5E", bg: "rgba(244, 63, 94, 0.06)", border: "rgba(244, 63, 94, 0.15)" },
     ];
 
     useEffect(() => {
@@ -110,26 +110,15 @@ interface HeroProps {
 
 export function Hero({ onOpenAuth }: HeroProps) {
     return (
-        <section className="relative flex flex-col items-start justify-center px-4 pt-40 pb-10 text-left md:px-8 md:pt-52 md:pb-16 overflow-hidden">
-            {/* ── Ambient glow ── */}
-            <div
-                className="pointer-events-none absolute -top-40 -right-40 h-[700px] w-[700px] md:h-[900px] md:w-[900px]"
-                style={{
-                    background:
-                        "radial-gradient(circle at center, rgba(16, 185, 129, 0.07) 0%, rgba(16, 185, 129, 0.03) 35%, transparent 70%)",
-                }}
-                aria-hidden
-            />
-
+        <section className="relative flex flex-col items-start justify-center pt-32 pb-10 text-left md:pt-40 md:pb-16 overflow-hidden">
             {/* ── Badge pill ── */}
             <motion.div
                 {...fadeUp(0)}
-                className="mb-8 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-medium"
+                className="mb-8 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-medium tracking-wider uppercase"
                 style={{
-                    borderColor: "rgba(16, 185, 129, 0.20)",
-                    color: C.accent,
-                    background: "rgba(16, 185, 129, 0.05)",
-                    boxShadow: "0 0 20px rgba(16, 185, 129, 0.08), inset 0 0 12px rgba(16, 185, 129, 0.04)",
+                    borderColor: "rgba(0, 170, 69, 0.2)",
+                    color: "#00AA45",
+                    background: "rgba(0, 170, 69, 0.06)",
                 }}
             >
                 <span
@@ -146,14 +135,12 @@ export function Hero({ onOpenAuth }: HeroProps) {
             {/* ── Headline ── */}
             <motion.h1
                 {...fadeUp(0.08)}
-                className="max-w-4xl text-[clamp(2.5rem,8vw,5rem)] font-semibold tracking-tighter leading-[1.1]"
+                className="max-w-4xl text-5xl md:text-6xl lg:text-[64px] font-semibold tracking-[-0.03em] leading-[1.05]"
             >
                 <span
                     style={{
-                        background: "linear-gradient(180deg, #FAFAFA 40%, #A1A1AA 100%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
+                        color: "#000000",
+                        WebkitTextFillColor: "initial",
                     }}
                 >
                     Engage smarter.
@@ -161,20 +148,16 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 <br />
                 <span
                     style={{
-                        background: "linear-gradient(180deg, #71717A 20%, #3F3F46 100%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
+                        color: "#6B6B6B",
+                        WebkitTextFillColor: "initial",
                     }}
                 >
                     Convert on{" "}
                 </span>
                 <span
                     style={{
-                        background: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
+                        color: "#00AA45",
+                        WebkitTextFillColor: "initial",
                     }}
                 >
                     autopilot.
@@ -193,19 +176,11 @@ export function Hero({ onOpenAuth }: HeroProps) {
             >
                 <button
                     onClick={() => onOpenAuth("register")}
-                    className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-5 text-sm font-medium sm:h-12 sm:px-8 sm:text-base transition-all cursor-pointer active:scale-[0.96]"
+                    className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-6 text-sm font-medium transition-all cursor-pointer active:scale-[0.96]"
                     style={{
-                        background: "linear-gradient(135deg, #10B981, #059669)",
+                        background: "#00AA45",
                         color: "#fff",
-                        boxShadow: "0 0 24px rgba(16, 185, 129, 0.25), 0 0 8px rgba(16, 185, 129, 0.15)",
-                    }}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow =
-                            "0 0 32px rgba(16, 185, 129, 0.35), 0 0 12px rgba(16, 185, 129, 0.25)";
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow =
-                            "0 0 24px rgba(16, 185, 129, 0.25), 0 0 8px rgba(16, 185, 129, 0.15)";
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
                     }}
                 >
                     Start for free
@@ -214,7 +189,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
 
                 <a
                     href="#how-it-works"
-                    className="group inline-flex h-10 items-center gap-2 rounded-full border px-5 text-sm font-medium transition-colors hover:bg-white/5 sm:h-12 sm:px-8 sm:text-base"
+                    className="group inline-flex h-10 items-center gap-2 rounded-full border px-6 text-sm font-medium transition-colors hover:bg-gray-50"
                     style={{ borderColor: C.border, color: C.textSoft }}
                 >
                     See how it works

@@ -27,22 +27,22 @@ export function Footer({ onOpenAuth }: FooterProps) {
         <>
             {/* ── Final CTA Band ─────────────────────────── */}
             <section
-                className="relative overflow-hidden px-4 py-24 md:px-8"
+                className="relative overflow-hidden py-24 md:py-32"
                 style={{ backgroundColor: C.bg }}
             >
-                {/* Radial emerald glow */}
+                {/* Subtle glow */}
                 <div
                     className="pointer-events-none absolute inset-0"
                     style={{
                         background:
-                            "radial-gradient(circle at 50% 60%, rgba(16,185,129,0.08) 0%, transparent 70%)",
+                            "radial-gradient(circle at 50% 60%, rgba(0,170,69,0.03) 0%, transparent 70%)",
                     }}
                 />
 
                 <div className="relative mx-auto flex max-w-2xl flex-col items-center text-center">
                     <motion.h2
                         {...fadeUp()}
-                        className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
+                        className="text-3xl md:text-4xl font-semibold tracking-[-0.02em]"
                         style={{ color: C.text }}
                     >
                         Ready to grow on autopilot?
@@ -71,16 +71,16 @@ export function Footer({ onOpenAuth }: FooterProps) {
             </section>
 
             {/* ── Divider ────────────────────────────────── */}
-            <div className="px-4 md:px-8" style={{ backgroundColor: C.bg }}>
+            <div style={{ backgroundColor: C.bg }}>
                 <div className="mx-auto h-px w-full" style={{ backgroundColor: C.border }} />
             </div>
 
             {/* ── Footer ─────────────────────────────────── */}
             <footer
-                className="px-4 py-8 md:px-8"
+                className="py-8"
                 style={{ backgroundColor: C.bg }}
             >
-                <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
+                <div className="mx-auto flex flex-col items-center justify-between gap-4 md:flex-row">
                     <p className="text-sm" style={{ color: C.textMuted }}>
                         &copy; 2026 Flapr
                     </p>
@@ -93,7 +93,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             <Link
                                 key={label}
                                 href={href}
-                                className="relative text-sm transition-colors hover:text-white after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-white after:transition-all hover:after:w-full"
+                                className="relative text-sm transition-colors hover:text-black after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-black after:transition-all hover:after:w-full"
                                 style={{ color: C.textMuted }}
                             >
                                 {label}
@@ -103,7 +103,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             href="https://twitter.com"
                             target="_blank"
                             rel="noreferrer"
-                            className="relative text-sm transition-colors hover:text-white after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-white after:transition-all hover:after:w-full"
+                            className="relative text-sm transition-colors hover:text-black after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-black after:transition-all hover:after:w-full"
                             style={{ color: C.textMuted }}
                         >
                             Twitter/X

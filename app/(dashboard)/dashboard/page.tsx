@@ -84,8 +84,8 @@ export default async function DashboardPage() {
       label: "Auto-Plugs Active",
       value: plugsFired,
       icon: Zap,
-      color: "text-[#7C3AED]",
-      bg: "bg-[#F0ECFE]",
+      color: "text-[#00AA45]",
+      bg: "bg-emerald-50",
     },
     {
       label: "Published",

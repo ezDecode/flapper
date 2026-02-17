@@ -74,7 +74,7 @@ const ListItem = React.forwardRef<
                     target={external ? "_blank" : undefined}
                     rel={external ? "noopener noreferrer" : undefined}
                     className={cn(
-                        "group relative flex h-full min-h-18 w-full flex-col justify-center overflow-hidden rounded-2xl bg-zinc-800/0 p-3.5 leading-none no-underline outline-none transition-all duration-150 select-none hover:bg-zinc-800 hover:text-zinc-100 focus:bg-zinc-800 focus:text-zinc-100",
+                        "group relative flex h-full min-h-18 w-full flex-col justify-center overflow-hidden rounded-2xl bg-zinc-800/0 p-3.5 leading-none no-underline outline-none transition-all duration-150 select-none hover:bg-gray-50 hover:text-black focus:bg-gray-50 focus:text-black",
                         className,
                     )}
                     {...props}
@@ -99,22 +99,22 @@ const ListItem = React.forwardRef<
                         {icon && (
                             <span
                                 className={cn(
-                                    "relative flex min-h-10 min-w-10 items-center justify-center rounded-xl p-2 text-primary transition group-hover:text-zinc-300",
+                                    "relative flex min-h-10 min-w-10 items-center justify-center rounded-xl p-2 text-[#00AA45] transition group-hover:text-[#00AA45]",
                                     backgroundImage
                                         ? "bg-white/5 backdrop-blur group-hover:bg-white/10"
-                                        : "bg-zinc-800/80 group-hover:bg-zinc-700/80",
+                                        : "bg-gray-100 group-hover:bg-gray-200",
                                 )}
                             >
                                 {icon}
                             </span>
                         )}
-                        <div className="flex h-full flex-col justify-start gap-1 leading-none font-normal text-zinc-100">
+                        <div className="flex h-full flex-col justify-start gap-1 leading-none font-normal text-[#000000]">
                             {title}
 
                             {children && (
                                 <p
                                     className={cn(
-                                        "line-clamp-2 text-sm leading-tight font-normal text-zinc-500",
+                                        "line-clamp-2 text-sm leading-tight font-normal text-[#6B6B6B]",
                                         backgroundImage && "relative z-[2]",
                                     )}
                                 >
@@ -148,7 +148,7 @@ export function NavbarMenu({ activeMenu, sections }: NavbarMenuProps) {
                 ease: [0.19, 1, 0.15, 1.01],
             }}
             className={cn(
-                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-2xl border border-t-0 border-white/5 bg-zinc-950/50 backdrop-blur-3xl outline-none shadow-xl shadow-black/20"
+                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-2xl border border-t-0 border-[#E8E8E4] bg-white/95 backdrop-blur-3xl outline-none shadow-xl shadow-black/8"
             )}
         >
             <div className="p-6">
@@ -203,19 +203,14 @@ export function NavbarWithMenu({
     };
 
     return (
-        <div className="fixed top-6 left-0 right-0 z-50 flex items-start justify-center px-4">
+        <div className="fixed top-0 left-0 right-0 z-50 border-b border-[#E8E8E4] bg-white/95 backdrop-blur-md">
             {/* biome-ignore lint/a11y/noStaticElementInteractions: Hover container for menu, not interactive content */}
             <div
-                className="relative mx-auto w-full max-w-2xl"
+                className="relative mx-auto w-full max-w-[1080px] px-6 md:px-8"
                 onMouseLeave={handleNavbarMouseLeave}
             >
                 <div
-                    className={cn(
-                        "navbar_content flex h-14 w-full items-center justify-between border border-white/[0.08] px-4 backdrop-blur-3xl transition-all shadow-lg shadow-black/5",
-                        activeDropdown || mobileMenuOpen
-                            ? "rounded-t-2xl border-b-0 bg-zinc-950/90"
-                            : "rounded-full bg-zinc-950/30 hover:bg-zinc-950/40",
-                    )}
+                    className="flex h-14 w-full items-center justify-between"
                 >
                     <div className="flex items-center gap-2">
                         {logo}
@@ -229,10 +224,10 @@ export function NavbarWithMenu({
                                     key={item.href}
                                     href={item.href}
                                     className={cn(
-                                        "relative flex h-9 cursor-pointer items-center rounded-full px-4 py-2 text-sm transition-colors hover:bg-zinc-800/40 font-medium",
+                                        "relative flex h-9 cursor-pointer items-center rounded-full px-4 py-2 text-sm transition-colors hover:bg-gray-100 font-medium",
                                         hoveredItem === item.label.toLowerCase()
-                                            ? "text-zinc-100"
-                                            : "text-zinc-400 hover:text-zinc-100",
+                                            ? "text-[#000000]"
+                                            : "text-[#6B6B6B] hover:text-[#000000]",
                                     )}
                                     onMouseEnter={() => {
                                         setHoveredItem(item.label.toLowerCase());
@@ -245,11 +240,11 @@ export function NavbarWithMenu({
                                 <button
                                     type="button"
                                     key={item.menu}
-                                    className="relative flex h-9 cursor-pointer items-center rounded-full px-4 py-2 text-sm text-zinc-400 font-medium transition-colors hover:text-zinc-100"
+                                    className="relative flex h-9 cursor-pointer items-center rounded-full px-4 py-2 text-sm text-[#6B6B6B] font-medium transition-colors hover:text-[#000000]"
                                     onMouseEnter={() => handleMouseEnter(item.menu)}
                                 >
                                     {hoveredItem === item.menu && (
-                                        <div className="absolute inset-0 h-full w-full rounded-full bg-zinc-800 transition-all duration-300 ease-out" />
+                                        <div className="absolute inset-0 h-full w-full rounded-full bg-gray-100 transition-all duration-300 ease-out" />
                                     )}
                                     <div className="relative z-10 flex items-center gap-2">
                                         <span>
@@ -274,7 +269,7 @@ export function NavbarWithMenu({
 
                     {/* MOBILE HAMBURGER */}
                     <button
-                        className="flex items-center justify-center p-2 text-zinc-400 hover:text-white md:hidden"
+                        className="flex items-center justify-center p-2 text-[#6B6B6B] hover:text-black md:hidden"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
                         {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -294,7 +289,7 @@ export function NavbarWithMenu({
                                 ease: [0.19, 1, 0.15, 1.01],
                             }}
                             className={cn(
-                                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-2xl border border-t-0 border-white/5 bg-zinc-950/80 backdrop-blur-3xl outline-none md:hidden shadow-xl shadow-black/20"
+                                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden border-b border-[#E8E8E4] bg-white/95 backdrop-blur-md outline-none md:hidden"
                             )}
                         >
                             <div className="flex flex-col gap-4 p-6">
@@ -303,18 +298,18 @@ export function NavbarWithMenu({
                                         <a
                                             key={item.href}
                                             href={item.href}
-                                            className="text-lg font-medium text-zinc-300 hover:text-white"
+                                            className="text-lg font-medium text-[#333333] hover:text-black"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >
                                             {item.label}
                                         </a>
                                     ) : (
                                         <div key={item.menu} className="flex flex-col gap-2">
-                                            <span className="text-sm font-medium text-zinc-500 uppercase tracking-wider">{item.label}</span>
+                                            <span className="text-sm font-medium text-[#6B6B6B] uppercase tracking-wider">{item.label}</span>
                                             <div className="pl-4 flex flex-col gap-2">
                                                 {/* Mobile dropdown logic would go here if needed, simplified for now */}
                                                 {sections.find(s => s.id === item.menu)?.links.map(link => (
-                                                    <a key={link.href} href={link.href} className="text-base text-zinc-400 hover:text-white py-1">
+                                                    <a key={link.href} href={link.href} className="text-base text-[#6B6B6B] hover:text-black py-1">
                                                         {link.label}
                                                     </a>
                                                 ))}
@@ -322,7 +317,7 @@ export function NavbarWithMenu({
                                         </div>
                                     )
                                 ))}
-                                <div className="mt-4 flex flex-col gap-3 border-t border-white/10 pt-6">
+                                <div className="mt-4 flex flex-col gap-3 border-t border-[#E8E8E4] pt-6">
                                     {/* Render CTA buttons for mobile */}
                                     <div className="flex items-center gap-3">
                                         {/* We can't easily clone the fragment, so we might need to adjust how CTA is passed or valid.

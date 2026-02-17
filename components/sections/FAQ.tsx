@@ -143,14 +143,14 @@ export function FAQ() {
     };
 
     return (
-        <section className="px-4 py-20 md:px-8 md:py-24">
+        <section className="py-24 md:py-32">
             <div className="mx-auto max-w-2xl">
                 <motion.h2
                     initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-                    className="mb-10 text-center text-3xl font-semibold tracking-tight sm:text-4xl"
+                    className="mb-16 text-center text-3xl md:text-4xl font-semibold tracking-[-0.02em]"
                     style={{ color: C.text }}
                 >
                     Common questions

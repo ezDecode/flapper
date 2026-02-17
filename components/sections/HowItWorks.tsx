@@ -8,16 +8,12 @@ export function HowItWorks() {
     return (
         <section
             id="how-it-works"
-            className="noise-bg relative overflow-hidden py-28 md:py-36"
+            className="relative overflow-hidden py-28 md:py-36"
             style={{
-                background: `
-                    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(16,185,129,0.04), transparent),
-                    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(16,185,129,0.02), transparent),
-                    ${C.bg}
-                `,
+                background: C.bgAlt,
             }}
         >
-            <div className="container mx-auto px-5 md:px-8 lg:px-12">
+            <div className="mx-auto max-w-[1080px] px-6 md:px-8">
                 {/* Section Header */}
                 <div className="mb-16 md:mb-20 max-w-2xl">
                     <motion.h2
@@ -25,7 +21,7 @@ export function HowItWorks() {
                         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl mb-5"
+                        className="text-3xl md:text-4xl lg:text-[40px] font-semibold tracking-[-0.02em] mb-5"
                     >
                         <span style={{ color: C.text }}>Three steps.</span>{" "}
                         <span style={{ color: C.textMuted }}>Zero friction.</span>
@@ -47,7 +43,7 @@ export function HowItWorks() {
                 <motion.div
                     className="hidden md:block h-px origin-left"
                     style={{
-                        background: `linear-gradient(90deg, ${C.accent}, ${C.accent}44, transparent)`,
+                        background: `linear-gradient(90deg, #00AA45, rgba(0,170,69,0.3), transparent)`,
                     }}
                     initial={{ scaleX: 0 }}
                     whileInView={{ scaleX: 1 }}
@@ -98,7 +94,7 @@ function StepCard({
             whileHover={{ y: -2, transition: { type: "spring", stiffness: 400, damping: 25 } }}
             onHoverStart={() => setHovered(true)}
             onHoverEnd={() => setHovered(false)}
-            className="relative flex flex-col gap-8 p-8 md:p-10 lg:p-12"
+            className="relative flex flex-col gap-8 p-6 md:p-8 lg:p-10"
             style={{
                 borderRight: isLast ? "none" : `1px solid ${C.border}`,
                 borderBottom: isLast ? "none" : undefined,
@@ -134,7 +130,7 @@ function StepCard({
                         border: `1.5px solid ${hovered ? C.accent : C.border}`,
                         color: hovered ? C.accent : C.textSoft,
                         boxShadow: hovered
-                            ? `0 0 16px ${C.accentSoft}, inset 0 0 8px ${C.accentSoft}`
+                            ? "0 0 0 3px rgba(0,170,69,0.1)"
                             : "none",
                         transition: "border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease",
                     }}
@@ -144,7 +140,7 @@ function StepCard({
 
                 {/* Title */}
                 <h3
-                    className="text-xl md:text-2xl font-semibold tracking-tight"
+                    className="text-xl font-semibold tracking-tight"
                     style={{ color: C.text }}
                 >
                     {step.title}

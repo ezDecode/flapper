@@ -5,8 +5,8 @@ import { features, C } from "@/lib/landing-data";
 
 export function Features() {
     return (
-        <section id="features" className="px-4 py-24 md:px-8 md:py-32">
-            <div className="mx-auto max-w-6xl">
+        <section id="features" className="py-24 md:py-32">
+            <div>
                 {/* Header */}
                 <div className="mb-16 text-center">
                     <div
@@ -20,7 +20,7 @@ export function Features() {
                         Features
                     </div>
                     <h2
-                        className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-[1.05]"
+                        className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]"
                         style={{ color: C.text }}
                     >
                         Everything you need to grow.
@@ -60,58 +60,30 @@ export function Features() {
                                     delay: index * 0.08,
                                     ease: "easeOut",
                                 }}
-                                className={`group relative rounded-xl p-8 transition-all duration-300 hover:-translate-y-0.5 ${feature.className}`}
+                                className={`group relative rounded-xl p-6 md:p-8 transition-all duration-300 hover:-translate-y-0.5 ${feature.className}`}
                                 style={{
-                                    background: isFullWidth
-                                        ? "transparent"
-                                        : `linear-gradient(135deg, ${C.surfaceHover} 0%, ${C.surface} 100%)`,
+                                    background: "#FFFFFF",
                                     border: isFullWidth
-                                        ? "none"
+                                        ? `1px solid ${C.accent}`
                                         : `1px solid ${C.border}`,
                                 }}
                                 onMouseEnter={(e) => {
                                     if (!isFullWidth) {
                                         e.currentTarget.style.borderColor =
-                                            C.textMuted;
-                                        e.currentTarget.style.background = `linear-gradient(135deg, ${C.surfaceHover} 0%, ${C.surfaceHover} 100%)`;
+                                            C.accent;
                                     }
                                 }}
                                 onMouseLeave={(e) => {
                                     if (!isFullWidth) {
                                         e.currentTarget.style.borderColor =
                                             C.border;
-                                        e.currentTarget.style.background = `linear-gradient(135deg, ${C.surfaceHover} 0%, ${C.surface} 100%)`;
                                     }
                                 }}
                             >
-                                {/* Gradient border for full-width card */}
-                                {isFullWidth && (
-                                    <div
-                                        className="pointer-events-none absolute inset-0 rounded-xl"
-                                        style={{
-                                            padding: "1px",
-                                            background: `linear-gradient(135deg, ${C.accent}, ${C.warm}, ${C.accent})`,
-                                            WebkitMask:
-                                                "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                                            WebkitMaskComposite:
-                                                "xor",
-                                            maskComposite: "exclude",
-                                        }}
-                                    />
-                                )}
-                                {isFullWidth && (
-                                    <div
-                                        className="pointer-events-none absolute inset-[1px] rounded-xl"
-                                        style={{
-                                            background: `linear-gradient(135deg, ${C.surfaceHover} 0%, ${C.surface} 100%)`,
-                                        }}
-                                    />
-                                )}
-
                                 <div className="relative z-10">
                                     {/* Icon */}
                                     <div
-                                        className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg transition-shadow duration-300 group-hover:shadow-[0_0_12px_rgba(16,185,129,0.2)]"
+                                        className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg transition-shadow duration-300 group-hover:shadow-[0_0_12px_rgba(0,170,69,0.15)]"
                                         style={{
                                             background: C.accentSoft,
                                         }}
@@ -124,7 +96,7 @@ export function Features() {
 
                                     {/* Title */}
                                     <h3
-                                        className="mb-2 text-lg font-medium"
+                                        className="mb-2 text-lg font-semibold"
                                         style={{ color: C.text }}
                                     >
                                         {feature.title}

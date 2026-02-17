@@ -28,7 +28,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
     const [isAnnual, setIsAnnual] = useState(false);
 
     return (
-        <section id="pricing" className="px-4 py-24 md:px-8 md:py-32">
+        <section id="pricing" className="py-24 md:py-32">
             {/* Header */}
             <div className="mb-6 text-center">
                 <div
@@ -43,7 +43,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                     Pricing
                 </div>
                 <h2
-                    className="text-[clamp(2.25rem,5vw,3rem)] font-medium tracking-tight leading-[1.05]"
+                    className="text-3xl md:text-4xl font-semibold tracking-[-0.02em] leading-[1.1]"
                     style={{ color: C.text }}
                 >
                     Simple, transparent pricing
@@ -105,7 +105,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
             </div>
 
             {/* Cards */}
-            <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
+            <div className="mx-auto grid max-w-2xl gap-6 md:grid-cols-2">
                 {plans.map((plan, i) => {
                     const isPro = plan.highlighted;
                     const displayPrice = getPrice(plan.price, isAnnual);
@@ -113,7 +113,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
 
                     const card = (
                         <div
-                            className="flex h-full flex-col rounded-2xl p-8"
+                            className="flex h-full flex-col rounded-xl p-6 md:p-8"
                             style={{
                                 background: C.surface,
                             }}
@@ -147,7 +147,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                 <AnimatePresence mode="popLayout">
                                     <motion.span
                                         key={displayPrice}
-                                        className="text-5xl font-semibold tracking-tight"
+                                        className="text-4xl font-semibold tracking-tight"
                                         style={{ color: C.text }}
                                         initial={{ y: 12, opacity: 0, filter: "blur(4px)" }}
                                         animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
@@ -225,14 +225,14 @@ export function Pricing({ onOpenAuth }: PricingProps) {
 
                             {/* CTA */}
                             <button
-                                onClick={() => onOpenAuth("register")}
-                                className="inline-flex w-full cursor-pointer items-center justify-center rounded-xl h-12 text-sm font-semibold tracking-wide transition-all duration-200 active:scale-[0.97]"
+                            onClick={() => onOpenAuth("register")}
+                            className="inline-flex w-full cursor-pointer items-center justify-center rounded-lg h-12 text-sm font-semibold tracking-wide transition-all duration-200 active:scale-[0.97]"
                                 style={
                                     isPro
                                         ? {
                                               background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
                                               color: "#fff",
-                                              boxShadow: `0 4px 20px ${C.accentSoft}, 0 0 40px ${C.accentSoft}`,
+                                              boxShadow: "0 4px 12px rgba(0,170,69,0.15)",
                                           }
                                         : {
                                               background: "transparent",
@@ -270,23 +270,20 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                             }}
                         >
                             {isPro ? (
-                                /* Gradient border wrapper for Pro */
+                                /* Solid green border for Pro */
                                 <div
-                                    className="rounded-2xl p-px"
+                                    className="rounded-xl border-2"
                                     style={{
-                                        background: `linear-gradient(170deg, ${C.accent}, ${C.accentHover}, ${C.border})`,
-                                        boxShadow: `0 0 40px ${C.accentSoft}, 0 8px 32px rgba(0,0,0,.4)`,
+                                        borderColor: C.accent,
                                     }}
                                 >
                                     {card}
                                 </div>
                             ) : (
                                 <div
-                                    className="rounded-2xl border"
+                                    className="rounded-xl border"
                                     style={{
                                         borderColor: C.border,
-                                        boxShadow:
-                                            "0 2px 12px rgba(0,0,0,.2)",
                                     }}
                                 >
                                     {card}

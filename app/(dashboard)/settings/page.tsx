@@ -48,7 +48,7 @@ export default async function SettingsPage() {
 
   const planBadge: Record<string, string> = {
     FREE: "bg-zinc-100 text-zinc-700 border border-zinc-200",
-    PRO: "bg-[#F0ECFE] text-[#7C3AED] border border-[#DDD5FD]",
+    PRO: "bg-[#00AA45]/8 text-[#00AA45] border border-[#00AA45]/20",
   };
 
   return (
@@ -122,7 +122,7 @@ export default async function SettingsPage() {
                 <div
                   className={cn(
                     "h-full rounded-full transition-all",
-                    postPct >= 90 ? "bg-[#E03131]" : "bg-[#7C3AED]"
+                    postPct >= 90 ? "bg-[#E03131]" : "bg-[#00AA45]"
                   )}
                   style={{ width: `${postPct}%` }}
                 />
@@ -154,7 +154,7 @@ export default async function SettingsPage() {
             {plan === "FREE" ? (
               <button
                 type="button"
-                className="inline-flex items-center gap-2 rounded-full bg-[#7C3AED] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#8B5CF6]"
+                className="inline-flex items-center gap-2 rounded-full bg-[#00AA45] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#009940]"
               >
                 <Zap size={15} />
                 Upgrade to Pro — $19/mo
