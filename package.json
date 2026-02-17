@@ -17,7 +17,6 @@
     "fn:invoke": "supabase functions invoke"
   },
   "dependencies": {
-    "@maximeheckel/design-system": "^4.2.3",
     "@supabase/ssr": "0.8.0",
     "@supabase/supabase-js": "2.95.3",
     "@tanstack/react-query": "5.90.21",

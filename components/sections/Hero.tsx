@@ -34,51 +34,62 @@ export function PlatformCycler() {
 function RotatingBadge() {
     const [index, setIndex] = useState(0);
     const badges = [
-        { text: "Smart Scheduling", icon: Clock },
-        { text: "Auto-Plug Engine", icon: Zap },
-        { text: "Analytics & Insights", icon: BarChart3 },
-        { text: "Growth Tools", icon: TrendingUp },
+        { text: "Smart Scheduling", icon: Clock, color: "#38bdf8", bg: "rgba(56, 189, 248, 0.1)", border: "rgba(56, 189, 248, 0.2)" },
+        { text: "Auto-Plug Engine", icon: Zap, color: "#a78bfa", bg: "rgba(139, 92, 246, 0.1)", border: "rgba(139, 92, 246, 0.2)" },
+        { text: "Analytics & Insights", icon: BarChart3, color: "#34d399", bg: "rgba(52, 211, 153, 0.1)", border: "rgba(52, 211, 153, 0.2)" },
+        { text: "Growth Tools", icon: TrendingUp, color: "#fb7185", bg: "rgba(251, 113, 133, 0.1)", border: "rgba(251, 113, 133, 0.2)" },
     ];
 
     useEffect(() => {
         const timer = setInterval(() => {
             setIndex((prev) => (prev + 1) % badges.length);
-        }, 2200);
+        }, 2500);
         return () => clearInterval(timer);
     }, []);
 
-    const CurrentIcon = badges[index].icon;
+    const current = badges[index];
+    const CurrentIcon = current.icon;
 
     return (
         <div className="mt-8 flex items-center gap-3">
             <span className="text-base font-medium" style={{ color: C.textSoft }}>
                 Powering
             </span>
-            <div className="relative h-8 w-64 overflow-hidden">
-                <AnimatePresence mode="wait">
+            <motion.div
+                layout
+                className="relative flex items-center justify-center overflow-hidden rounded-full border px-4 py-1.5"
+                style={{
+                    borderColor: current.border,
+                    backgroundColor: current.bg,
+                    color: current.color,
+                    boxShadow: `0 0 12px ${current.bg}`,
+                }}
+                transition={{
+                    duration: 0.3,
+                    ease: "easeInOut",
+                    // Animate colors smoothly too
+                    backgroundColor: { duration: 0.3 },
+                    borderColor: { duration: 0.3 },
+                    color: { duration: 0.3 },
+                }}
+            >
+                <AnimatePresence mode="popLayout" initial={false}>
                     <motion.div
                         key={index}
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: -20, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                        className="absolute inset-0 flex items-center"
+                        initial={{ opacity: 0, filter: "blur(4px)", y: 5 }}
+                        animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                        exit={{ opacity: 0, filter: "blur(4px)", y: -5 }}
+                        transition={{
+                            duration: 0.3,
+                            ease: "easeInOut",
+                        }}
+                        className="flex items-center gap-2 whitespace-nowrap text-sm font-medium tracking-wide"
                     >
-                        <span
-                            className="inline-flex items-center gap-2 rounded-full border px-4 py-1 text-sm font-medium tracking-wide"
-                            style={{
-                                borderColor: "rgba(139, 92, 246, 0.2)",
-                                backgroundColor: "rgba(139, 92, 246, 0.1)",
-                                color: "#A78BFA",
-                                boxShadow: "0 0 12px rgba(139, 92, 246, 0.1)",
-                            }}
-                        >
-                            <CurrentIcon className="h-3.5 w-3.5" />
-                            {badges[index].text}
-                        </span>
+                        <CurrentIcon className="h-3.5 w-3.5" />
+                        <span>{current.text}</span>
                     </motion.div>
                 </AnimatePresence>
-            </div>
+            </motion.div>
         </div>
     );
 }
