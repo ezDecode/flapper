@@ -5,8 +5,8 @@ import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { C } from "@/lib/landing-data";
 
-const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const spring = { type: "spring" as const, stiffness: 200, damping: 25 };
+const EASE_OUT: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
+const spring = { type: "spring" as const, stiffness: 380, damping: 30 };
 
 interface FooterProps {
     onOpenAuth: (tab: "login" | "register") => void;
@@ -76,10 +76,10 @@ export function Footer({ onOpenAuth }: FooterProps) {
                     >
                         <motion.button
                             onClick={() => onOpenAuth("register")}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.97 }}
+                            whileHover={{}}
+                            whileTap={{}}
                             transition={spring}
-                            className="group mt-8 inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-6 text-sm font-medium"
+                            className="group mt-8 inline-flex h-12 cursor-pointer items-center gap-2.5 rounded-full px-7 text-[15px] font-semibold transition-all duration-[350ms]"
                             aria-label="Start for free — sign up"
                             style={{
                                 background: C.accent,
@@ -112,7 +112,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             <Link
                                 key={label}
                                 href={href}
-                                className="text-sm transition-colors duration-200"
+                                className="text-sm transition-colors duration-[350ms]"
                                 style={{ color: C.textMuted }}
                                 onMouseEnter={(e) => { e.currentTarget.style.color = C.textSoft; }}
                                 onMouseLeave={(e) => { e.currentTarget.style.color = C.textMuted; }}
@@ -124,7 +124,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             href="https://twitter.com"
                             target="_blank"
                             rel="noreferrer"
-                            className="text-sm transition-colors duration-200"
+                            className="text-sm transition-colors duration-[350ms]"
                             style={{ color: C.textMuted }}
                             onMouseEnter={(e) => { e.currentTarget.style.color = C.textSoft; }}
                             onMouseLeave={(e) => { e.currentTarget.style.color = C.textMuted; }}

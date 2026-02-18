@@ -39,7 +39,7 @@ export interface NavbarWithMenuProps {
     cta?: React.ReactNode;
 }
 
-const springTransition = { type: "spring" as const, stiffness: 300, damping: 30 };
+const springTransition = { type: "spring" as const, stiffness: 380, damping: 30 };
 
 const ListItem = React.forwardRef<
     HTMLAnchorElement,
@@ -82,7 +82,7 @@ const ListItem = React.forwardRef<
                     target={external ? "_blank" : undefined}
                     rel={external ? "noopener noreferrer" : undefined}
                     className={cn(
-                        "group relative flex h-full min-h-18 w-full flex-col justify-center overflow-hidden rounded-2xl bg-transparent p-3.5 leading-none no-underline outline-none transition-all duration-150 select-none hover:bg-white/5 focus:bg-white/5 focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent",
+                        "group relative flex h-full min-h-[44px] w-full flex-col justify-center overflow-hidden rounded-2xl bg-transparent p-3.5 leading-none no-underline outline-none transition-all duration-[350ms] select-none hover:bg-white/[0.06] focus:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-1 focus-visible:ring-offset-transparent",
                         className,
                     )}
                     {...props}
@@ -159,7 +159,7 @@ export function NavbarMenu({ activeMenu, sections }: NavbarMenuProps) {
                 ease: [0.19, 1, 0.15, 1.01],
             }}
             className={cn(
-                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-xl border-x border-b border-white/[0.06] bg-surface-alt/95 backdrop-blur-3xl outline-none shadow-2xl shadow-black/40"
+                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-2xl border-x border-b border-white/[0.08] bg-surface-alt/80 backdrop-blur-2xl backdrop-saturate-[1.8] outline-none shadow-2xl shadow-black/40"
             )}
         >
             {/* Top accent gradient line */}
@@ -198,6 +198,28 @@ export function NavbarMenu({ activeMenu, sections }: NavbarMenuProps) {
     );
 }
 
+/* ── Hook: lock body scroll when mobile menu is open ─── */
+function useBodyScrollLock(locked: boolean) {
+    React.useEffect(() => {
+        if (!locked) return;
+        const scrollY = window.scrollY;
+        const body = document.body;
+        body.style.position = "fixed";
+        body.style.top = `-${scrollY}px`;
+        body.style.left = "0";
+        body.style.right = "0";
+        body.style.overflow = "hidden";
+        return () => {
+            body.style.position = "";
+            body.style.top = "";
+            body.style.left = "";
+            body.style.right = "";
+            body.style.overflow = "";
+            window.scrollTo(0, scrollY);
+        };
+    }, [locked]);
+}
+
 export function NavbarWithMenu({
     sections,
     navItems,
@@ -209,6 +231,36 @@ export function NavbarWithMenu({
     );
     const [hoveredItem, setHoveredItem] = React.useState<string | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+    // Lock body scroll when mobile menu is open
+    useBodyScrollLock(mobileMenuOpen);
+
+    // Close mobile menu on Escape key
+    React.useEffect(() => {
+        if (!mobileMenuOpen) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setMobileMenuOpen(false);
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [mobileMenuOpen]);
+
+    // Close mobile menu on window resize past mobile breakpoint
+    React.useEffect(() => {
+        if (!mobileMenuOpen) return;
+        const onResize = () => {
+            if (window.innerWidth >= 768) setMobileMenuOpen(false);
+        };
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
+    }, [mobileMenuOpen]);
+
+    // Close mobile menu on hash change (anchor navigation)
+    React.useEffect(() => {
+        const onHash = () => setMobileMenuOpen(false);
+        window.addEventListener("hashchange", onHash);
+        return () => window.removeEventListener("hashchange", onHash);
+    }, []);
 
     const defaultNavItems = [
         { type: "dropdown", label: "Product", menu: "product" },
@@ -229,211 +281,261 @@ export function NavbarWithMenu({
     };
 
     return (
-        <div className="fixed top-3 md:top-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
-            {/* biome-ignore lint/a11y/noStaticElementInteractions: Hover container for menu, not interactive content */}
+        <>
+            {/* Backdrop overlay for mobile menu */}
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <motion.div
+                        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+                        onClick={() => setMobileMenuOpen(false)}
+                        aria-hidden
+                    />
+                )}
+            </AnimatePresence>
+
             <div
-                className="pointer-events-auto relative w-full max-w-[calc(100%-1.5rem)] md:max-w-2xl rounded-full border border-white/[0.06] bg-surface-alt/80 backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.15),inset_0_1px_0_0_rgba(255,255,255,0.04)] transition-all duration-300 px-4 md:px-6"
-                onMouseLeave={handleNavbarMouseLeave}
+                className={cn(
+                    "fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none",
+                    "pt-[max(0.75rem,env(safe-area-inset-top))]",
+                    "md:pt-[max(1.5rem,env(safe-area-inset-top))]",
+                )}
             >
+                {/* biome-ignore lint/a11y/noStaticElementInteractions: Hover container for menu, not interactive content */}
                 <div
-                    className="flex h-14 w-full items-center justify-between"
-                >
-                    <div className="flex items-center gap-2">
-                        {logo}
-                    </div>
-
-                    {/* DESKTOP NAV */}
-                    <LayoutGroup id="navbar-pill">
-                        <div className="hidden md:flex items-center gap-1 rounded-lg px-1 py-1">
-                            {items.map((item) =>
-                                item.type === "link" ? (
-                                    <a
-                                        key={item.href}
-                                        href={item.href}
-                                        className={cn(
-                                            "relative flex h-9 cursor-pointer items-center rounded-full px-4 py-2 text-sm font-medium will-change-transform",
-                                            hoveredItem === item.label.toLowerCase()
-                                                ? "text-foreground"
-                                                : "text-muted-foreground hover:text-foreground",
-                                        )}
-                                        onMouseEnter={() => {
-                                            setHoveredItem(item.label.toLowerCase());
-                                            setActiveDropdown(null);
-                                        }}
-                                    >
-                                        {hoveredItem === item.label.toLowerCase() && (
-                                            <motion.div
-                                                layoutId="navbar-hover-pill"
-                                                className="absolute inset-0 h-full w-full rounded-full bg-white/5"
-                                                transition={springTransition}
-                                            />
-                                        )}
-                                        <span className="relative z-10">{item.label}</span>
-                                    </a>
-                                ) : (
-                                    <button
-                                        type="button"
-                                        key={item.menu}
-                                        className="relative flex h-9 cursor-pointer items-center rounded-full px-4 py-2 text-sm text-muted-foreground font-medium transition-colors hover:text-foreground will-change-transform"
-                                        onMouseEnter={() => handleMouseEnter(item.menu)}
-                                    >
-                                        {hoveredItem === item.menu && (
-                                            <motion.div
-                                                layoutId="navbar-hover-pill"
-                                                className="absolute inset-0 h-full w-full rounded-full bg-white/5"
-                                                transition={springTransition}
-                                            />
-                                        )}
-                                        <div className="relative z-10 flex items-center gap-2">
-                                            <span>
-                                                {item.label}
-                                            </span>
-                                            <motion.div
-                                                animate={{ rotate: hoveredItem === item.menu ? 180 : 0 }}
-                                                transition={springTransition}
-                                            >
-                                                <ChevronDown size={14} />
-                                            </motion.div>
-                                        </div>
-                                    </button>
-                                ),
-                            )}
-                        </div>
-                    </LayoutGroup>
-
-                    <div className="hidden md:flex items-center gap-1.5">
-                        {cta}
-                    </div>
-
-                    {/* MOBILE HAMBURGER */}
-                    <button
-                        className="relative flex items-center justify-center p-2 text-muted-foreground hover:text-foreground md:hidden overflow-hidden"
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-                        aria-expanded={mobileMenuOpen}
-                    >
-                        <AnimatePresence mode="wait" initial={false}>
-                            {mobileMenuOpen ? (
-                                <motion.div
-                                    key="close"
-                                    initial={{ opacity: 0, rotate: -90 }}
-                                    animate={{ opacity: 1, rotate: 0 }}
-                                    exit={{ opacity: 0, rotate: 90 }}
-                                    transition={{ duration: 0.15 }}
-                                >
-                                    <X size={20} />
-                                </motion.div>
-                            ) : (
-                                <motion.div
-                                    key="menu"
-                                    initial={{ opacity: 0, rotate: 90 }}
-                                    animate={{ opacity: 1, rotate: 0 }}
-                                    exit={{ opacity: 0, rotate: -90 }}
-                                    transition={{ duration: 0.15 }}
-                                >
-                                    <Menu size={20} />
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </button>
-                </div>
-
-                <AnimatePresence>
-                    {activeDropdown && (
-                        <NavbarMenu activeMenu={activeDropdown} sections={sections} />
+                    className={cn(
+                        "pointer-events-auto relative transition-all duration-[350ms]",
+                        // ── Sizing per breakpoint ──
+                        "w-[calc(100%-1rem)] max-w-none",          // <640px: nearly full-width, 8px each side
+                        "sm:w-[calc(100%-2rem)]",                   // 640-767px: 16px each side
+                        "md:w-auto md:min-w-[600px] md:max-w-2xl", // 768-1023px: auto-sized, min 600px
+                        "lg:min-w-[680px] lg:max-w-3xl",           // 1024+: wider for large screens
+                        // ── Shape ──
+                        "rounded-[22px] md:rounded-full",
+                        // ── Apple frosted glass ──
+                        "border border-white/[0.08]",
+                        "bg-surface-alt/70 backdrop-blur-2xl backdrop-saturate-[1.8]",
+                        "shadow-[0_2px_20px_rgba(0,0,0,0.25),inset_0_0.5px_0_0_rgba(255,255,255,0.06)]",
+                        // ── Padding ──
+                        "px-4 sm:px-5 md:px-6",
                     )}
-                    {mobileMenuOpen && (
-                        <motion.div
-                            initial={{ scaleY: 0.95, opacity: 0, y: -8 }}
-                            animate={{ scaleY: 1, opacity: 1, y: 0 }}
-                            exit={{ scaleY: 0.95, opacity: 0, y: -8 }}
-                            transition={{
-                                ease: [0.19, 1, 0.15, 1.01],
-                            }}
-                            className={cn(
-                                "absolute top-full left-0 z-40 w-full origin-top overflow-hidden rounded-b-xl border-x border-b border-white/[0.06] bg-surface-alt/95 backdrop-blur-md outline-none md:hidden shadow-2xl shadow-black/40"
-                            )}
-                        >
-                            {/* Top accent gradient line — matches desktop dropdown */}
-                            <div className="h-px w-full bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+                    onMouseLeave={handleNavbarMouseLeave}
+                >
+                    <nav
+                        className="flex h-12 sm:h-14 w-full items-center justify-between"
+                        role="navigation"
+                        aria-label="Main navigation"
+                    >
+                        {/* ── Logo ── */}
+                        <div className="flex items-center gap-2 shrink-0">
+                            {logo}
+                        </div>
 
-                            <motion.div
-                                className="flex flex-col gap-4 p-6"
-                                initial="hidden"
-                                animate="visible"
-                                variants={{
-                                    hidden: {},
-                                    visible: {
-                                        transition: {
-                                            staggerChildren: 0.05,
-                                        },
-                                    },
-                                }}
-                            >
-                                {items.map((item, index) => (
+                        {/* ── DESKTOP NAV ── */}
+                        <LayoutGroup id="navbar-pill">
+                            <div className="hidden md:flex items-center gap-0.5 lg:gap-1 rounded-lg px-1 py-1">
+                                {items.map((item) =>
+                                    item.type === "link" ? (
+                                        <a
+                                            key={item.href}
+                                            href={item.href}
+                                            className={cn(
+                                                "relative flex h-9 cursor-pointer items-center rounded-full px-3 lg:px-4 py-2 text-[13px] lg:text-sm font-medium will-change-transform transition-colors duration-[350ms]",
+                                                hoveredItem === item.label.toLowerCase()
+                                                    ? "text-foreground"
+                                                    : "text-muted-foreground hover:text-foreground",
+                                            )}
+                                            onMouseEnter={() => {
+                                                setHoveredItem(item.label.toLowerCase());
+                                                setActiveDropdown(null);
+                                            }}
+                                        >
+                                            {hoveredItem === item.label.toLowerCase() && (
+                                                <motion.div
+                                                    layoutId="navbar-hover-pill"
+                                                    className="absolute inset-0 h-full w-full rounded-full bg-white/[0.06]"
+                                                    transition={springTransition}
+                                                />
+                                            )}
+                                            <span className="relative z-10">{item.label}</span>
+                                        </a>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            key={item.menu}
+                                            className="relative flex h-9 cursor-pointer items-center rounded-full px-3 lg:px-4 py-2 text-[13px] lg:text-sm text-muted-foreground font-medium transition-colors duration-[350ms] hover:text-foreground will-change-transform"
+                                            onMouseEnter={() => handleMouseEnter(item.menu)}
+                                        >
+                                            {hoveredItem === item.menu && (
+                                                <motion.div
+                                                    layoutId="navbar-hover-pill"
+                                                    className="absolute inset-0 h-full w-full rounded-full bg-white/[0.06]"
+                                                    transition={springTransition}
+                                                />
+                                            )}
+                                            <div className="relative z-10 flex items-center gap-1.5 lg:gap-2">
+                                                <span>
+                                                    {item.label}
+                                                </span>
+                                                <motion.div
+                                                    animate={{ rotate: hoveredItem === item.menu ? 180 : 0 }}
+                                                    transition={springTransition}
+                                                >
+                                                    <ChevronDown size={14} />
+                                                </motion.div>
+                                            </div>
+                                        </button>
+                                    ),
+                                )}
+                            </div>
+                        </LayoutGroup>
+
+                        {/* ── DESKTOP CTA ── */}
+                        <div className="hidden md:flex items-center gap-1.5 shrink-0">
+                            {cta}
+                        </div>
+
+                        {/* ── MOBILE HAMBURGER ── */}
+                        <button
+                            className="relative flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-white/[0.06] transition-all duration-[350ms] md:hidden"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                            aria-expanded={mobileMenuOpen}
+                        >
+                            <AnimatePresence mode="wait" initial={false}>
+                                {mobileMenuOpen ? (
                                     <motion.div
-                                        key={item.type === "link" ? item.href : item.menu}
+                                        key="close"
+                                        initial={{ opacity: 0, rotate: -90, scale: 0.8 }}
+                                        animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                                        exit={{ opacity: 0, rotate: 90, scale: 0.8 }}
+                                        transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                                    >
+                                        <X size={20} strokeWidth={2.5} />
+                                    </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key="menu"
+                                        initial={{ opacity: 0, rotate: 90, scale: 0.8 }}
+                                        animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                                        exit={{ opacity: 0, rotate: -90, scale: 0.8 }}
+                                        transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                                    >
+                                        <Menu size={20} strokeWidth={2} />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </button>
+                    </nav>
+
+                    {/* ── DESKTOP DROPDOWN ── */}
+                    <AnimatePresence>
+                        {activeDropdown && (
+                            <NavbarMenu activeMenu={activeDropdown} sections={sections} />
+                        )}
+                    </AnimatePresence>
+
+                    {/* ── MOBILE MENU PANEL ── */}
+                    <AnimatePresence>
+                        {mobileMenuOpen && (
+                            <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{
+                                    height: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] },
+                                    opacity: { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] },
+                                }}
+                                className="overflow-hidden md:hidden"
+                            >
+                                {/* Top separator */}
+                                <div className="mx-1 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+
+                                <motion.div
+                                    className="flex flex-col gap-1 px-1 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]"
+                                    initial="hidden"
+                                    animate="visible"
+                                    variants={{
+                                        hidden: {},
+                                        visible: {
+                                            transition: {
+                                                staggerChildren: 0.04,
+                                                delayChildren: 0.05,
+                                            },
+                                        },
+                                    }}
+                                >
+                                    {/* ── Nav links ── */}
+                                    {items.map((item) => (
+                                        <motion.div
+                                            key={item.type === "link" ? item.href : item.menu}
+                                            variants={{
+                                                hidden: { opacity: 0, y: 8 },
+                                                visible: { opacity: 1, y: 0 },
+                                            }}
+                                            transition={springTransition}
+                                        >
+                                            {item.type === "link" ? (
+                                                <a
+                                                    href={item.href}
+                                                    className="flex items-center min-h-[44px] px-3 py-2.5 rounded-xl text-[17px] font-medium text-foreground/80 hover:text-foreground hover:bg-white/[0.06] transition-all duration-[350ms]"
+                                                    onClick={() => setMobileMenuOpen(false)}
+                                                >
+                                                    {item.label}
+                                                </a>
+                                            ) : (
+                                                <div className="flex flex-col gap-1">
+                                                    <div className="flex items-center gap-3 px-3 py-2">
+                                                        <span className="h-px w-3 bg-accent/40" />
+                                                        <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.08em]">
+                                                            {item.label}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col gap-0.5 pl-2">
+                                                        {sections.find(s => s.id === item.menu)?.links.map(link => (
+                                                            <a
+                                                                key={link.href}
+                                                                href={link.href}
+                                                                className="flex items-center gap-3 min-h-[44px] px-3 py-2 text-[15px] text-muted-foreground hover:text-foreground rounded-xl hover:bg-white/[0.06] transition-all duration-[350ms]"
+                                                                onClick={() => setMobileMenuOpen(false)}
+                                                            >
+                                                                {link.icon && (
+                                                                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-white/[0.06] text-muted-foreground">
+                                                                        {link.icon}
+                                                                    </span>
+                                                                )}
+                                                                <span>{link.label}</span>
+                                                            </a>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </motion.div>
+                                    ))}
+
+                                    {/* ── Mobile CTA buttons ── */}
+                                    <motion.div
+                                        className="flex flex-col gap-2.5 mt-3 pt-4 mx-1 border-t border-white/[0.06]"
                                         variants={{
-                                            hidden: { opacity: 0, y: 8 },
+                                            hidden: { opacity: 0, y: 4 },
                                             visible: { opacity: 1, y: 0 },
                                         }}
-                                        transition={springTransition}
+                                        transition={{ ...springTransition, delay: 0.12 }}
                                     >
-                                        {index > 0 && (
-                                            <div className="mb-4 h-px w-full bg-gradient-to-r from-white/[0.06] via-white/[0.03] to-transparent" />
-                                        )}
-                                        {item.type === "link" ? (
-                                            <a
-                                                href={item.href}
-                                                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors"
-                                                onClick={() => setMobileMenuOpen(false)}
-                                            >
-                                                {item.label}
-                                            </a>
-                                        ) : (
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex items-center gap-3">
-                                                    <span className="h-px w-4 bg-accent/50" />
-                                                    <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{item.label}</span>
-                                                </div>
-                                                <div className="pl-4 flex flex-col gap-1">
-                                                    {sections.find(s => s.id === item.menu)?.links.map(link => (
-                                                        <a
-                                                            key={link.href}
-                                                            href={link.href}
-                                                            className="flex items-center gap-3 text-base text-muted-foreground hover:text-foreground py-2 transition-colors rounded-lg hover:bg-white/[0.03] px-2 -mx-2"
-                                                            onClick={() => setMobileMenuOpen(false)}
-                                                        >
-                                                            {link.icon && (
-                                                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/5 text-muted-foreground">
-                                                                    {link.icon}
-                                                                </span>
-                                                            )}
-                                                            <span>{link.label}</span>
-                                                        </a>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
+                                        {/* Wrap CTA children to make them full-width on mobile */}
+                                        <div className="flex flex-col gap-2.5 [&>*]:w-full [&>*]:justify-center">
+                                            {cta}
+                                        </div>
                                     </motion.div>
-                                ))}
-                                <motion.div
-                                    className="mt-4 flex flex-col gap-3 border-t border-white/[0.06] pt-6"
-                                    variants={{
-                                        hidden: { opacity: 0 },
-                                        visible: { opacity: 1 },
-                                    }}
-                                    transition={{ ...springTransition, delay: 0.15 }}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        {cta}
-                                    </div>
                                 </motion.div>
                             </motion.div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                        )}
+                    </AnimatePresence>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

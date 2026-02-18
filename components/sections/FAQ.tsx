@@ -5,8 +5,8 @@ import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { faqs, C } from "@/lib/landing-data";
 
-const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const spring = { type: "spring" as const, stiffness: 300, damping: 30 };
+const EASE_OUT: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
+const spring = { type: "spring" as const, stiffness: 380, damping: 30 };
 
 function FAQItem({
     q,
@@ -34,10 +34,10 @@ function FAQItem({
         >
             <button
                 onClick={onToggle}
-                className="flex w-full items-center justify-between gap-4 py-5 text-left cursor-pointer"
+                className="flex w-full items-center justify-between gap-4 py-5 text-left cursor-pointer min-h-[44px]"
             >
                 <span
-                    className="text-sm font-medium leading-snug transition-colors duration-200 sm:text-[15px]"
+                    className="text-[15px] font-medium leading-snug transition-colors duration-[350ms] sm:text-[17px]"
                     style={{ color: isOpen ? C.text : C.text }}
                 >
                     {q}
@@ -45,7 +45,7 @@ function FAQItem({
                 <motion.div
                     animate={{ rotate: isOpen ? 135 : 0 }}
                     transition={spring}
-                    className="flex h-6 w-6 shrink-0 items-center justify-center"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center"
                 >
                     <Plus
                         className="h-4 w-4"
@@ -69,7 +69,7 @@ function FAQItem({
                         className="overflow-hidden"
                     >
                         <p
-                            className="pb-5 text-sm leading-relaxed sm:text-[15px] sm:leading-7 pr-10"
+                            className="pb-6 text-[15px] leading-relaxed pr-10"
                             style={{ color: C.textSoft }}
                         >
                             {a}

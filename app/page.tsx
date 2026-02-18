@@ -10,7 +10,7 @@ import { NavbarWithMenu } from "@/components/ui/navbar-menu";
 import { C } from "@/lib/landing-data";
 
 import { Hero } from "@/components/sections/Hero";
-import { Features } from "@/components/sections/Features";
+
 import { Pricing } from "@/components/sections/Pricing";
 import { FAQ } from "@/components/sections/FAQ";
 import { Footer } from "@/components/sections/Footer";
@@ -58,7 +58,6 @@ function LandingPageInner() {
           {/* ─── NAV ─── */}
           <NavbarWithMenu
             navItems={[
-              { type: "link", label: "Features", href: "#features" },
               { type: "link", label: "Pricing", href: "#pricing" },
             ]}
             sections={[]}
@@ -75,14 +74,14 @@ function LandingPageInner() {
               <>
                 <button
                   onClick={() => openAuth("login")}
-                  className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 text-sm font-medium transition-colors cursor-pointer hover:bg-white/5 active:scale-[0.96]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-5 text-[15px] font-medium transition-all duration-[350ms] cursor-pointer hover:bg-white/[0.06] active:scale-[0.97]"
                   style={{ color: "inherit" }}
                 >
                   Log in
                 </button>
                 <button
                   onClick={() => openAuth("register")}
-                  className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-5 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
+                  className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-6 text-[15px] font-semibold transition-all duration-[350ms] cursor-pointer active:scale-[0.97] hover:brightness-110"
                   style={{ backgroundColor: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}
                 >
                   Start free
@@ -92,7 +91,7 @@ function LandingPageInner() {
           />
 
           <Hero onOpenAuth={openAuth} />
-          <Features />
+          {/* Features section removed */}
           <Pricing onOpenAuth={openAuth} />
           <FAQ />
           <Footer onOpenAuth={openAuth} />

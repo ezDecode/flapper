@@ -262,7 +262,7 @@ export function PostComposer() {
         <button
           onClick={submit}
           disabled={saving}
-          className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
           style={{ backgroundColor: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}
         >
           <Send size={16} />

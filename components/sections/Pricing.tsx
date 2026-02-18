@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Check } from "lucide-react";
+import { Check, Shield, Sparkles } from "lucide-react";
 
 import { plans, C } from "@/lib/landing-data";
 
@@ -11,8 +11,8 @@ interface PricingProps {
 }
 
 const ANNUAL_DISCOUNT = 0.8;
-const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const spring = { type: "spring" as const, stiffness: 300, damping: 30 };
+const EASE_OUT: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
+const spring = { type: "spring" as const, stiffness: 380, damping: 30 };
 
 function getPrice(base: string, isAnnual: boolean): string {
     const num = parseInt(base.replace("$", ""), 10);
@@ -23,7 +23,7 @@ function getPrice(base: string, isAnnual: boolean): string {
 
 function getPeriod(period: string, isAnnual: boolean): string {
     if (period === "forever") return "forever";
-    return isAnnual ? "/ month, billed yearly" : "/ month";
+    return isAnnual ? "/ mo, billed yearly" : "/ month";
 }
 
 export function Pricing({ onOpenAuth }: PricingProps) {
@@ -79,7 +79,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
             </div>
 
             {/* Billing toggle */}
-            <div className="mb-8 md:mb-12 flex items-center justify-center gap-3">
+            <div className="mb-10 md:mb-14 flex items-center justify-center gap-3">
                 <span
                     className="text-sm font-medium transition-colors duration-200"
                     style={{ color: isAnnual ? C.textMuted : C.text }}
@@ -90,19 +90,21 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                     type="button"
                     aria-label="Toggle annual billing"
                     onClick={() => setIsAnnual((v) => !v)}
-                    className="relative h-7 w-12 cursor-pointer rounded-full transition-colors duration-200"
+                    className="relative h-[30px] w-[52px] cursor-pointer rounded-full transition-all duration-[400ms]"
                     style={{
                         background: isAnnual ? C.accent : C.surfaceHover,
-                        border: `1px solid ${isAnnual ? C.accent : C.border}`,
+                        border: `1.5px solid ${isAnnual ? "transparent" : C.border}`,
                     }}
                 >
                     <motion.div
-                        className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full"
-                        style={{ background: isAnnual ? "white" : C.text }}
+                        className="absolute top-1/2 h-[24px] w-[24px] -translate-y-1/2 rounded-full shadow-sm"
+                        style={{
+                            background: isAnnual ? "white" : C.text,
+                        }}
                         animate={{
                             left: isAnnual
-                                ? "calc(100% - 1.25rem - 2px)"
-                                : "2px",
+                                ? "calc(100% - 24px - 3px)"
+                                : "3px",
                         }}
                         transition={spring}
                     />
@@ -119,13 +121,13 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                 animate={{ opacity: 1, scale: 1, x: 0 }}
                                 exit={{ opacity: 0, scale: 0.8, x: -4 }}
                                 transition={spring}
-                                className="absolute left-full top-1/2 -translate-y-1/2 ml-1.5 whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-medium"
+                                className="absolute left-full top-1/2 -translate-y-1/2 ml-2 whitespace-nowrap rounded-full px-2.5 py-0.5 text-[11px] font-semibold"
                                 style={{
                                     color: C.accent,
                                     backgroundColor: C.accentSoft,
                                 }}
                             >
-                                save 20%
+                                −20%
                             </motion.span>
                         )}
                     </AnimatePresence>
@@ -133,7 +135,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
             </div>
 
             {/* Cards */}
-            <div className="mx-auto grid max-w-3xl gap-4 md:gap-5 md:grid-cols-2">
+            <div className="mx-auto grid max-w-3xl gap-5 md:grid-cols-2">
                 {plans.map((plan, i) => {
                     const isPro = plan.highlighted;
                     const displayPrice = getPrice(plan.price, isAnnual);
@@ -145,7 +147,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                             initial={{
                                 opacity: 0,
                                 y: 24,
-                                filter: "blur(4px)",
+                                filter: "blur(3px)",
                             }}
                             whileInView={{
                                 opacity: 1,
@@ -154,57 +156,58 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                             }}
                             viewport={{ once: true, amount: 0.3 }}
                             transition={{
-                                duration: 0.5,
-                                delay: i * 0.1,
+                                duration: 0.55,
+                                delay: i * 0.12,
                                 ease: EASE_OUT,
                             }}
-                            className="relative flex flex-col overflow-hidden rounded-2xl border"
+                            className="group relative flex flex-col overflow-hidden rounded-2xl"
                             style={{
-                                borderColor: isPro ? C.accent : C.border,
                                 backgroundColor: C.surface,
-                                boxShadow: isPro
-                                    ? `0 8px 32px -8px hsla(var(--primary) / 0.12)`
-                                    : undefined,
                             }}
                         >
-                            {/* Accent top bar for Pro */}
-                            {isPro && (
-                                <div
-                                    className="h-1"
-                                    style={{
-                                        background: `linear-gradient(90deg, ${C.accent}, ${C.accentHover})`,
-                                    }}
-                                />
-                            )}
-
-                            {/* Most popular badge */}
-                            {isPro && (
-                                <div
-                                    className="mx-6 mt-6 md:mx-8 md:mt-8 mb-0 w-fit rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider"
-                                    style={{
-                                        backgroundColor: C.accentSoft,
-                                        color: C.accent,
-                                    }}
-                                >
-                                    Most popular
-                                </div>
-                            )}
+                            {/* Border */}
+                            <div
+                                className="absolute inset-0 rounded-2xl pointer-events-none"
+                                style={{
+                                    border: `1px solid ${isPro ? C.accent : C.border}`,
+                                    borderRadius: "inherit",
+                                }}
+                            />
 
                             <div
-                                className={`flex flex-1 flex-col p-6 md:p-8 ${isPro ? "pt-4 md:pt-4" : ""}`}
+                                className={`relative flex flex-1 flex-col p-7 md:p-8 ${isPro ? "pt-6 md:pt-7" : ""}`}
                             >
-                                {/* Plan name */}
-                                <h3
-                                    className="text-xs font-medium tracking-widest uppercase"
-                                    style={{
-                                        color: isPro ? C.accent : C.textMuted,
-                                    }}
-                                >
-                                    {plan.name}
-                                </h3>
+                                {/* Header: Plan name + badge */}
+                                <div className="flex items-center gap-3 mb-6">
+                                    <h3
+                                        className="text-xs font-semibold tracking-widest uppercase"
+                                        style={{
+                                            color: isPro
+                                                ? C.accent
+                                                : C.textMuted,
+                                        }}
+                                    >
+                                        {plan.name}
+                                    </h3>
+                                    {isPro && (
+                                        <span
+                                            className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+                                            style={{
+                                                backgroundColor: C.accentSoft,
+                                                color: C.accent,
+                                            }}
+                                        >
+                                            <Sparkles
+                                                className="h-3 w-3"
+                                                strokeWidth={2}
+                                            />
+                                            Popular
+                                        </span>
+                                    )}
+                                </div>
 
                                 {/* Price */}
-                                <div className="mt-5 flex items-baseline gap-1.5 overflow-hidden">
+                                <div className="flex items-baseline gap-2 overflow-hidden">
                                     <AnimatePresence mode="popLayout">
                                         <motion.span
                                             key={displayPrice}
@@ -212,11 +215,11 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                             style={{
                                                 color: C.text,
                                                 fontSize:
-                                                    "clamp(28px, 5vw, 40px)",
+                                                    "clamp(32px, 5vw, 44px)",
                                                 lineHeight: 1,
                                             }}
                                             initial={{
-                                                y: 12,
+                                                y: 14,
                                                 opacity: 0,
                                                 filter: "blur(4px)",
                                             }}
@@ -226,7 +229,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                                 filter: "blur(0px)",
                                             }}
                                             exit={{
-                                                y: -12,
+                                                y: -14,
                                                 opacity: 0,
                                                 filter: "blur(4px)",
                                             }}
@@ -245,7 +248,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
 
                                 {/* Description */}
                                 <p
-                                    className="mt-2 text-sm leading-relaxed"
+                                    className="mt-3 text-sm leading-relaxed"
                                     style={{ color: C.textSoft }}
                                 >
                                     {plan.desc}
@@ -253,23 +256,33 @@ export function Pricing({ onOpenAuth }: PricingProps) {
 
                                 {/* Divider */}
                                 <div
-                                    className="my-6 h-px w-full"
+                                    className="my-7 h-px w-full"
                                     style={{ background: C.border }}
                                 />
 
                                 {/* Features */}
-                                <ul className="mb-8 flex-1 space-y-3.5">
+                                <ul className="mb-8 flex-1 space-y-4">
                                     {plan.features.map((f) => (
                                         <li
                                             key={f}
                                             className="flex items-start gap-3 text-sm leading-snug"
                                             style={{ color: C.textSoft }}
                                         >
-                                            <Check
-                                                className="mt-0.5 h-4 w-4 shrink-0"
-                                                style={{ color: C.accent }}
-                                                strokeWidth={2}
-                                            />
+                                            <div
+                                                className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md"
+                                                style={{
+                                                    backgroundColor:
+                                                        C.accentSoft,
+                                                }}
+                                            >
+                                                <Check
+                                                    className="h-3 w-3"
+                                                    style={{
+                                                        color: C.accent,
+                                                    }}
+                                                    strokeWidth={2.5}
+                                                />
+                                            </div>
                                             {f}
                                         </li>
                                     ))}
@@ -278,10 +291,10 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                 {/* CTA */}
                                 <motion.button
                                     onClick={() => onOpenAuth("register")}
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.97 }}
+                                    whileHover={{}}
+                                    whileTap={{}}
                                     transition={spring}
-                                    className="w-full cursor-pointer rounded-full px-4 py-3 text-sm font-medium transition-all duration-200 hover:brightness-110"
+                                    className="relative w-full cursor-pointer rounded-full h-[52px] px-5 text-[15px] font-semibold transition-all duration-200 flex items-center justify-center overflow-hidden"
                                     style={
                                         isPro
                                             ? {
@@ -296,14 +309,18 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                     }
                                     onMouseEnter={(e) => {
                                         if (!isPro) {
-                                            e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)';
-                                            e.currentTarget.style.borderColor = C.textMuted;
+                                            e.currentTarget.style.backgroundColor =
+                                                "rgba(255,255,255,0.05)";
+                                            e.currentTarget.style.borderColor =
+                                                C.textMuted;
                                         }
                                     }}
                                     onMouseLeave={(e) => {
                                         if (!isPro) {
-                                            e.currentTarget.style.backgroundColor = 'transparent';
-                                            e.currentTarget.style.borderColor = C.border;
+                                            e.currentTarget.style.backgroundColor =
+                                                "transparent";
+                                            e.currentTarget.style.borderColor =
+                                                C.border;
                                         }
                                     }}
                                 >
@@ -316,16 +333,19 @@ export function Pricing({ onOpenAuth }: PricingProps) {
             </div>
 
             {/* Footer note */}
-            <motion.p
+            <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3, ease: EASE_OUT }}
-                className="mt-10 text-sm"
+                className="mt-12 flex items-center justify-center gap-2 text-sm"
                 style={{ color: C.textMuted }}
             >
-                All plans include SSL encryption &amp; 99.9% uptime SLA.
-            </motion.p>
+                <Shield className="h-3.5 w-3.5" strokeWidth={1.75} />
+                <span>
+                    All plans include SSL encryption &amp; 99.9% uptime SLA.
+                </span>
+            </motion.div>
         </section>
     );
 }

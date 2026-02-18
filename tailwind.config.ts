@@ -6,9 +6,9 @@ const config: Config = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-				serif: ['var(--font-nineties)', 'serif'],
-				mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
+				sans: ['var(--font-inter)', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'system-ui', 'sans-serif'],
+				serif: ['var(--font-nineties)', 'New York', 'Georgia', 'serif'],
+				mono: ['SF Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
 			},
 			colors: {
 				background: 'hsl(var(--background))',

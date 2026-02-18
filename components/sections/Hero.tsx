@@ -31,8 +31,8 @@ export function PlatformCycler() {
 }
 
 // ─── Easing curves (Emil Kowalski) ─────────────────────────────
-const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const spring = { type: "spring" as const, stiffness: 200, damping: 25 };
+const EASE_OUT: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
+const spring = { type: "spring" as const, stiffness: 380, damping: 30 };
 
 // ─── Step icons ────────────────────────────────────────────────
 const STEP_ICONS = [PenTool, Zap, Rocket];
@@ -58,7 +58,7 @@ function WorkflowStepper() {
                         <button
                             key={i}
                             onClick={() => setActive(i)}
-                            className="relative flex flex-col items-start gap-2 p-5 text-left transition-colors duration-200 cursor-pointer hover:bg-white/[0.03]"
+                            className="relative flex flex-col items-start gap-2 p-5 text-left transition-colors duration-200 cursor-pointer hover:bg-white/[0.04]"
                             style={{
                                 backgroundColor: isActive ? C.surface : "transparent",
                             }}
@@ -121,7 +121,7 @@ function AnimatedLine({
                 <motion.span
                     key={i}
                     className="inline-block"
-                    initial={{ opacity: 0, y: 16, filter: "blur(4px)" }}
+                    initial={{ opacity: 0, y: 12, filter: "blur(2px)" }}
                     animate={{
                         opacity: 1,
                         y: 0,
@@ -129,7 +129,7 @@ function AnimatedLine({
                     }}
                     transition={{
                         ...spring,
-                        delay: delay + i * 0.05,
+                        delay: delay + i * 0.04,
                     }}
                 >
                     {word}
@@ -146,13 +146,13 @@ interface HeroProps {
 
 export function Hero({ onOpenAuth }: HeroProps) {
     return (
-        <section className="relative flex flex-col items-center justify-center pt-24 pb-8 text-center md:pt-32 md:pb-12 overflow-hidden">
+        <section className="relative flex flex-col items-center justify-center pt-28 pb-10 text-center md:pt-36 md:pb-14 overflow-hidden">
             {/* Announcement line */}
             <motion.div
                 initial={{ opacity: 0, scaleX: 0.6 }}
                 animate={{ opacity: 1, scaleX: 1 }}
                 transition={{ duration: 0.6, ease: EASE_OUT }}
-                className="mb-8 md:mb-12 flex items-center gap-4 w-full max-w-[280px] sm:max-w-xs"
+                className="mb-10 md:mb-14 flex items-center gap-4 w-full max-w-[280px] sm:max-w-xs"
             >
                 <div className="h-px flex-1" style={{ backgroundColor: C.border }} />
                 <span
@@ -187,14 +187,14 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5, ease: EASE_OUT }}
-                className="mt-8 md:mt-12 flex flex-row items-center justify-start gap-3 sm:gap-4"
+                className="mt-10 md:mt-14 flex flex-row items-center justify-center gap-3"
             >
                 <motion.button
                     onClick={() => onOpenAuth("register")}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
+                    whileHover={{}}
+                    whileTap={{}}
                     transition={spring}
-                    className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-6 text-sm font-medium cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2.5 rounded-full h-12 px-7 text-[15px] font-semibold cursor-pointer transition-all duration-[350ms]"
                     style={{
                         background: C.accent,
                         color: "hsl(var(--primary-foreground))",
@@ -206,10 +206,10 @@ export function Hero({ onOpenAuth }: HeroProps) {
 
                 <motion.a
                     href="#features"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
+                    whileHover={{}}
+                    whileTap={{}}
                     transition={spring}
-                    className="group inline-flex h-10 items-center gap-2 rounded-full border px-6 text-sm font-medium transition-colors duration-200 hover:bg-white/5"
+                    className="group inline-flex h-12 items-center gap-2.5 rounded-full border px-7 text-[15px] font-semibold transition-all duration-[350ms] hover:bg-white/[0.06]"
                     style={{ borderColor: C.border, color: C.textSoft }}
                 >
                     See features
