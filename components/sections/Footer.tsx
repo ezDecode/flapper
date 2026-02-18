@@ -5,18 +5,8 @@ import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { C } from "@/lib/landing-data";
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-const fadeUp = (delay = 0) => ({
-    initial: { opacity: 0, y: 24, filter: "blur(6px)" },
-    whileInView: {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        transition: { duration: 0.6, delay, ease: EASE },
-    },
-    viewport: { once: true, amount: 0.4 as const },
-});
+const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const spring = { type: "spring" as const, stiffness: 200, damping: 25 };
 
 interface FooterProps {
     onOpenAuth: (tab: "login" | "register") => void;
@@ -25,25 +15,26 @@ interface FooterProps {
 export function Footer({ onOpenAuth }: FooterProps) {
     return (
         <>
-            {/* ── Final CTA Band ─────────────────────────── */}
-            <section
-                className="relative overflow-hidden py-12 md:py-16"
-                style={{ backgroundColor: C.bg }}
-            >
-                {/* Subtle glow */}
-                <div
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                        background:
-                            "radial-gradient(circle at 50% 60%, rgba(255,255,255,0.06) 0%, transparent 70%)",
-                    }}
+            {/* ── CTA Section ─────────────────────────────── */}
+            <section className="py-20 md:py-28" style={{ backgroundColor: C.bg }}>
+                {/* Top accent line */}
+                <motion.div
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, ease: EASE_OUT }}
+                    className="h-px w-full mb-16 origin-left"
+                    style={{ backgroundColor: C.border }}
                 />
 
-                <div className="relative mx-auto flex max-w-2xl flex-col items-center text-center">
+                <div className="max-w-lg">
                     <motion.h2
-                        {...fadeUp()}
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, ease: EASE_OUT }}
                         className="font-serif font-medium tracking-[-0.02em]"
-                        style={{ 
+                        style={{
                             color: C.text,
                             fontSize: "clamp(24px, 4vw, 36px)",
                         }}
@@ -52,43 +43,51 @@ export function Footer({ onOpenAuth }: FooterProps) {
                     </motion.h2>
 
                     <motion.p
-                        {...fadeUp(0.1)}
-                        className="mt-4 text-base sm:text-lg"
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.08, ease: EASE_OUT }}
+                        className="mt-3 text-sm sm:text-base leading-relaxed"
                         style={{ color: C.textSoft }}
                     >
                         Start free — no credit card needed.
                     </motion.p>
 
-                    <motion.button
-                        {...fadeUp(0.2)}
-                        onClick={() => onOpenAuth("register")}
-                        className="group mt-8 inline-flex h-12 cursor-pointer items-center gap-2 rounded-full px-8 text-sm font-medium transition-opacity hover:opacity-90 active:scale-[0.96] sm:text-base"
-                        style={{
-                            background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
-                            color: "hsl(var(--primary-foreground))",
-                        }}
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.16, ease: EASE_OUT }}
                     >
-                        Start for free
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                    </motion.button>
+                        <motion.button
+                            onClick={() => onOpenAuth("register")}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.97 }}
+                            transition={spring}
+                            className="group mt-8 inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-6 text-sm font-medium"
+                            style={{
+                                background: C.accent,
+                                color: "hsl(var(--primary-foreground))",
+                            }}
+                        >
+                            Start for free
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                        </motion.button>
+                    </motion.div>
                 </div>
             </section>
 
             {/* ── Divider ────────────────────────────────── */}
             <div style={{ backgroundColor: C.bg }}>
-                <div className="mx-auto h-px w-full" style={{ backgroundColor: C.border }} />
+                <div className="h-px w-full" style={{ backgroundColor: C.border }} />
             </div>
 
             {/* ── Footer ─────────────────────────────────── */}
-            <footer
-                className="py-8"
-                style={{ backgroundColor: C.bg }}
-            >
-                <div className="mx-auto flex flex-col items-center justify-between gap-4 md:flex-row">
+            <footer className="py-8" style={{ backgroundColor: C.bg }}>
+                <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
                     <p className="text-sm" style={{ color: C.textMuted }}>
                         &copy; 2026 Flapr
                     </p>
-
                     <div className="flex gap-6">
                         {[
                             { label: "Privacy", href: "/privacy" },
@@ -97,7 +96,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             <Link
                                 key={label}
                                 href={href}
-                                className="relative text-sm transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:transition-all hover:after:w-full"
+                                className="text-sm transition-colors duration-200 hover:opacity-70"
                                 style={{ color: C.textMuted }}
                             >
                                 {label}
@@ -107,7 +106,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             href="https://twitter.com"
                             target="_blank"
                             rel="noreferrer"
-                            className="relative text-sm transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:transition-all hover:after:w-full"
+                            className="text-sm transition-colors duration-200 hover:opacity-70"
                             style={{ color: C.textMuted }}
                         >
                             Twitter/X

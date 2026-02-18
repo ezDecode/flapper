@@ -1,357 +1,253 @@
 "use client";
 
-import { motion } from "motion/react";
-import {
-    Clock,
-    Zap,
-    BarChart3,
-    MessageSquare,
-    Shield,
-    Sparkles,
-    ArrowUpRight,
-} from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { features, C } from "@/lib/landing-data";
 import { cn } from "@/lib/utils";
 
-// ─── Bento Grid Feature Card ─────────────────────────────────────
+const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const spring = { type: "spring" as const, stiffness: 300, damping: 30 };
 
-const cardVariants = {
-    hidden: { opacity: 0, y: 30, filter: "blur(6px)" },
-    visible: (i: number) => ({
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        transition: {
-            duration: 0.6,
-            delay: i * 0.1,
-            ease: [0.22, 1, 0.36, 1],
-        },
-    }),
-};
+/* ── Desktop: Interactive Feature Explorer ──────────────────── */
 
-// ─── Micro Visuals for each card ──────────────────────────────────
+function FeatureExplorer() {
+    const [active, setActive] = useState(0);
+    const current = features[active];
 
-function SchedulingVisual() {
     return (
-        <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
-            {/* Subtle dot grid */}
+        <div className="hidden md:flex gap-0 rounded-2xl border overflow-hidden" style={{ borderColor: C.border }}>
+            {/* Left nav — feature list */}
             <div
-                className="absolute inset-0 opacity-[0.04]"
-                style={{
-                    backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-                    backgroundSize: "20px 20px",
-                }}
-            />
-            {/* Timeline bars */}
-            <div className="relative flex items-end gap-1.5 px-6">
-                {[
-                    { h: 24, delay: 0 },
-                    { h: 40, delay: 0.1 },
-                    { h: 32, delay: 0.2 },
-                    { h: 56, delay: 0.3 },
-                    { h: 44, delay: 0.4 },
-                    { h: 64, delay: 0.5 },
-                    { h: 36, delay: 0.6 },
-                ].map((bar, i) => (
-                    <motion.div
-                        key={i}
-                        className="w-4 rounded-t-sm"
-                        style={{ backgroundColor: i === 5 ? C.accent : C.surfaceHover }}
-                        initial={{ height: 0 }}
-                        whileInView={{ height: bar.h }}
-                        viewport={{ once: true }}
-                        transition={{
-                            duration: 0.8,
-                            delay: bar.delay,
-                            ease: [0.22, 1, 0.36, 1],
-                        }}
-                    />
-                ))}
-            </div>
-            {/* Highlight line */}
-            <motion.div
-                className="absolute bottom-6 left-6 right-6 h-px"
-                style={{
-                    background: `linear-gradient(to right, transparent, ${C.accentSoft}, transparent)`,
-                }}
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
-            />
-        </div>
-    );
-}
-
-function AutoPlugVisual() {
-    return (
-        <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
-            {/* Center pulse */}
-            <div className="relative">
-                <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center relative z-10"
-                    style={{
-                        backgroundColor: C.surfaceHover,
-                        boxShadow: `0 0 30px ${C.accentSoft}`,
-                    }}
-                >
-                    <Zap className="w-5 h-5" style={{ color: C.accent }} strokeWidth={1.5} />
-                </div>
-                {/* Ripple rings */}
-                {[0, 1, 2].map((i) => (
-                    <motion.div
-                        key={i}
-                        className="absolute inset-0 rounded-xl border"
-                        style={{ borderColor: C.accent }}
-                        initial={{ scale: 1, opacity: 0.4 }}
-                        animate={{ scale: 2.5, opacity: 0 }}
-                        transition={{
-                            duration: 2.5,
-                            repeat: Infinity,
-                            delay: i * 0.7,
-                            ease: "easeOut",
-                        }}
-                    />
-                ))}
-            </div>
-        </div>
-    );
-}
-
-function AnalyticsVisual() {
-    return (
-        <div className="relative h-full w-full flex items-center justify-center overflow-hidden px-6">
-            {/* Ascending metric line */}
-            <svg className="w-full h-20" viewBox="0 0 200 60" fill="none">
-                <motion.path
-                    d="M0 50 Q30 48 50 40 T100 25 T150 15 T200 5"
-                    stroke={C.accent}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                />
-                <motion.path
-                    d="M0 50 Q30 48 50 40 T100 25 T150 15 T200 5 V60 H0 Z"
-                    fill={`url(#gradient)`}
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                />
-                <defs>
-                    <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor={C.accent} stopOpacity="0.15" />
-                        <stop offset="100%" stopColor={C.accent} stopOpacity="0" />
-                    </linearGradient>
-                </defs>
-            </svg>
-            {/* Metric dot */}
-            <motion.div
-                className="absolute right-8 top-6 w-2 h-2 rounded-full"
-                style={{ backgroundColor: C.accent, boxShadow: `0 0 8px ${C.accent}` }}
-                animate={{ scale: [1, 1.4, 1], opacity: [1, 0.7, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
-        </div>
-    );
-}
-
-function TemplatesVisual() {
-    return (
-        <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
-            {/* Stacked cards */}
-            {[2, 1, 0].map((i) => (
-                <motion.div
-                    key={i}
-                    className="absolute rounded-lg border p-3 flex flex-col gap-1.5"
-                    style={{
-                        width: 120,
-                        height: 72,
-                        backgroundColor: i === 0 ? C.surface : C.bgAlt,
-                        borderColor: i === 0 ? C.border : C.borderSubtle,
-                    }}
-                    initial={{ y: 0, scale: 0.9, opacity: 0 }}
-                    whileInView={{
-                        y: i * -8,
-                        x: i * 4,
-                        scale: 1 - i * 0.04,
-                        opacity: 1 - i * 0.25,
-                    }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: (2 - i) * 0.1 }}
-                >
-                    <div className="flex items-center gap-1.5">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: C.surfaceHover }} />
-                        <div className="w-10 h-1 rounded-full" style={{ backgroundColor: C.surfaceHover }} />
-                    </div>
-                    <div className="w-full h-1 rounded-full" style={{ backgroundColor: C.accentSoft }} />
-                    <div className="w-3/4 h-1 rounded-full" style={{ backgroundColor: C.accentSoft, opacity: 0.5 }} />
-                </motion.div>
-            ))}
-        </div>
-    );
-}
-
-function TwitterVisual() {
-    return (
-        <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
-            {/* X logo */}
-            <motion.svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-10 h-10"
-                style={{ color: C.textMuted }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
+                className="w-[280px] lg:w-[320px] shrink-0 flex flex-col"
+                style={{ backgroundColor: C.surface }}
             >
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </motion.svg>
-            {/* Orbit dots */}
-            {[0, 1, 2].map((i) => (
-                <motion.div
-                    key={i}
-                    className="absolute w-1.5 h-1.5 rounded-full"
-                    style={{ backgroundColor: C.accent }}
-                    animate={{
-                        x: [0, Math.cos((i * 2 * Math.PI) / 3) * 40],
-                        y: [0, Math.sin((i * 2 * Math.PI) / 3) * 40],
-                        opacity: [0, 1, 0],
-                    }}
-                    transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        delay: i * 1,
-                        ease: "easeInOut",
+                {features.map((feature, i) => {
+                    const isActive = i === active;
+                    const num = String(i + 1).padStart(2, "0");
+
+                    return (
+                        <button
+                            key={feature.title}
+                            onClick={() => setActive(i)}
+                            className={cn(
+                                "group relative flex items-center gap-4 px-6 py-5 text-left transition-colors duration-200 cursor-pointer",
+                                i !== features.length - 1 && "border-b",
+                            )}
+                            style={{
+                                borderColor: C.border,
+                                backgroundColor: isActive ? C.surfaceHover : "transparent",
+                            }}
+                        >
+                            {/* Active indicator bar */}
+                            {isActive && (
+                                <motion.div
+                                    layoutId="activeFeatureBar"
+                                    className="absolute left-0 top-0 bottom-0 w-[3px]"
+                                    style={{ backgroundColor: C.accent }}
+                                    transition={spring}
+                                />
+                            )}
+
+                            {/* Number */}
+                            <span
+                                className="text-[11px] font-mono font-medium tracking-wider shrink-0 transition-colors duration-200"
+                                style={{ color: isActive ? C.accent : C.textMuted }}
+                            >
+                                {num}
+                            </span>
+
+                            {/* Icon + Title */}
+                            <div className="flex items-center gap-2.5 min-w-0">
+                                <feature.icon
+                                    className="h-4 w-4 shrink-0 transition-colors duration-200"
+                                    style={{ color: isActive ? C.accent : C.textMuted }}
+                                    strokeWidth={1.75}
+                                />
+                                <span
+                                    className="text-sm font-medium truncate transition-colors duration-200"
+                                    style={{ color: isActive ? C.text : C.textSoft }}
+                                >
+                                    {feature.title}
+                                </span>
+                            </div>
+                        </button>
+                    );
+                })}
+            </div>
+
+            {/* Right panel — feature detail */}
+            <div
+                className="flex-1 relative min-h-[340px] flex items-center"
+                style={{ backgroundColor: C.bg }}
+            >
+                {/* Accent gradient background */}
+                <div
+                    className="absolute inset-0 opacity-[0.03]"
+                    style={{
+                        background: `radial-gradient(ellipse at 30% 50%, ${C.accent} 0%, transparent 70%)`,
                     }}
                 />
-            ))}
+
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={active}
+                        initial={{ opacity: 0, x: 20, filter: "blur(6px)" }}
+                        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, x: -20, filter: "blur(6px)" }}
+                        transition={{ duration: 0.35, ease: EASE_OUT }}
+                        className="relative z-10 px-10 lg:px-14 py-12"
+                    >
+                        {/* Large icon */}
+                        <div
+                            className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl"
+                            style={{ backgroundColor: C.accentSoft }}
+                        >
+                            <current.icon
+                                className="h-7 w-7"
+                                style={{ color: C.accent }}
+                                strokeWidth={1.75}
+                            />
+                        </div>
+
+                        {/* Title */}
+                        <h3
+                            className="text-2xl lg:text-3xl font-semibold tracking-tight mb-4"
+                            style={{ color: C.text }}
+                        >
+                            {current.title}
+                        </h3>
+
+                        {/* Description */}
+                        <p
+                            className="text-base leading-relaxed max-w-lg"
+                            style={{ color: C.textSoft }}
+                        >
+                            {current.desc}
+                        </p>
+
+                        {/* Decorative accent line */}
+                        <motion.div
+                            className="mt-8 h-px w-16"
+                            style={{ backgroundColor: C.accent }}
+                            initial={{ scaleX: 0 }}
+                            animate={{ scaleX: 1 }}
+                            transition={{ duration: 0.4, delay: 0.15, ease: EASE_OUT }}
+                        />
+                    </motion.div>
+                </AnimatePresence>
+            </div>
         </div>
     );
 }
 
-const VISUALS = [
-    SchedulingVisual,
-    AutoPlugVisual,
-    AnalyticsVisual,
-    TemplatesVisual,
-    TwitterVisual,
-];
+/* ── Mobile: Accordion-style stacked features ───────────────── */
 
-// ─── Feature Card ─────────────────────────────────────────────────
-
-function FeatureCard({ feature, index }: { feature: typeof features[number]; index: number }) {
-    const Visual = VISUALS[index];
-    const isWide = feature.className?.includes("col-span-2");
-    const isFull = feature.className?.includes("col-span-3");
+function MobileFeatureItem({ feature, index }: { feature: typeof features[number]; index: number }) {
+    const [open, setOpen] = useState(index === 0);
+    const num = String(index + 1).padStart(2, "0");
 
     return (
         <motion.div
-            custom={index}
-            variants={cardVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            className={cn(
-                "group relative flex flex-col rounded-2xl border overflow-hidden transition-colors duration-300",
-                isFull ? "md:col-span-3" : isWide ? "md:col-span-2" : "md:col-span-1",
-            )}
-            style={{
-                backgroundColor: C.surface,
-                borderColor: C.border,
-            }}
-            whileHover={{
-                borderColor: C.accent,
-                transition: { duration: 0.3 },
-            }}
+            initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, delay: index * 0.06, ease: EASE_OUT }}
+            className="border-b last:border-b-0"
+            style={{ borderColor: C.border }}
         >
-            {/* Visual area */}
-            <div
-                className="relative h-[140px] w-full flex items-center justify-center overflow-hidden"
-                style={{
-                    background: `linear-gradient(180deg, ${C.bgAlt} 0%, ${C.surface} 100%)`,
-                }}
+            <button
+                onClick={() => setOpen((v) => !v)}
+                className="flex w-full items-center gap-4 py-5 text-left cursor-pointer"
             >
-                {Visual && <Visual />}
-            </div>
+                {/* Number */}
+                <span
+                    className="text-[11px] font-mono font-medium tracking-wider shrink-0"
+                    style={{ color: open ? C.accent : C.textMuted }}
+                >
+                    {num}
+                </span>
 
-            {/* Content */}
-            <div className="flex flex-1 flex-col p-5 pt-4">
-                <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2.5">
-                        <div
-                            className="flex h-7 w-7 items-center justify-center rounded-lg transition-colors duration-300"
-                            style={{ backgroundColor: C.accentSoft }}
-                        >
-                            <feature.icon
-                                className="h-3.5 w-3.5"
-                                style={{ color: C.accent }}
-                                strokeWidth={1.5}
-                            />
-                        </div>
-                        <h3
-                            className="text-sm font-medium"
-                            style={{ color: C.text }}
-                        >
-                            {feature.title}
-                        </h3>
-                    </div>
-                    <ArrowUpRight
-                        className="h-3.5 w-3.5 opacity-0 -translate-x-1 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0"
-                        style={{ color: C.accent }}
-                        strokeWidth={1.5}
+                {/* Icon */}
+                <div
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors duration-200"
+                    style={{ backgroundColor: open ? C.accentSoft : C.surface }}
+                >
+                    <feature.icon
+                        className="h-4 w-4"
+                        style={{ color: open ? C.accent : C.textMuted }}
+                        strokeWidth={1.75}
                     />
                 </div>
-                <p
-                    className="text-[13px] leading-relaxed"
-                    style={{ color: C.textSoft }}
-                >
-                    {feature.desc}
-                </p>
-            </div>
 
-            {/* Hover glow */}
-            <div
-                className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                style={{
-                    background: `radial-gradient(ellipse at 50% 0%, ${C.accentSoft} 0%, transparent 70%)`,
-                }}
-            />
+                {/* Title */}
+                <span
+                    className="flex-1 text-sm font-medium transition-colors duration-200"
+                    style={{ color: open ? C.text : C.textSoft }}
+                >
+                    {feature.title}
+                </span>
+
+                {/* Toggle indicator */}
+                <motion.span
+                    animate={{ rotate: open ? 45 : 0 }}
+                    transition={spring}
+                    className="text-lg shrink-0 leading-none"
+                    style={{ color: C.textMuted }}
+                >
+                    +
+                </motion.span>
+            </button>
+
+            <AnimatePresence initial={false}>
+                {open && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: EASE_OUT }}
+                        className="overflow-hidden"
+                    >
+                        <p
+                            className="pb-5 pl-[calc(11px+1rem+36px+1rem)] pr-4 text-sm leading-relaxed"
+                            style={{ color: C.textSoft }}
+                        >
+                            {feature.desc}
+                        </p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 }
 
-// ─── Features Section ─────────────────────────────────────────────
+/* ── Main Section ───────────────────────────────────────────── */
 
 export function Features() {
     return (
-        <section id="features" className="py-16 md:py-24">
-            {/* Header */}
-            <div className="mb-12 text-center">
+        <section id="features" className="py-20 md:py-28">
+            {/* Editorial header */}
+            <div className="mb-14">
                 <motion.div
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-medium tracking-wider uppercase"
-                    style={{
-                        borderColor: C.border,
-                        color: C.textMuted,
-                    }}
+                    transition={{ duration: 0.5, ease: EASE_OUT }}
+                    className="flex items-center gap-3 mb-5"
                 >
-                    <Sparkles className="h-3 w-3" style={{ color: C.accent }} />
-                    Power Tools
+                    <div className="w-8 h-px" style={{ backgroundColor: C.accent }} />
+                    <span
+                        className="text-[11px] font-medium tracking-widest uppercase"
+                        style={{ color: C.textMuted }}
+                    >
+                        Features
+                    </span>
                 </motion.div>
+
                 <motion.h2
                     initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.5, delay: 0.05, ease: EASE_OUT }}
                     className="font-serif font-medium tracking-tight leading-[1.1]"
                     style={{
                         color: C.text,
@@ -364,19 +260,34 @@ export function Features() {
                     initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                    className="mx-auto mt-3 max-w-md text-sm leading-relaxed"
+                    transition={{ duration: 0.5, delay: 0.1, ease: EASE_OUT }}
+                    className="mt-3 max-w-md text-sm leading-relaxed"
                     style={{ color: C.textSoft }}
                 >
                     Everything you need to schedule, engage, and convert — all on autopilot.
                 </motion.p>
             </div>
 
-            {/* Bento Grid */}
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                {features.map((feature, i) => (
-                    <FeatureCard key={i} feature={feature} index={i} />
-                ))}
+            {/* Desktop: Interactive explorer */}
+            <motion.div
+                initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
+                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.6, ease: EASE_OUT }}
+            >
+                <FeatureExplorer />
+            </motion.div>
+
+            {/* Mobile: Accordion */}
+            <div
+                className="md:hidden rounded-xl border"
+                style={{ borderColor: C.border, backgroundColor: C.surface }}
+            >
+                <div className="px-4">
+                    {features.map((feature, i) => (
+                        <MobileFeatureItem key={feature.title} feature={feature} index={i} />
+                    ))}
+                </div>
             </div>
         </section>
     );

@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { cn } from "@/lib/utils";
 import { faqs, C } from "@/lib/landing-data";
 
+const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const spring = { type: "spring" as const, stiffness: 300, damping: 30 };
 
-const FAQItem = ({
+function FAQItem({
     q,
     a,
     index,
@@ -20,120 +20,69 @@ const FAQItem = ({
     index: number;
     isOpen: boolean;
     onToggle: () => void;
-}) => {
+}) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{
-                duration: 0.5,
-                delay: index * 0.08,
-                ease: [0.21, 0.47, 0.32, 0.98],
+                duration: 0.4,
+                delay: index * 0.06,
+                ease: EASE_OUT,
             }}
         >
-            <motion.div
-                animate={{
-                    backgroundColor: isOpen ? C.surface : "transparent",
-                    borderColor: isOpen ? C.border : "transparent",
-                }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
-                className="overflow-hidden rounded-xl border"
+            <button
+                onClick={onToggle}
+                className="flex w-full items-center justify-between gap-4 py-5 text-left cursor-pointer"
             >
-                <button
-                    onClick={onToggle}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                <span
+                    className="text-[15px] font-medium leading-snug transition-colors duration-200 sm:text-base"
+                    style={{ color: isOpen ? C.accent : C.text }}
                 >
-                    <span
-                        className="text-[15px] font-medium leading-snug transition-colors duration-200 sm:text-base"
-                        style={{ color: isOpen ? C.accent : C.text }}
-                    >
-                        {q}
-                    </span>
+                    {q}
+                </span>
+                <motion.div
+                    animate={{ rotate: isOpen ? 45 : 0 }}
+                    transition={spring}
+                    className="flex h-6 w-6 shrink-0 items-center justify-center"
+                >
+                    <Plus
+                        className="h-4 w-4"
+                        style={{ color: isOpen ? C.accent : C.textMuted }}
+                        strokeWidth={1.5}
+                    />
+                </motion.div>
+            </button>
 
+            <AnimatePresence initial={false}>
+                {isOpen && (
                     <motion.div
-                        animate={{ rotate: isOpen ? 90 : 0 }}
-                        transition={spring}
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-                        style={{
-                            backgroundColor: isOpen ? C.accentSoft : C.surfaceHover,
+                        key="answer"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{
+                            height: spring,
+                            opacity: { duration: 0.2, ease: "easeInOut" },
                         }}
+                        className="overflow-hidden"
                     >
-                        <AnimatePresence mode="wait" initial={false}>
-                            {isOpen ? (
-                                <motion.span
-                                    key="minus"
-                                    initial={{ opacity: 0, scale: 0.4 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.4 }}
-                                    transition={{ duration: 0.12 }}
-                                    className="flex items-center justify-center"
-                                >
-                                    <Minus
-                                        className="h-3.5 w-3.5"
-                                        style={{ color: C.accent }}
-                                    />
-                                </motion.span>
-                            ) : (
-                                <motion.span
-                                    key="plus"
-                                    initial={{ opacity: 0, scale: 0.4 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.4 }}
-                                    transition={{ duration: 0.12 }}
-                                    className="flex items-center justify-center"
-                                >
-                                    <Plus
-                                        className="h-3.5 w-3.5"
-                                        style={{ color: C.textSoft }}
-                                    />
-                                </motion.span>
-                            )}
-                        </AnimatePresence>
-                    </motion.div>
-                </button>
-
-                <AnimatePresence initial={false}>
-                    {isOpen && (
-                        <motion.div
-                            key="answer"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{
-                                height: spring,
-                                opacity: { duration: 0.2, ease: "easeInOut" },
-                            }}
-                            className="overflow-hidden"
+                        <p
+                            className="pb-5 text-sm leading-relaxed sm:text-[15px] sm:leading-7 pr-10"
+                            style={{ color: C.textSoft }}
                         >
-                            <motion.div
-                                initial={{ scaleX: 0 }}
-                                animate={{ scaleX: 1 }}
-                                exit={{ scaleX: 0 }}
-                                transition={{ duration: 0.3, ease: "easeInOut" }}
-                                className="mx-5 origin-left"
-                                style={{
-                                    height: "1px",
-                                    backgroundColor: C.border,
-                                }}
-                            />
-                            <motion.p
-                                initial={{ y: -6 }}
-                                animate={{ y: 0 }}
-                                exit={{ y: -6 }}
-                                transition={{ duration: 0.25, ease: "easeOut" }}
-                                className="px-5 pb-5 pt-3.5 text-sm leading-relaxed sm:text-[15px] sm:leading-7"
-                                style={{ color: C.textSoft }}
-                            >
-                                {a}
-                            </motion.p>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </motion.div>
+                            {a}
+                        </p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Divider */}
+            <div className="h-px w-full" style={{ backgroundColor: C.border }} />
         </motion.div>
     );
-};
+}
 
 export function FAQ() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -143,23 +92,46 @@ export function FAQ() {
     };
 
     return (
-        <section className="py-12 md:py-16">
+        <section className="py-20 md:py-28">
             <div className="mx-auto max-w-2xl">
-                <motion.h2
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-                    className="mb-16 text-center font-serif font-medium tracking-[-0.02em]"
-                    style={{ 
-                        color: C.text,
-                        fontSize: "clamp(24px, 4vw, 36px)",
-                    }}
-                >
-                    Common questions
-                </motion.h2>
+                {/* Editorial header */}
+                <div className="mb-10">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, ease: EASE_OUT }}
+                        className="flex items-center gap-3 mb-5"
+                    >
+                        <div className="w-8 h-px" style={{ backgroundColor: C.accent }} />
+                        <span
+                            className="text-[11px] font-medium tracking-widest uppercase"
+                            style={{ color: C.textMuted }}
+                        >
+                            FAQ
+                        </span>
+                    </motion.div>
 
-                <div className="space-y-2">
+                    <motion.h2
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.05, ease: EASE_OUT }}
+                        className="font-serif font-medium tracking-[-0.02em]"
+                        style={{
+                            color: C.text,
+                            fontSize: "clamp(24px, 4vw, 36px)",
+                        }}
+                    >
+                        Common questions
+                    </motion.h2>
+                </div>
+
+                {/* Top divider */}
+                <div className="h-px w-full" style={{ backgroundColor: C.border }} />
+
+                {/* Items */}
+                <div>
                     {faqs.map((faq, i) => (
                         <FAQItem
                             key={i}

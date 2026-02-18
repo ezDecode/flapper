@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Check, Sparkles } from "lucide-react";
+import { Check } from "lucide-react";
 
 import { plans, C } from "@/lib/landing-data";
 
@@ -10,7 +10,9 @@ interface PricingProps {
     onOpenAuth: (tab: "login" | "register") => void;
 }
 
-const ANNUAL_DISCOUNT = 0.8; // 20% off
+const ANNUAL_DISCOUNT = 0.8;
+const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const spring = { type: "spring" as const, stiffness: 300, damping: 30 };
 
 function getPrice(base: string, isAnnual: boolean): string {
     const num = parseInt(base.replace("$", ""), 10);
@@ -28,42 +30,58 @@ export function Pricing({ onOpenAuth }: PricingProps) {
     const [isAnnual, setIsAnnual] = useState(false);
 
     return (
-        <section id="pricing" className="py-12 md:py-16">
-            {/* Header */}
-            <div className="mb-6 text-center">
-                <div
-                    className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-medium tracking-wide uppercase"
-                    style={{
-                        borderColor: C.accent,
-                        color: C.accent,
-                        background: C.accentSoft,
-                    }}
+        <section id="pricing" className="py-20 md:py-28">
+            {/* Editorial header */}
+            <div className="mb-14">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, ease: EASE_OUT }}
+                    className="flex items-center gap-3 mb-5"
                 >
-                    <Sparkles className="h-3.5 w-3.5" />
-                    Pricing
-                </div>
-                <h2
+                    <div
+                        className="w-8 h-px"
+                        style={{ backgroundColor: C.accent }}
+                    />
+                    <span
+                        className="text-[11px] font-medium tracking-widest uppercase"
+                        style={{ color: C.textMuted }}
+                    >
+                        Pricing
+                    </span>
+                </motion.div>
+
+                <motion.h2
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.05, ease: EASE_OUT }}
                     className="font-serif font-medium tracking-[-0.02em] leading-[1.1]"
-                    style={{ 
+                    style={{
                         color: C.text,
                         fontSize: "clamp(24px, 4vw, 36px)",
                     }}
                 >
                     Simple, transparent pricing
-                </h2>
-                <p
-                    className="mx-auto mt-4 max-w-md text-base font-normal leading-relaxed"
+                </motion.h2>
+                <motion.p
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.1, ease: EASE_OUT }}
+                    className="mt-3 max-w-md text-sm leading-relaxed"
                     style={{ color: C.textSoft }}
                 >
                     Start free — no credit card needed. Upgrade only when Flapr
                     proves its value.
-                </p>
+                </motion.p>
             </div>
 
-            {/* Monthly / Annual toggle */}
-            <div className="mb-16 flex items-center justify-center gap-3">
+            {/* Billing toggle */}
+            <div className="mb-12 flex items-center justify-center gap-3">
                 <span
-                    className="text-sm font-medium"
+                    className="text-sm font-medium transition-colors duration-200"
                     style={{ color: isAnnual ? C.textMuted : C.text }}
                 >
                     Monthly
@@ -80,233 +98,222 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                 >
                     <motion.div
                         className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full"
-                        style={{ background: "hsl(var(--text))" }}
+                        style={{ background: isAnnual ? "white" : C.text }}
                         animate={{
                             left: isAnnual
                                 ? "calc(100% - 1.25rem - 2px)"
                                 : "2px",
                         }}
-                        transition={{
-                            type: "spring",
-                            stiffness: 500,
-                            damping: 30,
-                        }}
+                        transition={spring}
                     />
                 </button>
                 <span
-                    className="text-sm font-medium"
+                    className="text-sm font-medium transition-colors duration-200"
                     style={{ color: isAnnual ? C.text : C.textMuted }}
                 >
-                    Annual{" "}
-                    <span
-                        className="ml-1 rounded-full px-2 py-0.5 text-[11px] font-medium"
-                        style={{ background: C.warmSoft, color: C.warm }}
-                    >
-                        Save 20%
-                    </span>
+                    Annual
+                    <AnimatePresence>
+                        {isAnnual && (
+                            <motion.span
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={spring}
+                                className="ml-1.5 inline-block rounded-full px-2 py-0.5 text-[11px] font-medium"
+                                style={{
+                                    color: C.accent,
+                                    backgroundColor: C.accentSoft,
+                                }}
+                            >
+                                save 20%
+                            </motion.span>
+                        )}
+                    </AnimatePresence>
                 </span>
             </div>
 
             {/* Cards */}
-            <div className="mx-auto grid max-w-2xl gap-6 md:grid-cols-2">
+            <div className="mx-auto grid max-w-3xl gap-5 md:grid-cols-2">
                 {plans.map((plan, i) => {
                     const isPro = plan.highlighted;
                     const displayPrice = getPrice(plan.price, isAnnual);
                     const displayPeriod = getPeriod(plan.period, isAnnual);
 
-                    const card = (
-                        <div
-                            className="flex h-full flex-col rounded-xl p-6 md:p-8"
+                    return (
+                        <motion.div
+                            key={plan.name}
+                            initial={{
+                                opacity: 0,
+                                y: 24,
+                                filter: "blur(4px)",
+                            }}
+                            whileInView={{
+                                opacity: 1,
+                                y: 0,
+                                filter: "blur(0px)",
+                            }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{
+                                duration: 0.5,
+                                delay: i * 0.1,
+                                ease: EASE_OUT,
+                            }}
+                            className="relative flex flex-col overflow-hidden rounded-2xl border"
                             style={{
-                                background: C.surface,
+                                borderColor: isPro ? C.accent : C.border,
+                                backgroundColor: C.surface,
+                                boxShadow: isPro
+                                    ? `0 0 0 1px ${C.accent}, 0 8px 32px -8px hsla(var(--primary) / 0.12)`
+                                    : undefined,
                             }}
                         >
-                            {/* Badge */}
+                            {/* Accent top bar for Pro */}
                             {isPro && (
                                 <div
-                                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-medium tracking-wide uppercase shadow-lg"
+                                    className="h-1"
                                     style={{
-                                        background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
-                                        color: "hsl(var(--primary-foreground))",
-                                        boxShadow: `0 4px 14px ${C.accentSoft}`,
+                                        background: `linear-gradient(90deg, ${C.accent}, ${C.accentHover})`,
+                                    }}
+                                />
+                            )}
+
+                            {/* Most popular badge */}
+                            {isPro && (
+                                <div
+                                    className="mx-6 mt-6 md:mx-8 md:mt-8 mb-0 w-fit rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider"
+                                    style={{
+                                        backgroundColor: C.accentSoft,
+                                        color: C.accent,
                                     }}
                                 >
                                     Most popular
                                 </div>
                             )}
 
-                            {/* Plan name */}
-                            <h3
-                                className="text-sm font-medium tracking-wide uppercase"
-                                style={{
-                                    color: isPro ? C.accent : C.textMuted,
-                                }}
-                            >
-                                {plan.name}
-                            </h3>
-
-                            {/* Price */}
-                            <div className="mt-5 flex items-end gap-1">
-                                <AnimatePresence mode="popLayout">
-                                    <motion.span
-                                        key={displayPrice}
-                                        className="font-medium tracking-tight"
-                                        style={{ 
-                                            color: C.text,
-                                            fontSize: "clamp(28px, 5vw, 36px)",
-                                        }}
-                                        initial={{ y: 12, opacity: 0, filter: "blur(4px)" }}
-                                        animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                                        exit={{ y: -12, opacity: 0, filter: "blur(4px)" }}
-                                        transition={{
-                                            type: "spring",
-                                            stiffness: 300,
-                                            damping: 25,
-                                        }}
-                                    >
-                                        {displayPrice}
-                                    </motion.span>
-                                </AnimatePresence>
-                                <span
-                                    className="mb-1.5 text-sm font-normal"
-                                    style={{ color: C.textMuted }}
-                                >
-                                    {displayPeriod}
-                                </span>
-                            </div>
-
-                            {/* Struck-through original price when annual */}
-                            {isPro && isAnnual && (
-                                <span
-                                    className="mt-1 text-sm line-through"
-                                    style={{ color: C.textMuted }}
-                                >
-                                    {plan.price}/mo
-                                </span>
-                            )}
-
-                            {/* Description */}
-                            <p
-                                className="mt-2 text-sm font-normal leading-relaxed"
-                                style={{ color: C.textSoft }}
-                            >
-                                {plan.desc}
-                            </p>
-
-                            {/* Divider */}
                             <div
-                                className="my-7 h-px w-full"
-                                style={{ background: C.border }}
-                            />
+                                className={`flex flex-1 flex-col p-6 md:p-8 ${isPro ? "pt-4 md:pt-4" : ""}`}
+                            >
+                                {/* Plan name */}
+                                <h3
+                                    className="text-xs font-medium tracking-widest uppercase"
+                                    style={{
+                                        color: isPro ? C.accent : C.textMuted,
+                                    }}
+                                >
+                                    {plan.name}
+                                </h3>
 
-                            {/* Features */}
-                            <ul className="mb-8 flex-1 space-y-3.5">
-                                {plan.features.map((f) => (
-                                    <li
-                                        key={f}
-                                        className="flex items-start gap-3 text-sm font-normal leading-snug"
-                                        style={{ color: C.textSoft }}
-                                    >
-                                        <span
-                                            className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                                {/* Price */}
+                                <div className="mt-5 flex items-baseline gap-1.5">
+                                    <AnimatePresence mode="popLayout">
+                                        <motion.span
+                                            key={displayPrice}
+                                            className="font-semibold tracking-tight"
                                             style={{
-                                                background: isPro
-                                                    ? C.accentSoft
-                                                    : C.surfaceHover,
+                                                color: C.text,
+                                                fontSize:
+                                                    "clamp(32px, 5vw, 40px)",
+                                                lineHeight: 1,
                                             }}
+                                            initial={{
+                                                y: 12,
+                                                opacity: 0,
+                                                filter: "blur(4px)",
+                                            }}
+                                            animate={{
+                                                y: 0,
+                                                opacity: 1,
+                                                filter: "blur(0px)",
+                                            }}
+                                            exit={{
+                                                y: -12,
+                                                opacity: 0,
+                                                filter: "blur(4px)",
+                                            }}
+                                            transition={spring}
+                                        >
+                                            {displayPrice}
+                                        </motion.span>
+                                    </AnimatePresence>
+                                    <span
+                                        className="text-sm"
+                                        style={{ color: C.textMuted }}
+                                    >
+                                        {displayPeriod}
+                                    </span>
+                                </div>
+
+                                {/* Description */}
+                                <p
+                                    className="mt-2 text-sm leading-relaxed"
+                                    style={{ color: C.textSoft }}
+                                >
+                                    {plan.desc}
+                                </p>
+
+                                {/* Divider */}
+                                <div
+                                    className="my-6 h-px w-full"
+                                    style={{ background: C.border }}
+                                />
+
+                                {/* Features */}
+                                <ul className="mb-8 flex-1 space-y-3">
+                                    {plan.features.map((f) => (
+                                        <li
+                                            key={f}
+                                            className="flex items-start gap-3 text-sm leading-snug"
+                                            style={{ color: C.textSoft }}
                                         >
                                             <Check
-                                                className="h-3 w-3"
-                                                style={{
-                                                    color: isPro
-                                                        ? C.accent
-                                                        : C.textSoft,
-                                                }}
+                                                className="mt-0.5 h-4 w-4 shrink-0"
+                                                style={{ color: C.accent }}
+                                                strokeWidth={2}
                                             />
-                                        </span>
-                                        {f}
-                                    </li>
-                                ))}
-                            </ul>
+                                            {f}
+                                        </li>
+                                    ))}
+                                </ul>
 
-                            {/* CTA */}
-                            <button
-                            onClick={() => onOpenAuth("register")}
-                            className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors cursor-pointer hover:bg-white/5 active:scale-[0.96]"
-                                style={
-                                    isPro
-                                        ? {
-                                              background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
-                                              color: "hsl(var(--primary-foreground))",
-                                              boxShadow: "0 4px 12px hsl(var(--accent-soft))",
-                                          }
-                                        : {
-                                              background: "transparent",
-                                              border: `1px solid ${C.border}`,
-                                              color: C.textSoft,
-                                          }
-                                }
-                                onMouseEnter={(e) => {
-                                    if (!isPro)
-                                        e.currentTarget.style.borderColor =
-                                            C.textSoft;
-                                }}
-                                onMouseLeave={(e) => {
-                                    if (!isPro)
-                                        e.currentTarget.style.borderColor =
-                                            C.border;
-                                }}
-                            >
-                                {plan.cta}
-                            </button>
-                        </div>
-                    );
-
-                    return (
-                        <motion.div
-                            key={plan.name}
-                            className="relative"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.3 }}
-                            transition={{
-                                duration: 0.5,
-                                delay: i * 0.15,
-                                ease: [0.25, 0.1, 0.25, 1],
-                            }}
-                        >
-                            {isPro ? (
-                                /* Solid green border for Pro */
-                                <div
-                                    className="rounded-xl border-2"
-                                    style={{
-                                        borderColor: C.accent,
-                                    }}
+                                {/* CTA */}
+                                <motion.button
+                                    onClick={() => onOpenAuth("register")}
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    transition={spring}
+                                    className="w-full cursor-pointer rounded-full px-4 py-3 text-sm font-medium transition-colors duration-200"
+                                    style={
+                                        isPro
+                                            ? {
+                                                  background: C.accent,
+                                                  color: "hsl(var(--primary-foreground))",
+                                              }
+                                            : {
+                                                  background: "transparent",
+                                                  border: `1px solid ${C.border}`,
+                                                  color: C.textSoft,
+                                              }
+                                    }
                                 >
-                                    {card}
-                                </div>
-                            ) : (
-                                <div
-                                    className="rounded-xl border"
-                                    style={{
-                                        borderColor: C.border,
-                                    }}
-                                >
-                                    {card}
-                                </div>
-                            )}
+                                    {plan.cta}
+                                </motion.button>
+                            </div>
                         </motion.div>
                     );
                 })}
             </div>
 
             {/* Footer note */}
-            <p
-                className="mt-10 text-center text-sm font-normal"
+            <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3, ease: EASE_OUT }}
+                className="mt-10 text-center text-sm"
                 style={{ color: C.textMuted }}
             >
-                All plans include SSL encryption & 99.9% uptime SLA.
-            </p>
+                All plans include SSL encryption &amp; 99.9% uptime SLA.
+            </motion.p>
         </section>
     );
 }

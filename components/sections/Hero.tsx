@@ -30,126 +30,115 @@ export function PlatformCycler() {
     );
 }
 
-// ─── Merged Rotating Line ───────────────────────────────────────
-// ─── Merged Rotating Line ───────────────────────────────────────
-// ─── Merged Rotating Line ───────────────────────────────────────
-// ─── Merged Rotating Line ───────────────────────────────────────
-const INTERVAL = 3000;
+// ─── Easing curves (Emil Kowalski) ─────────────────────────────
+const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const spring = { type: "spring" as const, stiffness: 200, damping: 25 };
 
-// Map icons to steps (assuming 3 steps in order)
+// ─── Step icons ────────────────────────────────────────────────
 const STEP_ICONS = [PenTool, Zap, Rocket];
 
-// ─── Simple Notification Pill ─────────────────────────────────────
-
-function SimpleWorkflow() {
-    const [index, setIndex] = useState(0);
-    const [isHovered, setIsHovered] = useState(false);
+// ─── Horizontal Stepper ────────────────────────────────────────
+function WorkflowStepper() {
+    const [active, setActive] = useState(0);
 
     useEffect(() => {
-        if (isHovered) return;
         const timer = setInterval(() => {
-            setIndex((prev) => (prev + 1) % steps.length);
-        }, 3500); // Slower cycle for readability
+            setActive((prev) => (prev + 1) % steps.length);
+        }, 3000);
         return () => clearInterval(timer);
-    }, [isHovered]);
-
-    const currentStep = steps[index];
-    const Icon = STEP_ICONS[index];
+    }, []);
 
     return (
-        <div 
-            className="mt-16 flex justify-center"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
-            <motion.div
-                layout
-                className="relative flex items-center gap-4 rounded-full border px-2 py-2 pr-8 backdrop-blur-md shadow-2xl transition-colors"
-                style={{ 
-                    background: `${C.surface}E6`, // 90% opacity
-                    borderColor: C.border,
-                    boxShadow: "0 0 0 1px rgba(0,0,0,0.4), 0 8px 32px -8px rgba(0,0,0,0.5)" 
-                }}
-            >
-                {/* Icon Circle */}
-                <div 
-                    className="relative flex h-12 w-12 items-center justify-center rounded-full overflow-hidden"
-                    style={{ background: C.surfaceHover, borderColor: C.border }}
-                >
-                     <AnimatePresence mode="popLayout" initial={false}>
-                        <motion.div
-                            key={index}
-                            className="absolute inset-0 flex items-center justify-center"
-                            initial={{ scale: 0.5, opacity: 0, rotate: -45 }}
-                            animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                            exit={{ scale: 0.5, opacity: 0, rotate: 45 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        <div className="mt-20 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-px rounded-xl border overflow-hidden" style={{ borderColor: C.border }}>
+                {steps.map((step, i) => {
+                    const Icon = STEP_ICONS[i];
+                    const isActive = i === active;
+                    return (
+                        <button
+                            key={i}
+                            onClick={() => setActive(i)}
+                            className="relative flex flex-col items-start gap-2 p-5 text-left transition-colors duration-200 cursor-pointer"
+                            style={{
+                                backgroundColor: isActive ? C.surface : "transparent",
+                            }}
                         >
-                            <Icon className="h-5 w-5" style={{ color: C.text }} />
-                        </motion.div>
-                    </AnimatePresence>
-                    
-                    {/* Subtle Progress Ring */}
-                    {!isHovered && (
-                        <svg className="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 48 48">
-                            <motion.circle
-                                key={index}
-                                cx="24"
-                                cy="24"
-                                r="23"
-                                fill="none"
-                                stroke={C.accent}
-                                strokeWidth="2"
-                                strokeDasharray="144.5" // 2 * PI * 23
-                                strokeDashoffset="144.5"
-                                initial={{ strokeDashoffset: 144.5 }}
-                                animate={{ strokeDashoffset: 0 }}
-                                transition={{ duration: 3.5, ease: "linear" }}
-                                className="opacity-80 drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]"
-                                strokeLinecap="round"
-                            />
-                        </svg>
-                    )}
-                </div>
+                            <div className="flex items-center gap-2.5">
+                                <Icon
+                                    className="h-4 w-4 shrink-0"
+                                    style={{ color: isActive ? C.accent : C.textMuted }}
+                                    strokeWidth={1.5}
+                                />
+                                <span
+                                    className="text-sm font-medium"
+                                    style={{ color: isActive ? C.text : C.textMuted }}
+                                >
+                                    {step.title}
+                                </span>
+                            </div>
+                            <p
+                                className="text-[13px] leading-relaxed"
+                                style={{ color: isActive ? C.textSoft : C.textMuted }}
+                            >
+                                {step.description}
+                            </p>
 
-                {/* Text Content */}
-                <div className="flex flex-col items-start justify-center h-10 overflow-hidden text-left min-w-[200px]">
-                    <AnimatePresence mode="popLayout" initial={false}>
-                        <motion.div
-                            key={index}
-                            initial={{ y: 20, opacity: 0, filter: "blur(4px)" }}
-                            animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                            exit={{ y: -20, opacity: 0, filter: "blur(4px)" }}
-                            transition={{ type: "spring", stiffness: 300, damping: 24, mass: 0.8 }}
-                            className="flex flex-col"
-                        >
-                            <span className="text-sm font-medium leading-tight" style={{ color: C.text }}>
-                                {currentStep.title}
-                            </span>
-                            <span className="text-xs leading-tight mt-0.5" style={{ color: C.textMuted }}>
-                                {currentStep.description}
-                            </span>
-                        </motion.div>
-                    </AnimatePresence>
-                </div>
-            </motion.div>
+                            {/* Progress bar */}
+                            {isActive && (
+                                <motion.div
+                                    className="absolute bottom-0 left-0 right-0 h-[2px] origin-left"
+                                    style={{ backgroundColor: C.accent }}
+                                    initial={{ scaleX: 0 }}
+                                    animate={{ scaleX: 1 }}
+                                    key={active}
+                                    transition={{ duration: 3, ease: "linear" }}
+                                />
+                            )}
+                        </button>
+                    );
+                })}
+            </div>
         </div>
     );
 }
 
-// ─── Staggered fade-up ─────────────────────────────────────
-const spring = { type: "spring", damping: 30, stiffness: 200 } as const;
-
-const fadeUp = (delay: number = 0) => ({
-    initial: { opacity: 0, y: 24, filter: "blur(8px)" },
-    animate: {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        transition: { ...spring, delay },
-    },
-    viewport: { once: true },
-});
+// ─── Headline word-by-word reveal ──────────────────────────────
+function AnimatedLine({
+    children,
+    delay = 0,
+    style,
+    className = "",
+}: {
+    children: string;
+    delay?: number;
+    style?: React.CSSProperties;
+    className?: string;
+}) {
+    const words = children.split(" ");
+    return (
+        <span className={className} style={style}>
+            {words.map((word, i) => (
+                <motion.span
+                    key={i}
+                    className="inline-block"
+                    initial={{ opacity: 0, y: 16, filter: "blur(4px)" }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                        filter: "blur(0px)",
+                    }}
+                    transition={{
+                        ...spring,
+                        delay: delay + i * 0.05,
+                    }}
+                >
+                    {word}
+                    {i < words.length - 1 ? "\u00A0" : ""}
+                </motion.span>
+            ))}
+        </span>
+    );
+}
 
 interface HeroProps {
     onOpenAuth: (tab: "login" | "register") => void;
@@ -157,55 +146,55 @@ interface HeroProps {
 
 export function Hero({ onOpenAuth }: HeroProps) {
     return (
-        <section className="relative flex flex-col items-center justify-center pt-24 pb-8 text-center md:pt-32 md:pb-12 overflow-hidden">
-            {/* Badge pill */}
+        <section className="relative flex flex-col items-center justify-center pt-28 pb-8 text-center md:pt-36 md:pb-12 overflow-hidden">
+            {/* Announcement line */}
             <motion.div
-                {...fadeUp(0)}
-                className="mb-8 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-medium tracking-wider uppercase"
-                style={{
-                    borderColor: "hsl(var(--border))",
-                    color: C.accent,
-                    background: "hsl(var(--surface-hover))",
-                }}
+                initial={{ opacity: 0, scaleX: 0.6 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.6, ease: EASE_OUT }}
+                className="mb-12 flex items-center gap-4 w-full max-w-xs"
             >
-                <span className="relative flex h-2 w-2" aria-hidden>
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ backgroundColor: C.accent }} />
-                    <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: C.accent }} />
+                <div className="h-px flex-1" style={{ backgroundColor: C.border }} />
+                <span
+                    className="flex items-center gap-2 text-[11px] font-medium tracking-widest uppercase whitespace-nowrap"
+                    style={{ color: C.textMuted }}
+                >
+                    <PlatformCycler />
+                    Public beta
                 </span>
-                <PlatformCycler />
-                Now in public beta
+                <div className="h-px flex-1" style={{ backgroundColor: C.border }} />
             </motion.div>
 
             {/* Headline */}
-            <motion.h1
-                {...fadeUp(0.08)}
+            <h1
                 className="max-w-4xl font-serif font-medium tracking-[-0.03em] leading-[1.05]"
-                style={{
-                    fontSize: "clamp(32px, 6vw, 56px)", // Compact scaling
-                }}
+                style={{ fontSize: "clamp(32px, 6vw, 56px)" }}
             >
-                <span style={{ color: C.text }}>
+                <AnimatedLine delay={0.1} style={{ color: C.text }}>
                     Engage smarter.
-                </span>
+                </AnimatedLine>
                 <br />
-                <span style={{ color: C.textMuted }}>
-                    Convert on{" "}
-                </span>
-                <span style={{ color: C.accent }}>
+                <AnimatedLine delay={0.25} style={{ color: C.textMuted }}>
+                    Convert on
+                </AnimatedLine>{" "}
+                <AnimatedLine delay={0.35} style={{ color: C.accent }}>
                     autopilot.
-                </span>
-            </motion.h1>
-
-            {/* REMOVED: RotatingFeatureBadge (Powering...) */}
+                </AnimatedLine>
+            </h1>
 
             {/* CTA Buttons */}
             <motion.div
-                {...fadeUp(0.24)}
-                className="mt-10 flex flex-row items-center justify-start gap-3 sm:gap-4"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5, ease: EASE_OUT }}
+                className="mt-12 flex flex-row items-center justify-start gap-3 sm:gap-4"
             >
-                <button
+                <motion.button
                     onClick={() => onOpenAuth("register")}
-                    className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-6 text-sm font-medium transition-all cursor-pointer active:scale-[0.96]"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={spring}
+                    className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-6 text-sm font-medium cursor-pointer"
                     style={{
                         background: C.accent,
                         color: "hsl(var(--primary-foreground))",
@@ -213,21 +202,29 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 >
                     Start for free
                     <ArrowRight className="h-4 w-4" />
-                </button>
+                </motion.button>
 
-                <a
+                <motion.a
                     href="#features"
-                    className="group inline-flex h-10 items-center gap-2 rounded-full border px-6 text-sm font-medium transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={spring}
+                    className="group inline-flex h-10 items-center gap-2 rounded-full border px-6 text-sm font-medium"
                     style={{ borderColor: C.border, color: C.textSoft }}
                 >
                     See features
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </a>
+                </motion.a>
             </motion.div>
 
-            {/* Simple Workflow Pill */}
-            <motion.div {...fadeUp(0.32)} className="w-full px-4">
-                <SimpleWorkflow />
+            {/* Workflow Stepper */}
+            <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6, ease: EASE_OUT }}
+                className="w-full px-4"
+            >
+                <WorkflowStepper />
             </motion.div>
         </section>
     );
