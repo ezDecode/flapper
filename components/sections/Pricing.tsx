@@ -30,9 +30,9 @@ export function Pricing({ onOpenAuth }: PricingProps) {
     const [isAnnual, setIsAnnual] = useState(false);
 
     return (
-        <section id="pricing" className="py-20 md:py-28">
+        <section id="pricing" className="py-16 md:py-24">
             {/* Editorial header */}
-            <div className="mb-14">
+            <div className="mb-10 md:mb-14">
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -79,7 +79,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
             </div>
 
             {/* Billing toggle */}
-            <div className="mb-12 flex items-center justify-center gap-3">
+            <div className="mb-8 md:mb-12 flex items-center justify-center gap-3">
                 <span
                     className="text-sm font-medium transition-colors duration-200"
                     style={{ color: isAnnual ? C.textMuted : C.text }}
@@ -133,7 +133,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
             </div>
 
             {/* Cards */}
-            <div className="mx-auto grid max-w-3xl gap-5 md:grid-cols-2">
+            <div className="mx-auto grid max-w-3xl gap-4 md:gap-5 md:grid-cols-2">
                 {plans.map((plan, i) => {
                     const isPro = plan.highlighted;
                     const displayPrice = getPrice(plan.price, isAnnual);
@@ -212,7 +212,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                             style={{
                                                 color: C.text,
                                                 fontSize:
-                                                    "clamp(32px, 5vw, 40px)",
+                                                    "clamp(28px, 5vw, 40px)",
                                                 lineHeight: 1,
                                             }}
                                             initial={{

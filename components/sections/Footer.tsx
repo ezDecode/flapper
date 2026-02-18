@@ -16,14 +16,14 @@ export function Footer({ onOpenAuth }: FooterProps) {
     return (
         <>
             {/* ── CTA Section ─────────────────────────────── */}
-            <section className="py-20 md:py-28" style={{ backgroundColor: C.bg }}>
+            <section className="py-16 md:py-24" style={{ backgroundColor: C.bg }}>
                 {/* Top accent line */}
                 <motion.div
                     initial={{ scaleX: 0 }}
                     whileInView={{ scaleX: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: EASE_OUT }}
-                    className="h-px w-full mb-16 origin-left"
+                    className="h-px w-full mb-10 md:mb-16 origin-left"
                     style={{ backgroundColor: C.border }}
                 />
 
@@ -99,7 +99,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
             </div>
 
             {/* ── Footer ─────────────────────────────────── */}
-            <footer className="py-8" style={{ backgroundColor: C.bg }}>
+            <footer className="py-6 md:py-8" style={{ backgroundColor: C.bg }}>
                 <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
                     <p className="text-sm" style={{ color: C.textMuted }}>
                         &copy; 2026 Flapr

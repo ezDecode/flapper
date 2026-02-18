@@ -146,13 +146,13 @@ interface HeroProps {
 
 export function Hero({ onOpenAuth }: HeroProps) {
     return (
-        <section className="relative flex flex-col items-center justify-center pt-28 pb-8 text-center md:pt-36 md:pb-12 overflow-hidden">
+        <section className="relative flex flex-col items-center justify-center pt-24 pb-8 text-center md:pt-32 md:pb-12 overflow-hidden">
             {/* Announcement line */}
             <motion.div
                 initial={{ opacity: 0, scaleX: 0.6 }}
                 animate={{ opacity: 1, scaleX: 1 }}
                 transition={{ duration: 0.6, ease: EASE_OUT }}
-                className="mb-12 flex items-center gap-4 w-full max-w-[280px] sm:max-w-xs"
+                className="mb-8 md:mb-12 flex items-center gap-4 w-full max-w-[280px] sm:max-w-xs"
             >
                 <div className="h-px flex-1" style={{ backgroundColor: C.border }} />
                 <span
@@ -187,7 +187,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5, ease: EASE_OUT }}
-                className="mt-12 flex flex-row items-center justify-start gap-3 sm:gap-4"
+                className="mt-8 md:mt-12 flex flex-row items-center justify-start gap-3 sm:gap-4"
             >
                 <motion.button
                     onClick={() => onOpenAuth("register")}
@@ -222,7 +222,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6, ease: EASE_OUT }}
-                className="w-full px-4"
+                className="w-full"
             >
                 <WorkflowStepper />
             </motion.div>

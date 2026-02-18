@@ -229,10 +229,10 @@ export function NavbarWithMenu({
     };
 
     return (
-        <div className="fixed top-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
+        <div className="fixed top-3 md:top-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
             {/* biome-ignore lint/a11y/noStaticElementInteractions: Hover container for menu, not interactive content */}
             <div
-                className="pointer-events-auto relative w-full max-w-[calc(100%-2rem)] md:max-w-2xl rounded-full border border-white/[0.06] bg-surface-alt/80 backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.15),inset_0_1px_0_0_rgba(255,255,255,0.04)] transition-all duration-300 px-6 md:px-8"
+                className="pointer-events-auto relative w-full max-w-[calc(100%-1.5rem)] md:max-w-2xl rounded-full border border-white/[0.06] bg-surface-alt/80 backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.15),inset_0_1px_0_0_rgba(255,255,255,0.04)] transition-all duration-300 px-4 md:px-6"
                 onMouseLeave={handleNavbarMouseLeave}
             >
                 <div
@@ -301,7 +301,7 @@ export function NavbarWithMenu({
                         </div>
                     </LayoutGroup>
 
-                    <div className="hidden md:flex items-center gap-2">
+                    <div className="hidden md:flex items-center gap-1.5">
                         {cta}
                     </div>
 

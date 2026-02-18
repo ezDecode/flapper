@@ -107,7 +107,7 @@ function FeatureExplorer() {
             <div
                 id="feature-detail-panel"
                 role="tabpanel"
-                className="flex-1 relative min-h-[380px] flex items-start"
+                className="flex-1 relative min-h-[320px] flex items-start"
                 style={{ backgroundColor: C.bg }}
             >
                 {/* Accent gradient background */}
@@ -125,7 +125,7 @@ function FeatureExplorer() {
                         animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                         exit={{ opacity: 0, x: -20, filter: "blur(6px)" }}
                         transition={{ duration: 0.35, ease: EASE_OUT }}
-                        className="relative z-10 px-10 lg:px-14 py-12"
+                        className="relative z-10 px-8 lg:px-12 py-10"
                     >
                         {/* Large icon with subtle glow */}
                         <div
@@ -261,7 +261,7 @@ function MobileFeatureItem({ feature, index }: { feature: typeof features[number
                         className="overflow-hidden"
                     >
                         <p
-                            className="pb-5 pl-[4.25rem] pr-4 text-sm leading-relaxed"
+                            className="pb-5 pl-[3.75rem] pr-4 text-[13px] sm:text-sm leading-relaxed"
                             style={{ color: C.textSoft }}
                         >
                             {feature.desc}
@@ -277,9 +277,9 @@ function MobileFeatureItem({ feature, index }: { feature: typeof features[number
 
 export function Features() {
     return (
-        <section id="features" className="py-20 md:py-28">
+        <section id="features" className="py-16 md:py-24">
             {/* Editorial header */}
-            <div className="mb-14">
+            <div className="mb-10 md:mb-14">
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}

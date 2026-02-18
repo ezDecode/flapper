@@ -37,7 +37,7 @@ function FAQItem({
                 className="flex w-full items-center justify-between gap-4 py-5 text-left cursor-pointer"
             >
                 <span
-                    className="text-[15px] font-medium leading-snug transition-colors duration-200 sm:text-base"
+                    className="text-sm font-medium leading-snug transition-colors duration-200 sm:text-[15px]"
                     style={{ color: isOpen ? C.text : C.text }}
                 >
                     {q}
@@ -92,8 +92,8 @@ export function FAQ() {
     };
 
     return (
-        <section id="faq" className="py-20 md:py-28">
-            <div className="mx-auto max-w-2xl">
+        <section id="faq" className="py-16 md:py-24">
+            <div>
                 {/* Editorial header */}
                 <div className="mb-10">
                     <motion.div
