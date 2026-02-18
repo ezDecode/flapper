@@ -48,7 +48,7 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
-        <Zap size={16} className="text-white" />
+        <Zap size={16} className="text-[#1A1A2E]" />
         <p className="text-sm font-medium text-[#1A1A2E]">
           Auto-Plug Configuration
         </p>

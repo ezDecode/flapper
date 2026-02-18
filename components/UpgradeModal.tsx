@@ -18,8 +18,8 @@ export function UpgradeModal({ open, onClose }: Props) {
         <div className="p-6">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
-                <AlertCircle size={20} className="text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-50">
+                <AlertCircle size={20} className="text-red-600" />
               </div>
               <h2 className="text-xl font-semibold text-[#1A1A2E]">Usage limit reached</h2>
             </div>

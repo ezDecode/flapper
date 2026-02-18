@@ -54,7 +54,7 @@ export const features = [
     },
     {
         icon: Shield,
-        title: "Built for 𝕏",
+        title: "Built for Twitter",
         desc: "Deep Twitter/X integration — tweets, threads, and real-time engagement metrics. More platforms soon.",
         className: "md:col-span-3",
     },

@@ -42,11 +42,11 @@ const statusColor: Record<string, string> = {
 };
 
 const statusPillClasses: Record<string, string> = {
-  DRAFT: "bg-white/10 text-white border border-white/20",
-  SCHEDULED: "bg-white/10 text-white border border-white/20",
-  PUBLISHING: "bg-white/10 text-white border border-white/20",
-  PUBLISHED: "bg-white/10 text-white border border-white/20",
-  FAILED: "bg-white/10 text-white border border-white/20",
+  DRAFT: "bg-gray-100 text-gray-700 border border-gray-200",
+  SCHEDULED: "bg-blue-50 text-blue-700 border border-blue-200",
+  PUBLISHING: "bg-yellow-50 text-yellow-700 border border-yellow-200",
+  PUBLISHED: "bg-green-50 text-green-700 border border-green-200",
+  FAILED: "bg-red-50 text-red-700 border border-red-200",
 };
 
 export function ScheduleCalendar() {
@@ -106,9 +106,9 @@ export function ScheduleCalendar() {
             </p>
           </div>
           <div className="flex gap-2">
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-white/10 text-white border border-white/20">Scheduled</span>
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-white/10 text-white border border-white/20">Published</span>
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-white/10 text-white border border-white/20">Failed</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">Scheduled</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-50 text-green-700 border border-green-200">Published</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-red-50 text-red-700 border border-red-200">Failed</span>
           </div>
         </div>
       </div>
