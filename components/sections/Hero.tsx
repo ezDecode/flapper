@@ -49,7 +49,7 @@ function WorkflowStepper() {
     }, []);
 
     return (
-        <div className="mt-20 w-full">
+        <div className="mt-14 w-full">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-px rounded-xl border overflow-hidden" style={{ borderColor: C.border }}>
                 {steps.map((step, i) => {
                     const Icon = STEP_ICONS[i];
@@ -58,7 +58,7 @@ function WorkflowStepper() {
                         <button
                             key={i}
                             onClick={() => setActive(i)}
-                            className="relative flex flex-col items-start gap-2 p-5 text-left transition-colors duration-200 cursor-pointer"
+                            className="relative flex flex-col items-start gap-2 p-5 text-left transition-colors duration-200 cursor-pointer hover:bg-white/[0.03]"
                             style={{
                                 backgroundColor: isActive ? C.surface : "transparent",
                             }}
@@ -86,7 +86,7 @@ function WorkflowStepper() {
                             {/* Progress bar */}
                             {isActive && (
                                 <motion.div
-                                    className="absolute bottom-0 left-0 right-0 h-[2px] origin-left"
+                                    className="absolute bottom-0 left-0 right-0 h-[2px] origin-left z-10"
                                     style={{ backgroundColor: C.accent }}
                                     initial={{ scaleX: 0 }}
                                     animate={{ scaleX: 1 }}
@@ -152,7 +152,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 initial={{ opacity: 0, scaleX: 0.6 }}
                 animate={{ opacity: 1, scaleX: 1 }}
                 transition={{ duration: 0.6, ease: EASE_OUT }}
-                className="mb-12 flex items-center gap-4 w-full max-w-xs"
+                className="mb-12 flex items-center gap-4 w-full max-w-[280px] sm:max-w-xs"
             >
                 <div className="h-px flex-1" style={{ backgroundColor: C.border }} />
                 <span
@@ -209,7 +209,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.97 }}
                     transition={spring}
-                    className="group inline-flex h-10 items-center gap-2 rounded-full border px-6 text-sm font-medium"
+                    className="group inline-flex h-10 items-center gap-2 rounded-full border px-6 text-sm font-medium transition-colors duration-200 hover:bg-white/5"
                     style={{ borderColor: C.border, color: C.textSoft }}
                 >
                     See features

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Plus } from "lucide-react";
 import { features, C } from "@/lib/landing-data";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,8 @@ function FeatureExplorer() {
             <div
                 className="w-[280px] lg:w-[320px] shrink-0 flex flex-col"
                 style={{ backgroundColor: C.surface }}
+                role="tablist"
+                aria-label="Features"
             >
                 {features.map((feature, i) => {
                     const isActive = i === active;
@@ -29,13 +32,29 @@ function FeatureExplorer() {
                         <button
                             key={feature.title}
                             onClick={() => setActive(i)}
+                            role="tab"
+                            aria-selected={isActive}
+                            aria-controls="feature-detail-panel"
                             className={cn(
                                 "group relative flex items-center gap-4 px-6 py-5 text-left transition-colors duration-200 cursor-pointer",
+                                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset",
                                 i !== features.length - 1 && "border-b",
                             )}
                             style={{
                                 borderColor: C.border,
                                 backgroundColor: isActive ? C.surfaceHover : "transparent",
+                                // @ts-expect-error CSS custom property
+                                "--tw-ring-color": C.accent,
+                            }}
+                            onMouseEnter={(e) => {
+                                if (!isActive) {
+                                    e.currentTarget.style.backgroundColor = C.surfaceHover;
+                                }
+                            }}
+                            onMouseLeave={(e) => {
+                                if (!isActive) {
+                                    e.currentTarget.style.backgroundColor = "transparent";
+                                }
                             }}
                         >
                             {/* Active indicator bar */}
@@ -70,6 +89,15 @@ function FeatureExplorer() {
                                     {feature.title}
                                 </span>
                             </div>
+
+                            {/* Hover arrow indicator */}
+                            <motion.span
+                                className="ml-auto text-xs opacity-0 group-hover:opacity-60 transition-opacity duration-200 shrink-0"
+                                style={{ color: C.textMuted }}
+                                aria-hidden
+                            >
+                                →
+                            </motion.span>
                         </button>
                     );
                 })}
@@ -77,7 +105,9 @@ function FeatureExplorer() {
 
             {/* Right panel — feature detail */}
             <div
-                className="flex-1 relative min-h-[340px] flex items-center"
+                id="feature-detail-panel"
+                role="tabpanel"
+                className="flex-1 relative min-h-[380px] flex items-start"
                 style={{ backgroundColor: C.bg }}
             >
                 {/* Accent gradient background */}
@@ -97,13 +127,17 @@ function FeatureExplorer() {
                         transition={{ duration: 0.35, ease: EASE_OUT }}
                         className="relative z-10 px-10 lg:px-14 py-12"
                     >
-                        {/* Large icon */}
+                        {/* Large icon with subtle glow */}
                         <div
-                            className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl"
+                            className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl relative"
                             style={{ backgroundColor: C.accentSoft }}
                         >
+                            <div
+                                className="absolute inset-0 rounded-2xl blur-xl opacity-40"
+                                style={{ backgroundColor: C.accentSoft }}
+                            />
                             <current.icon
-                                className="h-7 w-7"
+                                className="h-7 w-7 relative z-10"
                                 style={{ color: C.accent }}
                                 strokeWidth={1.75}
                             />
@@ -125,10 +159,10 @@ function FeatureExplorer() {
                             {current.desc}
                         </p>
 
-                        {/* Decorative accent line */}
+                        {/* Decorative accent line — anchored left */}
                         <motion.div
                             className="mt-8 h-px w-16"
-                            style={{ backgroundColor: C.accent }}
+                            style={{ backgroundColor: C.accent, transformOrigin: "left" }}
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
                             transition={{ duration: 0.4, delay: 0.15, ease: EASE_OUT }}
@@ -152,16 +186,35 @@ function MobileFeatureItem({ feature, index }: { feature: typeof features[number
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.5, delay: index * 0.06, ease: EASE_OUT }}
-            className="border-b last:border-b-0"
+            className="border-b last:border-b-0 relative"
             style={{ borderColor: C.border }}
         >
+            {/* Active left accent bar for mobile */}
+            <AnimatePresence>
+                {open && (
+                    <motion.div
+                        className="absolute left-0 top-0 bottom-0 w-[2px] rounded-full"
+                        style={{ backgroundColor: C.accent }}
+                        initial={{ scaleY: 0 }}
+                        animate={{ scaleY: 1 }}
+                        exit={{ scaleY: 0 }}
+                        transition={spring}
+                    />
+                )}
+            </AnimatePresence>
+
             <button
                 onClick={() => setOpen((v) => !v)}
-                className="flex w-full items-center gap-4 py-5 text-left cursor-pointer"
+                className="flex w-full items-center gap-4 py-5 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset rounded-lg"
+                style={{
+                    // @ts-expect-error CSS custom property
+                    "--tw-ring-color": C.accent,
+                }}
+                aria-expanded={open}
             >
                 {/* Number */}
                 <span
-                    className="text-[11px] font-mono font-medium tracking-wider shrink-0"
+                    className="text-[11px] font-mono font-medium tracking-wider shrink-0 transition-colors duration-200"
                     style={{ color: open ? C.accent : C.textMuted }}
                 >
                     {num}
@@ -187,15 +240,15 @@ function MobileFeatureItem({ feature, index }: { feature: typeof features[number
                     {feature.title}
                 </span>
 
-                {/* Toggle indicator */}
-                <motion.span
-                    animate={{ rotate: open ? 45 : 0 }}
+                {/* Toggle indicator — rotating Plus icon */}
+                <motion.div
+                    animate={{ rotate: open ? 135 : 0 }}
                     transition={spring}
-                    className="text-lg shrink-0 leading-none"
-                    style={{ color: C.textMuted }}
+                    className="shrink-0 flex items-center justify-center"
+                    style={{ color: open ? C.accent : C.textMuted }}
                 >
-                    +
-                </motion.span>
+                    <Plus size={16} strokeWidth={2} />
+                </motion.div>
             </button>
 
             <AnimatePresence initial={false}>
@@ -208,7 +261,7 @@ function MobileFeatureItem({ feature, index }: { feature: typeof features[number
                         className="overflow-hidden"
                     >
                         <p
-                            className="pb-5 pl-[calc(11px+1rem+36px+1rem)] pr-4 text-sm leading-relaxed"
+                            className="pb-5 pl-[4.25rem] pr-4 text-sm leading-relaxed"
                             style={{ color: C.textSoft }}
                         >
                             {feature.desc}
@@ -261,7 +314,7 @@ export function Features() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.1, ease: EASE_OUT }}
-                    className="mt-3 max-w-md text-sm leading-relaxed"
+                    className="mt-3 max-w-lg text-sm leading-relaxed"
                     style={{ color: C.textSoft }}
                 >
                     Everything you need to schedule, engage, and convert — all on autopilot.
@@ -280,7 +333,7 @@ export function Features() {
 
             {/* Mobile: Accordion */}
             <div
-                className="md:hidden rounded-xl border"
+                className="md:hidden rounded-xl border overflow-hidden"
                 style={{ borderColor: C.border, backgroundColor: C.surface }}
             >
                 <div className="px-4">

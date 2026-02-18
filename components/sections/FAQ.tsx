@@ -38,12 +38,12 @@ function FAQItem({
             >
                 <span
                     className="text-[15px] font-medium leading-snug transition-colors duration-200 sm:text-base"
-                    style={{ color: isOpen ? C.accent : C.text }}
+                    style={{ color: isOpen ? C.text : C.text }}
                 >
                     {q}
                 </span>
                 <motion.div
-                    animate={{ rotate: isOpen ? 45 : 0 }}
+                    animate={{ rotate: isOpen ? 135 : 0 }}
                     transition={spring}
                     className="flex h-6 w-6 shrink-0 items-center justify-center"
                 >
@@ -79,7 +79,7 @@ function FAQItem({
             </AnimatePresence>
 
             {/* Divider */}
-            <div className="h-px w-full" style={{ backgroundColor: C.border }} />
+            <div className={`h-px w-full ${isOpen ? '' : ''}`} style={{ backgroundColor: C.border }} />
         </motion.div>
     );
 }
@@ -92,7 +92,7 @@ export function FAQ() {
     };
 
     return (
-        <section className="py-20 md:py-28">
+        <section id="faq" className="py-20 md:py-28">
             <div className="mx-auto max-w-2xl">
                 {/* Editorial header */}
                 <div className="mb-10">

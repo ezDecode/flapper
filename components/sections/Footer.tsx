@@ -28,6 +28,21 @@ export function Footer({ onOpenAuth }: FooterProps) {
                 />
 
                 <div className="max-w-lg">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, ease: EASE_OUT }}
+                        className="flex items-center gap-3 mb-5"
+                    >
+                        <div className="w-8 h-px" style={{ backgroundColor: C.accent }} />
+                        <span
+                            className="text-[11px] font-medium tracking-widest uppercase"
+                            style={{ color: C.textMuted }}
+                        >
+                            Get Started
+                        </span>
+                    </motion.div>
                     <motion.h2
                         initial={{ opacity: 0, y: 16 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -65,6 +80,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             whileTap={{ scale: 0.97 }}
                             transition={spring}
                             className="group mt-8 inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-6 text-sm font-medium"
+                            aria-label="Start for free — sign up"
                             style={{
                                 background: C.accent,
                                 color: "hsl(var(--primary-foreground))",
@@ -96,8 +112,10 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             <Link
                                 key={label}
                                 href={href}
-                                className="text-sm transition-colors duration-200 hover:opacity-70"
+                                className="text-sm transition-colors duration-200"
                                 style={{ color: C.textMuted }}
+                                onMouseEnter={(e) => { e.currentTarget.style.color = C.textSoft; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.color = C.textMuted; }}
                             >
                                 {label}
                             </Link>
@@ -106,8 +124,10 @@ export function Footer({ onOpenAuth }: FooterProps) {
                             href="https://twitter.com"
                             target="_blank"
                             rel="noreferrer"
-                            className="text-sm transition-colors duration-200 hover:opacity-70"
+                            className="text-sm transition-colors duration-200"
                             style={{ color: C.textMuted }}
+                            onMouseEnter={(e) => { e.currentTarget.style.color = C.textSoft; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.color = C.textMuted; }}
                         >
                             Twitter/X
                         </a>

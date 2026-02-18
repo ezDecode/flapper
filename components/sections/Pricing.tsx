@@ -108,18 +108,18 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                     />
                 </button>
                 <span
-                    className="text-sm font-medium transition-colors duration-200"
+                    className="relative text-sm font-medium transition-colors duration-200"
                     style={{ color: isAnnual ? C.text : C.textMuted }}
                 >
                     Annual
                     <AnimatePresence>
                         {isAnnual && (
                             <motion.span
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.8 }}
+                                initial={{ opacity: 0, scale: 0.8, x: -4 }}
+                                animate={{ opacity: 1, scale: 1, x: 0 }}
+                                exit={{ opacity: 0, scale: 0.8, x: -4 }}
                                 transition={spring}
-                                className="ml-1.5 inline-block rounded-full px-2 py-0.5 text-[11px] font-medium"
+                                className="absolute left-full top-1/2 -translate-y-1/2 ml-1.5 whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-medium"
                                 style={{
                                     color: C.accent,
                                     backgroundColor: C.accentSoft,
@@ -163,7 +163,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                 borderColor: isPro ? C.accent : C.border,
                                 backgroundColor: C.surface,
                                 boxShadow: isPro
-                                    ? `0 0 0 1px ${C.accent}, 0 8px 32px -8px hsla(var(--primary) / 0.12)`
+                                    ? `0 8px 32px -8px hsla(var(--primary) / 0.12)`
                                     : undefined,
                             }}
                         >
@@ -204,7 +204,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                 </h3>
 
                                 {/* Price */}
-                                <div className="mt-5 flex items-baseline gap-1.5">
+                                <div className="mt-5 flex items-baseline gap-1.5 overflow-hidden">
                                     <AnimatePresence mode="popLayout">
                                         <motion.span
                                             key={displayPrice}
@@ -258,7 +258,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                 />
 
                                 {/* Features */}
-                                <ul className="mb-8 flex-1 space-y-3">
+                                <ul className="mb-8 flex-1 space-y-3.5">
                                     {plan.features.map((f) => (
                                         <li
                                             key={f}
@@ -281,7 +281,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.97 }}
                                     transition={spring}
-                                    className="w-full cursor-pointer rounded-full px-4 py-3 text-sm font-medium transition-colors duration-200"
+                                    className="w-full cursor-pointer rounded-full px-4 py-3 text-sm font-medium transition-all duration-200 hover:brightness-110"
                                     style={
                                         isPro
                                             ? {
@@ -294,6 +294,18 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                                   color: C.textSoft,
                                               }
                                     }
+                                    onMouseEnter={(e) => {
+                                        if (!isPro) {
+                                            e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)';
+                                            e.currentTarget.style.borderColor = C.textMuted;
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (!isPro) {
+                                            e.currentTarget.style.backgroundColor = 'transparent';
+                                            e.currentTarget.style.borderColor = C.border;
+                                        }
+                                    }}
                                 >
                                     {plan.cta}
                                 </motion.button>
@@ -309,7 +321,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3, ease: EASE_OUT }}
-                className="mt-10 text-center text-sm"
+                className="mt-10 text-sm"
                 style={{ color: C.textMuted }}
             >
                 All plans include SSL encryption &amp; 99.9% uptime SLA.

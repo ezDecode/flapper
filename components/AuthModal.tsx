@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { C } from "@/lib/landing-data";
+import { motion, AnimatePresence } from "motion/react";
 
 import { TwitterXIcon } from "./ui/icons";
 
@@ -83,42 +84,51 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
     color: C.text,
   };
 
+  const formTransition = { duration: 0.25, ease: [0.16, 1, 0.3, 1] as const };
+
   return (
-    <div
+    <motion.div
       className="fixed inset-0 flex items-center justify-center px-4"
       style={{
         zIndex: 100,
         background: "hsl(var(--background) / 0.8)",
         backdropFilter: "blur(8px)",
-        animation: "authModalFadeIn 0.2s ease-out",
       }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       onClick={onClose}
     >
-      <style>{`
-        @keyframes authModalFadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-      `}</style>
-
-      <div
+      <motion.div
         className="relative w-full max-w-[420px] rounded-xl border p-8"
         style={{ background: C.bgAlt, borderColor: C.border, boxShadow: "0 20px 60px -15px hsl(var(--background) / 0.5)" }}
         onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, y: 20, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
       >
 
 
         {/* Tab switcher */}
         <div
-          className="mb-6 flex rounded-full border p-1"
+          className="relative mb-6 flex rounded-full border p-1"
           style={{ borderColor: C.border, background: C.surface }}
         >
+          <motion.div
+            layoutId="authTabIndicator"
+            className="absolute inset-y-1 rounded-full"
+            style={{
+              background: C.accentSoft,
+              width: "calc(50% - 4px)",
+              left: tab === "login" ? 4 : "calc(50%)",
+            }}
+            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          />
           <button
             type="button"
             onClick={() => onTabChange("login")}
-            className="flex-1 rounded-full py-2 text-sm font-medium transition-all"
+            className="relative z-[1] flex-1 rounded-full py-2 text-sm font-medium transition-colors"
             style={{
-              background: tab === "login" ? C.accentSoft : "transparent",
               color: tab === "login" ? C.accent : C.textMuted,
             }}
           >
@@ -127,9 +137,8 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
           <button
             type="button"
             onClick={() => onTabChange("register")}
-            className="flex-1 rounded-full py-2 text-sm font-medium transition-all"
+            className="relative z-[1] flex-1 rounded-full py-2 text-sm font-medium transition-colors"
             style={{
-              background: tab === "register" ? C.accentSoft : "transparent",
               color: tab === "register" ? C.accent : C.textMuted,
             }}
           >
@@ -159,137 +168,30 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
           <div className="h-px flex-1" style={{ background: C.border }} />
         </div>
 
-        {/* ── LOGIN FORM ── */}
-        {tab === "login" && (
-          <form onSubmit={signIn} className="flex flex-col gap-4">
-            <div>
-              <label
-                htmlFor="modal-login-email"
-                className="mb-1.5 block text-xs font-medium"
-                style={{ color: C.textSoft }}
-              >
-                Email
-              </label>
-              <input
-                id="modal-login-email"
-                type="email"
-                value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value)}
-                placeholder="you@example.com"
-                className={inputClass}
-                style={inputStyle}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="modal-login-password"
-                className="mb-1.5 block text-xs font-medium"
-                style={{ color: C.textSoft }}
-              >
-                Password
-              </label>
-              <input
-                id="modal-login-password"
-                type="password"
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.target.value)}
-                placeholder="••••••••"
-                className={inputClass}
-                style={inputStyle}
-              />
-            </div>
-
-            {loginError && (
-              <p className="text-xs font-normal" style={{ color: "hsl(var(--destructive))" }}>
-                {loginError}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={loginLoading}
-              className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
-              style={{ backgroundColor: C.accent, color: "hsl(var(--primary-foreground))" }}
+        {/* ── FORM TRANSITIONS ── */}
+        <AnimatePresence mode="wait">
+          {tab === "login" && (
+            <motion.div
+              key="login"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={formTransition}
             >
-              {loginLoading ? "Logging in…" : "Log in"}
-            </button>
-          </form>
-        )}
-
-        {/* ── REGISTER FORM ── */}
-        {tab === "register" && (
-          <>
-            {regSuccess ? (
-              <div
-                className="rounded-lg border px-4 py-3"
-                style={{ borderColor: `${C.accent}40`, background: C.accentSoft }}
-              >
-                <p className="text-sm font-normal" style={{ color: C.accent }}>
-                  {regSuccess}
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={register} className="flex flex-col gap-4">
+              <form onSubmit={signIn} className="flex flex-col gap-4">
                 <div>
                   <label
-                    htmlFor="modal-reg-name"
-                    className="mb-1.5 block text-xs font-medium"
-                    style={{ color: C.textSoft }}
-                  >
-                    Full name
-                  </label>
-                  <input
-                    id="modal-reg-name"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Jane Doe"
-                    className={inputClass}
-                    style={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="modal-reg-beta"
-                    className="mb-1.5 block text-xs font-medium"
-                    style={{ color: C.textSoft }}
-                  >
-                    Invite code
-                  </label>
-                  <input
-                    id="modal-reg-beta"
-                    type="text"
-                    value={betaCode}
-                    onChange={async (e) => {
-                      const code = e.target.value;
-                      setBetaCode(code);
-                      if (code.length > 5) {
-                        const { data: isValid } = await (supabase.rpc as Function)(
-                          "check_invite_code",
-                          { code_input: code }
-                        );
-                        if (!isValid) setRegError("Invalid invite code");
-                        else setRegError("");
-                      }
-                    }}
-                    placeholder="Enter invite code"
-                    className={inputClass}
-                    style={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="modal-reg-email"
+                    htmlFor="modal-login-email"
                     className="mb-1.5 block text-xs font-medium"
                     style={{ color: C.textSoft }}
                   >
                     Email
                   </label>
                   <input
-                    id="modal-reg-email"
+                    id="modal-login-email"
                     type="email"
-                    value={regEmail}
-                    onChange={(e) => setRegEmail(e.target.value)}
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
                     placeholder="you@example.com"
                     className={inputClass}
                     style={inputStyle}
@@ -297,42 +199,183 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                 </div>
                 <div>
                   <label
-                    htmlFor="modal-reg-password"
+                    htmlFor="modal-login-password"
                     className="mb-1.5 block text-xs font-medium"
                     style={{ color: C.textSoft }}
                   >
                     Password
                   </label>
                   <input
-                    id="modal-reg-password"
+                    id="modal-login-password"
                     type="password"
-                    value={regPassword}
-                    onChange={(e) => setRegPassword(e.target.value)}
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
                     placeholder="••••••••"
                     className={inputClass}
                     style={inputStyle}
                   />
                 </div>
 
-                {regError && (
-                  <p className="text-xs font-normal" style={{ color: "hsl(var(--destructive))" }}>
-                    {regError}
-                  </p>
-                )}
+                <AnimatePresence>
+                  {loginError && (
+                    <motion.p
+                      className="text-xs font-normal overflow-hidden"
+                      style={{ color: "hsl(var(--destructive))" }}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                    >
+                      {loginError}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
 
                 <button
                   type="submit"
-                  disabled={regLoading}
+                  disabled={loginLoading}
                   className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
                   style={{ backgroundColor: C.accent, color: "hsl(var(--primary-foreground))" }}
                 >
-                  {regLoading ? "Creating your account…" : "Create account"}
+                  {loginLoading ? "Logging in…" : "Log in"}
                 </button>
               </form>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+            </motion.div>
+          )}
+
+          {tab === "register" && (
+            <motion.div
+              key="register"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={formTransition}
+            >
+              {regSuccess ? (
+                <motion.div
+                  className="rounded-lg border px-4 py-3"
+                  style={{ borderColor: `${C.accent}40`, background: C.accentSoft }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                >
+                  <p className="text-sm font-normal" style={{ color: C.accent }}>
+                    {regSuccess}
+                  </p>
+                </motion.div>
+              ) : (
+                <form onSubmit={register} className="flex flex-col gap-4">
+                  <div>
+                    <label
+                      htmlFor="modal-reg-name"
+                      className="mb-1.5 block text-xs font-medium"
+                      style={{ color: C.textSoft }}
+                    >
+                      Full name
+                    </label>
+                    <input
+                      id="modal-reg-name"
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Jane Doe"
+                      className={inputClass}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="modal-reg-beta"
+                      className="mb-1.5 block text-xs font-medium"
+                      style={{ color: C.textSoft }}
+                    >
+                      Invite code
+                    </label>
+                    <input
+                      id="modal-reg-beta"
+                      type="text"
+                      value={betaCode}
+                      onChange={async (e) => {
+                        const code = e.target.value;
+                        setBetaCode(code);
+                        if (code.length > 5) {
+                          const { data: isValid } = await (supabase.rpc as Function)(
+                            "check_invite_code",
+                            { code_input: code }
+                          );
+                          if (!isValid) setRegError("Invalid invite code");
+                          else setRegError("");
+                        }
+                      }}
+                      placeholder="Enter invite code"
+                      className={inputClass}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="modal-reg-email"
+                      className="mb-1.5 block text-xs font-medium"
+                      style={{ color: C.textSoft }}
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="modal-reg-email"
+                      type="email"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      className={inputClass}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="modal-reg-password"
+                      className="mb-1.5 block text-xs font-medium"
+                      style={{ color: C.textSoft }}
+                    >
+                      Password
+                    </label>
+                    <input
+                      id="modal-reg-password"
+                      type="password"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className={inputClass}
+                      style={inputStyle}
+                    />
+                  </div>
+
+                  <AnimatePresence>
+                    {regError && (
+                      <motion.p
+                        className="text-xs font-normal overflow-hidden"
+                        style={{ color: "hsl(var(--destructive))" }}
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                      >
+                        {regError}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+
+                  <button
+                    type="submit"
+                    disabled={regLoading}
+                    className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
+                    style={{ backgroundColor: C.accent, color: "hsl(var(--primary-foreground))" }}
+                  >
+                    {regLoading ? "Creating your account…" : "Create account"}
+                  </button>
+                </form>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
   );
 }
