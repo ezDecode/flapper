@@ -56,9 +56,7 @@ function LandingPageInner() {
         <div className="mx-auto min-h-screen w-full max-w-[720px] px-5 md:px-8">
           {/* ─── NAV ─── */}
           <NavbarWithMenu
-            navItems={[
-              { type: "link", label: "Pricing", href: "#pricing" },
-            ]}
+            navItems={[]}
             sections={[]}
             logo={
               <Link
@@ -70,17 +68,17 @@ function LandingPageInner() {
               </Link>
             }
             cta={
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
                 <button
                   onClick={() => openAuth("login")}
-                  className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-5 text-[15px] font-medium transition-all duration-[350ms] cursor-pointer hover:bg-white/[0.06] active:scale-[0.97]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-4 text-sm font-medium transition-all duration-[350ms] cursor-pointer hover:bg-white/[0.06] active:scale-[0.97]"
                   style={{ color: "inherit" }}
                 >
                   Log in
                 </button>
                 <button
                   onClick={() => openAuth("register")}
-                  className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-6 text-[15px] font-semibold transition-all duration-[350ms] cursor-pointer active:scale-[0.97] hover:brightness-110"
+                  className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-5 text-sm font-semibold transition-all duration-[350ms] cursor-pointer active:scale-[0.97] hover:brightness-110"
                   style={{ backgroundColor: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}
                 >
                   Start free

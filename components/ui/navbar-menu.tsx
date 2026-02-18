@@ -309,23 +309,21 @@ export function NavbarWithMenu({
                     className={cn(
                         "pointer-events-auto relative transition-all duration-[350ms]",
                         // ── Sizing per breakpoint ──
-                        "w-[calc(100%-1rem)] max-w-none",          // <640px: nearly full-width, 8px each side
-                        "sm:w-[calc(100%-2rem)]",                   // 640-767px: 16px each side
-                        "md:w-auto md:min-w-[600px] md:max-w-2xl", // 768-1023px: auto-sized, min 600px
-                        "lg:min-w-[680px] lg:max-w-3xl",           // 1024+: wider for large screens
+                        "w-[calc(100%-1.5rem)] max-w-none",          // <640px: nearly full-width
+                        "sm:w-auto sm:min-w-[320px] sm:max-w-xl",   // 640+: auto-sized
                         // ── Shape ──
-                        "rounded-[22px] md:rounded-full",
+                        "rounded-full",
                         // ── Apple frosted glass ──
                         "border border-white/[0.08]",
                         "bg-surface-alt/70 backdrop-blur-2xl backdrop-saturate-[1.8]",
                         "shadow-[0_2px_20px_rgba(0,0,0,0.25),inset_0_0.5px_0_0_rgba(255,255,255,0.06)]",
                         // ── Padding ──
-                        "px-4 sm:px-5 md:px-6",
+                        "pl-6 pr-2 py-1.5",
                     )}
                     onMouseLeave={handleNavbarMouseLeave}
                 >
                     <nav
-                        className="flex h-12 sm:h-14 w-full items-center justify-between"
+                        className="flex h-9 w-full items-center justify-between gap-4"
                         role="navigation"
                         aria-label="Main navigation"
                     >
