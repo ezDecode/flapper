@@ -27,74 +27,51 @@ a {
 
 @layer base {
   :root {
-    /* ── Apple HIG Dark Mode – System Backgrounds ─── */
-    --background: 0 0% 0%;           /* #000000 systemBackground */
-    --foreground: 0 0% 100%;         /* #FFFFFF label */
+    /* ── Default: Strict Apple ── */
+    /* Pure Black (#000000) */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --card: 240 3% 12%;              /* #1C1C1E secondarySystemBackground */
+    /* Dark Gray (#1C1C1E) */
+    --card: 240 3% 11%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 240 2% 18%;           /* #2C2C2E tertiarySystemBackground */
+    --popover: 240 3% 11%;
     --popover-foreground: 0 0% 100%;
 
-    /* ── Apple HIG – System Blue (Dark) ───────────── */
-    --primary: 211 100% 52%;         /* #0A84FF systemBlue */
+    /* System Blue (#007AFF) */
+    --primary: 211 100% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 3% 12%;         /* #1C1C1E */
+    /* Gray (#8E8E93) */
+    --secondary: 240 2% 57%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 3% 12%;             /* #1C1C1E */
-    --muted-foreground: 240 16% 94% / 0.6; /* secondaryLabel */
+    --muted: 240 3% 12%;
+    --muted-foreground: 240 2% 57%;
 
-    --accent: 211 100% 52%;          /* #0A84FF systemBlue */
+    --accent: 211 100% 50%;
     --accent-foreground: 0 0% 100%;
 
-    /* ── Apple HIG – System Semantic Colors ────────── */
-    --destructive: 3 100% 61%;       /* #FF453A systemRed */
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 138 64% 51%;          /* #30D158 systemGreen */
-    --success-foreground: 0 0% 100%;
+    --border: 240 2% 22%;
+    --input: 240 2% 22%;
+    --ring: 211 100% 50%;
+    --radius: 0.875rem;
 
-    /* ── Apple HIG – Separators & Input ───────────── */
-    --border: 240 2% 22%;            /* #38383A separator */
-    --input: 240 2% 22%;             /* #38383A */
-    --ring: 211 100% 52%;            /* #0A84FF systemBlue */
-    --radius: 0.875rem;              /* Apple's 14px standard corner radius */
-
-    /* ── Apple HIG – Surface Hierarchy ────────────── */
+    /* Surface Hierarchy (Apple) */
     --surface: 240 3% 12%;           /* #1C1C1E secondarySystemBg */
     --surface-hover: 240 2% 18%;     /* #2C2C2E tertiarySystemBg */
     --surface-alt: 240 2% 9%;        /* #161618 elevated bg */
-
-    /* ── Apple HIG – Label Hierarchy ──────────────── */
-    --text: 0 0% 100%;               /* #FFFFFF label (primary) */
-    --text-soft: 240 16% 94% / 0.6;  /* secondaryLabel */
-    --text-muted: 240 16% 94% / 0.3; /* tertiaryLabel */
-
-    /* ── Apple HIG – Accent Extended ──────────────── */
-    --accent-soft: 211 100% 52% / 0.12;
-    --accent-hover: 211 100% 64%;    /* Lighter systemBlue hover */
-
-    /* ── Warm Accent ──────────────────────────────── */
-    --warm: 28 100% 54%;             /* #FF9F0A systemOrange dark */
-    --warm-soft: 28 100% 54% / 0.12;
-
-    /* ── Chart Colors (Apple System Colors Dark) ──── */
+    
+    /* Chart Colors (Apple System Colors Dark) */
     --chart-1: 211 100% 52%;         /* systemBlue */
     --chart-2: 138 64% 51%;          /* systemGreen */
     --chart-3: 28 100% 54%;          /* systemOrange */
     --chart-4: 263 78% 58%;          /* systemPurple #BF5AF2 */
     --chart-5: 3 100% 61%;           /* systemRed */
-
-    /* ── Apple-style Motion ────────────────────────── */
-    --apple-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
-    --apple-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-    --apple-ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
-    --apple-duration-fast: 0.2s;
-    --apple-duration: 0.35s;
-    --apple-duration-slow: 0.5s;
   }
 }
 

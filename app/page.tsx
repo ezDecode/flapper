@@ -51,7 +51,6 @@ function LandingPageInner() {
     <>
       <main
         className="min-h-screen w-full overflow-x-hidden tracking-tight"
-        style={{ background: C.bg, color: C.text }}
       >
         {/* ─── THE RESPONSIVE CONTAINER ─── */}
         <div className="mx-auto min-h-screen w-full max-w-[720px] px-5 md:px-8">
@@ -71,7 +70,7 @@ function LandingPageInner() {
               </Link>
             }
             cta={
-              <>
+              <div className="flex items-center gap-3">
                 <button
                   onClick={() => openAuth("login")}
                   className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-5 text-[15px] font-medium transition-all duration-[350ms] cursor-pointer hover:bg-white/[0.06] active:scale-[0.97]"
@@ -86,7 +85,7 @@ function LandingPageInner() {
                 >
                   Start free
                 </button>
-              </>
+              </div>
             }
           />
 
