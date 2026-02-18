@@ -36,9 +36,9 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
 
   if (active.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-[#E8E8E4] bg-[#FAFAF8] px-6 py-10 text-center">
-        <Zap size={24} className="mx-auto mb-2 text-[#6B6B6B]" />
-        <p className="text-sm text-[#6B6B7B]">
+      <div className="rounded-xl border border-dashed border-border bg-surface-alt px-6 py-10 text-center">
+        <Zap size={24} className="mx-auto mb-2 text-muted-foreground" />
+        <p className="text-sm text-muted-foreground">
           Select at least one platform to configure auto-plug triggers.
         </p>
       </div>
@@ -48,8 +48,8 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
-        <Zap size={16} className="text-[#1A1A2E]" />
-        <p className="text-sm font-medium text-[#1A1A2E]">
+        <Zap size={16} className="text-foreground" />
+        <p className="text-sm font-medium text-foreground">
           Auto-Plug Configuration
         </p>
       </div>
@@ -58,19 +58,19 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
         const config = value[platform];
 
         return (
-          <div key={platform} className="rounded-xl border border-[#E8E8E4] bg-white">
+          <div key={platform} className="rounded-xl border border-border bg-card">
             <div className="p-4">
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-white" />
-                  <p className="text-sm font-medium text-[#1A1A2E]">
+                  <div className="h-2 w-2 rounded-full bg-primary" />
+                  <p className="text-sm font-medium text-foreground">
                     {platformLabels[platform]}
                   </p>
                 </div>
 
                 <div className="flex flex-wrap gap-3 items-end">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-[#6B6B6B]">
+                    <label className="text-xs font-medium text-muted-foreground">
                       Trigger type
                     </label>
                     <div className="flex gap-1">
@@ -86,8 +86,8 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
                           }
                           className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                             config.triggerType === opt.value
-                              ? "border-white bg-white text-black"
-                              : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-white/40"
+                              ? "border-primary bg-primary text-primary-foreground"
+                              : "border-border bg-card text-muted-foreground hover:border-primary/40"
                           }`}
                         >
                           {opt.icon}
@@ -98,7 +98,7 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-[#6B6B6B]">
+                    <label className="text-xs font-medium text-muted-foreground">
                       Threshold
                     </label>
                     <input
@@ -114,13 +114,13 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
                           },
                         })
                       }
-                      className="h-8 w-24 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                      className="h-8 w-24 rounded-lg border border-border bg-card px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                     />
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-medium text-[#6B6B6B]">
+                  <label className="text-xs font-medium text-muted-foreground">
                     Auto-reply content
                   </label>
                   <textarea
@@ -133,7 +133,7 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
                         [platform]: { ...config, plugContent: e.target.value },
                       })
                     }
-                    className="w-full rounded-lg border border-[#E8E8E4] bg-white px-3 py-2 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                    className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                 </div>
               </div>

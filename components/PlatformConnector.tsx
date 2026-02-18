@@ -22,8 +22,8 @@ const platformRows: Array<{
       key: "TWITTER",
       label: "Twitter / X",
       icon: <Twitter size={18} />,
-      color: "#FFFFFF",
-      bgClass: "bg-white/10",
+      color: "hsl(var(--foreground))",
+      bgClass: "bg-primary/10",
     }
   ];
 
@@ -115,7 +115,7 @@ export function PlatformConnector() {
       })}
 
       {message ? (
-        <p className="text-sm text-[#A1A1AA]">
+        <p className="text-sm text-muted-foreground">
           {message}
         </p>
       ) : null}

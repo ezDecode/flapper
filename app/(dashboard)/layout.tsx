@@ -19,7 +19,7 @@ const nav = [
 
 const planColors: Record<string, string> = {
   FREE: "bg-zinc-700 text-zinc-300",
-  PRO: "bg-[#00AA45]/10 text-[#00AA45]",
+  PRO: "bg-primary/10 text-primary",
   AGENCY: "bg-purple-500/20 text-purple-400",
 };
 
@@ -67,15 +67,15 @@ export default async function DashboardLayout({
 
   return (
     <>
-      <div className="flex min-h-screen bg-[#FAFAF8]">
+      <div className="flex min-h-screen bg-background">
         {/* Sidebar */}
-        <aside className="hidden lg:flex lg:w-[240px] lg:flex-col lg:fixed lg:inset-y-0 bg-white text-[#000000] border-r border-[#E8E8E4]">
+        <aside className="hidden lg:flex lg:w-[240px] lg:flex-col lg:fixed lg:inset-y-0 bg-surface-alt text-foreground border-r border-border">
           {/* Logo */}
-          <div className="flex items-center gap-2 px-6 py-5 border-b border-[#E8E8E4]">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00AA45] text-sm font-medium text-white">
+          <div className="flex items-center gap-2 px-6 py-5 border-b border-border">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-sm font-medium text-white">
               F
             </div>
-            <span className="text-lg font-medium tracking-tight text-[#000000]">Flapr</span>
+            <span className="text-lg font-medium tracking-tight text-foreground">Flapr</span>
           </div>
 
           {/* Navigation */}
@@ -86,7 +86,7 @@ export default async function DashboardLayout({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-[#6B6B6B] transition-colors hover:bg-gray-50 hover:text-black"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground"
                 >
                   <Icon size={18} strokeWidth={1.8} />
                   {item.label}
@@ -96,13 +96,13 @@ export default async function DashboardLayout({
           </nav>
 
           {/* User info */}
-          <div className="border-t border-[#E8E8E4] p-4">
+          <div className="border-t border-border p-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#00AA45]/10 text-xs font-medium text-[#00AA45]">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-medium text-primary">
                 {initials}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-[#000000]">
+                <p className="truncate text-sm font-medium text-foreground">
                   {displayName}
                 </p>
                 <span
@@ -116,8 +116,8 @@ export default async function DashboardLayout({
         </aside>
 
         {/* Mobile header */}
-        <div className="lg:hidden fixed top-0 inset-x-0 z-50 flex items-center gap-3 border-b border-[#E8E8E4] bg-white px-4 py-3">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#00AA45] text-xs font-medium text-white">
+        <div className="lg:hidden fixed top-0 inset-x-0 z-50 flex items-center gap-3 border-b border-border bg-surface-alt px-4 py-3">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-xs font-medium text-white">
             F
           </div>
           <span className="text-base font-medium">Flapr</span>

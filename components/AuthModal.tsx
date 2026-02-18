@@ -88,7 +88,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
       className="fixed inset-0 flex items-center justify-center px-4"
       style={{
         zIndex: 100,
-        background: "rgba(0, 0, 0, 0.6)",
+        background: "hsl(var(--background) / 0.8)",
         backdropFilter: "blur(8px)",
         animation: "authModalFadeIn 0.2s ease-out",
       }}
@@ -103,7 +103,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
 
       <div
         className="relative w-full max-w-[420px] rounded-xl border p-8"
-        style={{ background: C.bgAlt, borderColor: C.border, boxShadow: "0 20px 60px -15px rgba(0,0,0,0.2)" }}
+        style={{ background: C.bgAlt, borderColor: C.border, boxShadow: "0 20px 60px -15px hsl(var(--background) / 0.5)" }}
         onClick={(e) => e.stopPropagation()}
       >
 
@@ -200,7 +200,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
             </div>
 
             {loginError && (
-              <p className="text-xs font-normal" style={{ color: "#EF4444" }}>
+              <p className="text-xs font-normal" style={{ color: "hsl(var(--destructive))" }}>
                 {loginError}
               </p>
             )}
@@ -209,7 +209,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
               type="submit"
               disabled={loginLoading}
               className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
-              style={{ backgroundColor: C.accent, color: "#fff" }}
+              style={{ backgroundColor: C.accent, color: "hsl(var(--primary-foreground))" }}
             >
               {loginLoading ? "Logging in…" : "Log in"}
             </button>
@@ -315,7 +315,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                 </div>
 
                 {regError && (
-                  <p className="text-xs font-normal" style={{ color: "#EF4444" }}>
+                  <p className="text-xs font-normal" style={{ color: "hsl(var(--destructive))" }}>
                     {regError}
                   </p>
                 )}
@@ -324,7 +324,7 @@ export default function AuthModal({ tab, onTabChange, onClose }: AuthModalProps)
                   type="submit"
                   disabled={regLoading}
                   className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
-                  style={{ backgroundColor: C.accent, color: "#fff" }}
+                  style={{ backgroundColor: C.accent, color: "hsl(var(--primary-foreground))" }}
                 >
                   {regLoading ? "Creating your account…" : "Create account"}
                 </button>

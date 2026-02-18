@@ -19,31 +19,63 @@ a {
 
 @layer base {
   :root {
-    --background: 0 0% 0%; /* Black */
-    --foreground: 0 0% 100%; /* White */
-    --card: 0 0% 3%;
+    /* ── Core Palette ─────────────────────────────── */
+    --background: 0 0% 2%;           /* #050505 Deep Void */
+    --foreground: 0 0% 100%;         /* #FFFFFF */
+
+    --card: 0 0% 7%;                 /* #111111 Surface */
     --card-foreground: 0 0% 100%;
-    --popover: 0 0% 3%;
+
+    --popover: 0 0% 4%;              /* #0A0A0A */
     --popover-foreground: 0 0% 100%;
-    --primary: 0 0% 100%; /* White */
-    --primary-foreground: 0 0% 0%; /* Black */
-    --secondary: 0 0% 11%;
+
+    --primary: 217 91% 60%;          /* #3B82F6 Electric Blue */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 9%;            /* #171717 */
     --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 11%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 0 0% 11%;
+
+    --muted: 0 0% 9%;
+    --muted-foreground: 0 0% 63%;    /* #A1A1AA */
+
+    --accent: 217 91% 60%;           /* #3B82F6 */
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 0% 100%;
-    --destructive-foreground: 0 0% 0%;
-    --border: 0 0% 11%;
-    --input: 0 0% 11%;
-    --ring: 0 0% 100%;
-    --chart-1: 0 0% 100%;
-    --chart-2: 0 0% 80%;
-    --chart-3: 0 0% 60%;
-    --chart-4: 0 0% 40%;
-    --chart-5: 0 0% 20%;
+
+    --destructive: 0 84% 60%;        /* #EF4444 */
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 152 69% 31%;          /* #2B8A3E */
+    --success-foreground: 0 0% 100%;
+
+    --border: 0 0% 13%;              /* #222222 */
+    --input: 0 0% 13%;
+    --ring: 217 91% 60%;
     --radius: 0.75rem;
+
+    /* ── Extended Surfaces ────────────────────────── */
+    --surface: 0 0% 7%;              /* #111111 */
+    --surface-hover: 0 0% 9%;        /* #161616 */
+    --surface-alt: 0 0% 4%;          /* #0A0A0A */
+
+    /* ── Extended Text ────────────────────────────── */
+    --text: 0 0% 100%;               /* #FFFFFF */
+    --text-soft: 240 5% 65%;         /* #A1A1AA */
+    --text-muted: 240 4% 46%;        /* #52525B */
+
+    /* ── Accent Extended ──────────────────────────── */
+    --accent-soft: 217 91% 60% / 0.15;
+    --accent-hover: 213 94% 68%;     /* #60A5FA */
+
+    /* ── Warm Accent ──────────────────────────────── */
+    --warm: 38 92% 50%;              /* #F59E0B */
+    --warm-soft: 38 92% 50% / 0.15;
+
+    /* ── Chart Colors ─────────────────────────────── */
+    --chart-1: 217 91% 60%;
+    --chart-2: 217 91% 40%;
+    --chart-3: 0 0% 100%;
+    --chart-4: 0 0% 80%;
+    --chart-5: 0 0% 60%;
   }
 }
 

@@ -34,19 +34,19 @@ const localizer = dateFnsLocalizer({
 });
 
 const statusColor: Record<string, string> = {
-  DRAFT: "#333333",
-  SCHEDULED: "#666666",
-  PUBLISHING: "#888888",
-  PUBLISHED: "#FFFFFF",
-  FAILED: "#333333",
+  DRAFT: "hsl(var(--text-muted))",
+  SCHEDULED: "hsl(var(--primary))",
+  PUBLISHING: "hsl(var(--warm, 38 92% 50%))",
+  PUBLISHED: "hsl(var(--success))",
+  FAILED: "hsl(var(--destructive))",
 };
 
 const statusPillClasses: Record<string, string> = {
-  DRAFT: "bg-gray-100 text-gray-700 border border-gray-200",
-  SCHEDULED: "bg-blue-50 text-blue-700 border border-blue-200",
-  PUBLISHING: "bg-yellow-50 text-yellow-700 border border-yellow-200",
-  PUBLISHED: "bg-green-50 text-green-700 border border-green-200",
-  FAILED: "bg-red-50 text-red-700 border border-red-200",
+  DRAFT: "bg-muted text-muted-foreground border border-border",
+  SCHEDULED: "bg-primary/10 text-primary border border-primary/20",
+  PUBLISHING: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
+  PUBLISHED: "bg-success/10 text-success border border-success/20",
+  FAILED: "bg-destructive/10 text-destructive border border-destructive/20",
 };
 
 export function ScheduleCalendar() {
@@ -85,7 +85,7 @@ export function ScheduleCalendar() {
   const eventPropGetter = useMemo(
     () => (event: PostEvent) => ({
       style: {
-        backgroundColor: statusColor[event.resource.status] ?? "#64748b",
+        backgroundColor: statusColor[event.resource.status] ?? "hsl(var(--text-muted))",
         borderColor: "transparent",
         color: "white",
         borderRadius: 8,
@@ -96,19 +96,19 @@ export function ScheduleCalendar() {
   );
 
   return (
-    <div className="rounded-xl border border-[#E8E8E4] bg-white">
-      <div className="border-b border-[#E8E8E4] px-6 py-4">
+    <div className="rounded-xl border border-border bg-card">
+      <div className="border-b border-border px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Clock size={16} className="text-[#6B6B6B]" />
-            <p className="text-sm font-medium text-[#1A1A2E]">
+            <Clock size={16} className="text-muted-foreground" />
+            <p className="text-sm font-medium text-foreground">
               Post Calendar
             </p>
           </div>
           <div className="flex gap-2">
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">Scheduled</span>
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-50 text-green-700 border border-green-200">Published</span>
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-red-50 text-red-700 border border-red-200">Failed</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-primary/10 text-primary border border-primary/20">Scheduled</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-success/10 text-success border border-success/20">Published</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-destructive/10 text-destructive border border-destructive/20">Failed</span>
           </div>
         </div>
       </div>
@@ -128,10 +128,10 @@ export function ScheduleCalendar() {
         />
 
         {selectedEvent ? (
-          <div className="mt-4 rounded-xl border border-[#E8E8E4] bg-[#FAFAF8] p-4">
+          <div className="mt-4 rounded-xl border border-border bg-surface-alt p-4">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
-                <p className="text-sm font-medium text-[#1A1A2E]">
+                <p className="text-sm font-medium text-foreground">
                   Selected post
                 </p>
                 <span
@@ -143,7 +143,7 @@ export function ScheduleCalendar() {
                 </span>
               </div>
               <p className="text-sm">{selectedEvent.title}</p>
-              <p className="text-xs text-[#6B6B7B]">
+              <p className="text-xs text-muted-foreground">
                 {format(selectedEvent.start as Date, "PPpp")}
               </p>
             </div>

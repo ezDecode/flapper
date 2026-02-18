@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import {
     Clock,
     Zap,
@@ -9,212 +8,350 @@ import {
     MessageSquare,
     Shield,
     Sparkles,
+    ArrowUpRight,
 } from "lucide-react";
 import { features, C } from "@/lib/landing-data";
 import { cn } from "@/lib/utils";
 
-// --- Ultra-Compact Minimalist Visuals ---
+// ─── Bento Grid Feature Card ─────────────────────────────────────
 
-const VisualScheduling = () => {
+const cardVariants = {
+    hidden: { opacity: 0, y: 30, filter: "blur(6px)" },
+    visible: (i: number) => ({
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        transition: {
+            duration: 0.6,
+            delay: i * 0.1,
+            ease: [0.22, 1, 0.36, 1],
+        },
+    }),
+};
+
+// ─── Micro Visuals for each card ──────────────────────────────────
+
+function SchedulingVisual() {
     return (
-        <div className="relative flex items-center justify-center w-full h-[180px]">
-            <div className="relative w-32 h-32 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.01]">
-                {/* Clock Hands */}
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                    className="absolute w-[1px] h-12 bg-gradient-to-t from-white/40 to-transparent origin-bottom bottom-1/2 left-[calc(50%-0.5px)]"
-                />
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                    className="absolute w-[1px] h-8 bg-white/60 origin-bottom bottom-1/2 left-[calc(50%-0.5px)]"
-                />
-                
-                 {/* Subtle Ticks */}
-                {[0, 3, 6, 9].map((i) => (
-                    <div
+        <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
+            {/* Subtle dot grid */}
+            <div
+                className="absolute inset-0 opacity-[0.04]"
+                style={{
+                    backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+                    backgroundSize: "20px 20px",
+                }}
+            />
+            {/* Timeline bars */}
+            <div className="relative flex items-end gap-1.5 px-6">
+                {[
+                    { h: 24, delay: 0 },
+                    { h: 40, delay: 0.1 },
+                    { h: 32, delay: 0.2 },
+                    { h: 56, delay: 0.3 },
+                    { h: 44, delay: 0.4 },
+                    { h: 64, delay: 0.5 },
+                    { h: 36, delay: 0.6 },
+                ].map((bar, i) => (
+                    <motion.div
                         key={i}
-                        className="absolute w-1 h-1 bg-white/20 rounded-full"
-                        style={{
-                            top: '50%',
-                            left: '50%',
-                            transform: `translate(-50%, -50%) rotate(${i * 30}deg) translateY(-60px)`,
+                        className="w-4 rounded-t-sm"
+                        style={{ backgroundColor: i === 5 ? C.accent : C.surfaceHover }}
+                        initial={{ height: 0 }}
+                        whileInView={{ height: bar.h }}
+                        viewport={{ once: true }}
+                        transition={{
+                            duration: 0.8,
+                            delay: bar.delay,
+                            ease: [0.22, 1, 0.36, 1],
                         }}
                     />
                 ))}
             </div>
-             
-             {/* Floating Compact Posts */}
-            {[0, 1].map((i) => (
-                <motion.div
-                    key={i}
-                    className="absolute w-20 h-6 rounded-full border border-white/10 flex items-center justify-center bg-[#050505] shadow-lg"
-                    initial={{ opacity: 0, scale: 0.8, x: 0 }}
-                    animate={{
-                        opacity: [0, 1, 1, 0],
-                        scale: [0.9, 1, 1, 0.9],
-                        x: [0, (i === 0 ? 1 : -1) * 50],
-                         y: [0, (i === 0 ? -1 : 1) * 30],
-                    }}
-                    transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        delay: i * 2,
-                        ease: "easeInOut",
-                    }}
-                >
-                    <div className="w-8 h-0.5 bg-white/20 rounded-full" />
-                </motion.div>
-            ))}
+            {/* Highlight line */}
+            <motion.div
+                className="absolute bottom-6 left-6 right-6 h-px"
+                style={{
+                    background: `linear-gradient(to right, transparent, ${C.accentSoft}, transparent)`,
+                }}
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+            />
         </div>
     );
-};
+}
 
-const VisualAutoPlug = () => {
+function AutoPlugVisual() {
     return (
-        <div className="relative flex items-center justify-center w-full h-[180px]">
-             {/* Center Node */}
-             <div className="relative w-16 h-16 rounded-xl flex items-center justify-center bg-white/[0.03] border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-                <Zap className="w-6 h-6 text-white" strokeWidth={1.5} />
-             </div>
-             
-             {/* Pulses moving out */}
-              {[0, 1, 2].map(i => (
-                  <motion.div
-                    key={i}
-                    className="absolute inset-0 border border-white/5 rounded-xl"
-                    initial={{ scale: 1, opacity: 0.5 }}
-                    animate={{ scale: 2.5, opacity: 0 }}
-                    transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        delay: i * 0.6,
-                        ease: "easeOut"
+        <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
+            {/* Center pulse */}
+            <div className="relative">
+                <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center relative z-10"
+                    style={{
+                        backgroundColor: C.surfaceHover,
+                        boxShadow: `0 0 30px ${C.accentSoft}`,
                     }}
-                  />
-              ))}
-
-            {/* Connecting Lines */}
-            <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent top-1/2 -translate-y-1/2" />
-        </div>
-    );
-};
-
-const VisualAnalytics = () => {
-    return (
-        <div className="relative flex items-end justify-center gap-2 w-full h-[180px] pb-8 px-12">
-            {[40, 70, 50, 90, 60, 85].map((height, i) => (
-                <motion.div
-                    key={i}
-                    className="w-8 bg-white/5 rounded-t-sm relative overflow-hidden border-t border-x border-white/5"
-                    initial={{ height: 0 }}
-                    whileInView={{ height: height * 1.2 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    <motion.div 
-                        className="absolute bottom-0 left-0 w-full bg-white"
-                        animate={{ 
-                            height: ["0%", "100%", "0%"],
-                            opacity: [0, 0.5, 0]
-                        }}
-                        transition={{ 
-                            duration: 3, 
-                            delay: i * 0.2,
+                    <Zap className="w-5 h-5" style={{ color: C.accent }} strokeWidth={1.5} />
+                </div>
+                {/* Ripple rings */}
+                {[0, 1, 2].map((i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute inset-0 rounded-xl border"
+                        style={{ borderColor: C.accent }}
+                        initial={{ scale: 1, opacity: 0.4 }}
+                        animate={{ scale: 2.5, opacity: 0 }}
+                        transition={{
+                            duration: 2.5,
                             repeat: Infinity,
-                            ease: "easeInOut"
+                            delay: i * 0.7,
+                            ease: "easeOut",
                         }}
                     />
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function AnalyticsVisual() {
+    return (
+        <div className="relative h-full w-full flex items-center justify-center overflow-hidden px-6">
+            {/* Ascending metric line */}
+            <svg className="w-full h-20" viewBox="0 0 200 60" fill="none">
+                <motion.path
+                    d="M0 50 Q30 48 50 40 T100 25 T150 15 T200 5"
+                    stroke={C.accent}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                />
+                <motion.path
+                    d="M0 50 Q30 48 50 40 T100 25 T150 15 T200 5 V60 H0 Z"
+                    fill={`url(#gradient)`}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                />
+                <defs>
+                    <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor={C.accent} stopOpacity="0.15" />
+                        <stop offset="100%" stopColor={C.accent} stopOpacity="0" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            {/* Metric dot */}
+            <motion.div
+                className="absolute right-8 top-6 w-2 h-2 rounded-full"
+                style={{ backgroundColor: C.accent, boxShadow: `0 0 8px ${C.accent}` }}
+                animate={{ scale: [1, 1.4, 1], opacity: [1, 0.7, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+        </div>
+    );
+}
+
+function TemplatesVisual() {
+    return (
+        <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
+            {/* Stacked cards */}
+            {[2, 1, 0].map((i) => (
+                <motion.div
+                    key={i}
+                    className="absolute rounded-lg border p-3 flex flex-col gap-1.5"
+                    style={{
+                        width: 120,
+                        height: 72,
+                        backgroundColor: i === 0 ? C.surface : C.bgAlt,
+                        borderColor: i === 0 ? C.border : C.borderSubtle,
+                    }}
+                    initial={{ y: 0, scale: 0.9, opacity: 0 }}
+                    whileInView={{
+                        y: i * -8,
+                        x: i * 4,
+                        scale: 1 - i * 0.04,
+                        opacity: 1 - i * 0.25,
+                    }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: (2 - i) * 0.1 }}
+                >
+                    <div className="flex items-center gap-1.5">
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: C.surfaceHover }} />
+                        <div className="w-10 h-1 rounded-full" style={{ backgroundColor: C.surfaceHover }} />
+                    </div>
+                    <div className="w-full h-1 rounded-full" style={{ backgroundColor: C.accentSoft }} />
+                    <div className="w-3/4 h-1 rounded-full" style={{ backgroundColor: C.accentSoft, opacity: 0.5 }} />
                 </motion.div>
             ))}
         </div>
     );
-};
+}
 
-const VisualTemplates = () => {
+function TwitterVisual() {
     return (
-        <div className="relative flex items-center justify-center w-full h-[180px]">
+        <div className="relative h-full w-full flex items-center justify-center overflow-hidden">
+            {/* X logo */}
+            <motion.svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-10 h-10"
+                style={{ color: C.textMuted }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+            >
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </motion.svg>
+            {/* Orbit dots */}
             {[0, 1, 2].map((i) => (
                 <motion.div
                     key={i}
-                    className="absolute w-40 h-24 bg-[#0A0A0A] border border-white/10 rounded-lg shadow-xl flex flex-col p-3 gap-2"
-                    initial={{ y: 0, scale: 0.9, opacity: 0 }}
+                    className="absolute w-1.5 h-1.5 rounded-full"
+                    style={{ backgroundColor: C.accent }}
                     animate={{
-                        y: i * -12 + 12,
-                        scale: 1 - i * 0.04,
-                        opacity: 1 - i * 0.2,
-                        zIndex: 3 - i,
+                        x: [0, Math.cos((i * 2 * Math.PI) / 3) * 40],
+                        y: [0, Math.sin((i * 2 * Math.PI) / 3) * 40],
+                        opacity: [0, 1, 0],
                     }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                >
-                    <div className="flex items-center gap-2">
-                         <div className="w-5 h-5 rounded-full bg-white/10" />
-                         <div className="w-16 h-1.5 bg-white/10 rounded-full" />
-                    </div>
-                     <div className="w-full h-1.5 bg-white/5 rounded-full mt-1" />
-                     <div className="w-2/3 h-1.5 bg-white/5 rounded-full" />
-                </motion.div>
+                    transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        delay: i * 1,
+                        ease: "easeInOut",
+                    }}
+                />
             ))}
         </div>
     );
-};
+}
 
-const VisualX = () => {
-    return (
-        <div className="relative flex items-center justify-center w-full h-[180px]">
-             <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-12 h-12 text-white relative z-10"
-            >
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
-             
-             {[0, 1].map(i => (
-                 <motion.div
-                    key={i}
-                    className="absolute w-[140px] h-[70px] rounded-[100%] border border-white/10"
-                    style={{ rotate: i * 45 }}
-                    animate={{ rotate: [i * 45, i * 45 + 360] }}
-                    transition={{ duration: 15 + i * 5, repeat: Infinity, ease: "linear" }}
-                 >
-                     <div className="absolute top-0 left-1/2 w-1 h-1 bg-white rounded-full shadow-[0_0_5px_white]" />
-                 </motion.div>
-             ))}
-        </div>
-    );
-};
-
-const FEATURE_VISUALS = [
-    VisualScheduling,
-    VisualAutoPlug,
-    VisualAnalytics,
-    VisualTemplates,
-    VisualX,
+const VISUALS = [
+    SchedulingVisual,
+    AutoPlugVisual,
+    AnalyticsVisual,
+    TemplatesVisual,
+    TwitterVisual,
 ];
 
-export function Features() {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const ActiveVisual = FEATURE_VISUALS[activeIndex] || VisualScheduling;
-    const activeFeature = features[activeIndex];
+// ─── Feature Card ─────────────────────────────────────────────────
+
+function FeatureCard({ feature, index }: { feature: typeof features[number]; index: number }) {
+    const Visual = VISUALS[index];
+    const isWide = feature.className?.includes("col-span-2");
+    const isFull = feature.className?.includes("col-span-3");
 
     return (
-        <section id="features" className="py-16 md:py-20">
-             {/* Header */}
-            <div className="mb-10 text-center">
-                <div
-                    className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[10px] font-medium tracking-wide uppercase"
+        <motion.div
+            custom={index}
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            className={cn(
+                "group relative flex flex-col rounded-2xl border overflow-hidden transition-colors duration-300",
+                isFull ? "md:col-span-3" : isWide ? "md:col-span-2" : "md:col-span-1",
+            )}
+            style={{
+                backgroundColor: C.surface,
+                borderColor: C.border,
+            }}
+            whileHover={{
+                borderColor: C.accent,
+                transition: { duration: 0.3 },
+            }}
+        >
+            {/* Visual area */}
+            <div
+                className="relative h-[140px] w-full flex items-center justify-center overflow-hidden"
+                style={{
+                    background: `linear-gradient(180deg, ${C.bgAlt} 0%, ${C.surface} 100%)`,
+                }}
+            >
+                {Visual && <Visual />}
+            </div>
+
+            {/* Content */}
+            <div className="flex flex-1 flex-col p-5 pt-4">
+                <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2.5">
+                        <div
+                            className="flex h-7 w-7 items-center justify-center rounded-lg transition-colors duration-300"
+                            style={{ backgroundColor: C.accentSoft }}
+                        >
+                            <feature.icon
+                                className="h-3.5 w-3.5"
+                                style={{ color: C.accent }}
+                                strokeWidth={1.5}
+                            />
+                        </div>
+                        <h3
+                            className="text-sm font-medium"
+                            style={{ color: C.text }}
+                        >
+                            {feature.title}
+                        </h3>
+                    </div>
+                    <ArrowUpRight
+                        className="h-3.5 w-3.5 opacity-0 -translate-x-1 translate-y-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0"
+                        style={{ color: C.accent }}
+                        strokeWidth={1.5}
+                    />
+                </div>
+                <p
+                    className="text-[13px] leading-relaxed"
+                    style={{ color: C.textSoft }}
+                >
+                    {feature.desc}
+                </p>
+            </div>
+
+            {/* Hover glow */}
+            <div
+                className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                style={{
+                    background: `radial-gradient(ellipse at 50% 0%, ${C.accentSoft} 0%, transparent 70%)`,
+                }}
+            />
+        </motion.div>
+    );
+}
+
+// ─── Features Section ─────────────────────────────────────────────
+
+export function Features() {
+    return (
+        <section id="features" className="py-16 md:py-24">
+            {/* Header */}
+            <div className="mb-12 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-medium tracking-wider uppercase"
                     style={{
                         borderColor: C.border,
                         color: C.textMuted,
-                        background: "transparent",
                     }}
                 >
-                    <Sparkles className="h-3 w-3" />
+                    <Sparkles className="h-3 w-3" style={{ color: C.accent }} />
                     Power Tools
-                </div>
-                <h2
+                </motion.div>
+                <motion.h2
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                     className="font-serif font-medium tracking-tight leading-[1.1]"
                     style={{
                         color: C.text,
@@ -222,103 +359,25 @@ export function Features() {
                     }}
                 >
                     Built for growth.
-                </h2>
+                </motion.h2>
+                <motion.p
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                    className="mx-auto mt-3 max-w-md text-sm leading-relaxed"
+                    style={{ color: C.textSoft }}
+                >
+                    Everything you need to schedule, engage, and convert — all on autopilot.
+                </motion.p>
             </div>
 
-            {/* Compact Tabs */}
-            <div className="flex flex-wrap justify-center gap-2 mb-8">
-                {features.map((feature, i) => {
-                    const isActive = activeIndex === i;
-                    const Icon = feature.icon;
-                    return (
-                        <button
-                            key={i}
-                            onClick={() => setActiveIndex(i)}
-                            className={cn(
-                                "relative flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 whitespace-nowrap",
-                                isActive 
-                                    ? "text-black" 
-                                    : "text-zinc-500 hover:text-zinc-300"
-                            )}
-                        >
-                            {isActive && (
-                                <motion.div
-                                    layoutId="activeTab"
-                                    className="absolute inset-0 bg-white rounded-full"
-                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                />
-                            )}
-                            <span className="relative z-10 flex items-center gap-2">
-                                <Icon size={14} strokeWidth={isActive ? 2 : 1.5} />
-                                {feature.title}
-                            </span>
-                        </button>
-                    )
-                })}
-            </div>
-
-            {/* Compact Display Card */}
-            <div className="relative mx-auto w-full max-w-2xl">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={activeIndex}
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="rounded-xl overflow-hidden border shadow-sm group"
-                        style={{
-                            background: C.surface,
-                            borderColor: C.border,
-                        }}
-                    >
-                        {/* Visual Area - Reduced Height */}
-                        <div className="w-full h-[200px] bg-gradient-to-b from-white/[0.01] to-transparent flex items-center justify-center border-b border-white/5 relative overflow-hidden">
-                             {/* Static Grid Background */}
-                             <div 
-                                className="absolute inset-0 opacity-[0.03]" 
-                                style={{ 
-                                    backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-                                    backgroundSize: '24px 24px' 
-                                }} 
-                             />
-                            <ActiveVisual />
-                        </div>
-
-                        {/* Text Content - Compact */}
-                        <div className="p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
-                            <div className="flex-1">
-                                <h3 className="text-lg font-medium text-white mb-2 flex items-center gap-2">
-                                     <activeFeature.icon size={18} className="text-zinc-400" />
-                                    {activeFeature.title}
-                                </h3>
-                                <p className="text-sm text-zinc-400 leading-relaxed max-w-md">
-                                    {activeFeature.desc}
-                                </p>
-                            </div>
-                            
-                            {/* Optional: Small 'Learn' arrow or indicator could go here */}
-                             <div className="hidden md:block">
-                                <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-zinc-600 group-hover:text-white group-hover:border-white/20 transition-colors">
-                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </div>
-                             </div>
-                        </div>
-                    </motion.div>
-                </AnimatePresence>
-                
-                {/* Refined Glow */}
-                <div 
-                    className="absolute -inset-1 bg-white/5 blur-xl -z-10 rounded-[2rem] opacity-0 transition-opacity duration-700 active-glow" 
-                    style={{ opacity: 0.3 }}
-                />
+            {/* Bento Grid */}
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                {features.map((feature, i) => (
+                    <FeatureCard key={i} feature={feature} index={i} />
+                ))}
             </div>
         </section>
     );
 }
-
-// Global stylesheet for hiding scrollbar if needed
-// .no-scrollbar::-webkit-scrollbar { display: none; }
-// .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

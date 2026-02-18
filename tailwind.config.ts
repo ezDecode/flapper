@@ -11,7 +11,6 @@ const config: Config = {
 				mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
 			},
 			colors: {
-				
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				card: {
@@ -41,6 +40,15 @@ const config: Config = {
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
+				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				surface: {
+					DEFAULT: 'hsl(var(--surface))',
+					hover: 'hsl(var(--surface-hover))',
+					alt: 'hsl(var(--surface-alt))'
 				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

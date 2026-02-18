@@ -22,7 +22,7 @@ export function PlatformCycler() {
                 verticalAlign: "middle",
                 position: "relative",
                 top: "-0.06em",
-                color: "#666",
+                color: C.textMuted,
             }}
         >
             <XIcon className="w-full h-full" />
@@ -64,13 +64,18 @@ function SimpleWorkflow() {
         >
             <motion.div
                 layout
-                className="relative flex items-center gap-4 rounded-full border border-white/5 bg-[#111]/80 px-2 py-2 pr-8 backdrop-blur-md shadow-2xl transition-colors hover:border-white/10 hover:bg-[#161616]"
+                className="relative flex items-center gap-4 rounded-full border px-2 py-2 pr-8 backdrop-blur-md shadow-2xl transition-colors"
                 style={{ 
+                    background: `${C.surface}E6`, // 90% opacity
+                    borderColor: C.border,
                     boxShadow: "0 0 0 1px rgba(0,0,0,0.4), 0 8px 32px -8px rgba(0,0,0,0.5)" 
                 }}
             >
                 {/* Icon Circle */}
-                <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1A1A] border border-white/5 overflow-hidden">
+                <div 
+                    className="relative flex h-12 w-12 items-center justify-center rounded-full overflow-hidden"
+                    style={{ background: C.surfaceHover, borderColor: C.border }}
+                >
                      <AnimatePresence mode="popLayout" initial={false}>
                         <motion.div
                             key={index}
@@ -80,7 +85,7 @@ function SimpleWorkflow() {
                             exit={{ scale: 0.5, opacity: 0, rotate: 45 }}
                             transition={{ type: "spring", stiffness: 300, damping: 20 }}
                         >
-                            <Icon className="h-5 w-5 text-[#F5F5F5]" />
+                            <Icon className="h-5 w-5" style={{ color: C.text }} />
                         </motion.div>
                     </AnimatePresence>
                     
@@ -118,10 +123,10 @@ function SimpleWorkflow() {
                             transition={{ type: "spring", stiffness: 300, damping: 24, mass: 0.8 }}
                             className="flex flex-col"
                         >
-                            <span className="text-sm font-medium text-[#F5F5F5] leading-tight">
+                            <span className="text-sm font-medium leading-tight" style={{ color: C.text }}>
                                 {currentStep.title}
                             </span>
-                            <span className="text-xs text-[#888] leading-tight mt-0.5">
+                            <span className="text-xs leading-tight mt-0.5" style={{ color: C.textMuted }}>
                                 {currentStep.description}
                             </span>
                         </motion.div>
@@ -158,9 +163,9 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 {...fadeUp(0)}
                 className="mb-8 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-medium tracking-wider uppercase"
                 style={{
-                    borderColor: "rgba(255, 255, 255, 0.2)",
+                    borderColor: "hsl(var(--border))",
                     color: C.accent,
-                    background: "rgba(255, 255, 255, 0.06)",
+                    background: "hsl(var(--surface-hover))",
                 }}
             >
                 <span className="relative flex h-2 w-2" aria-hidden>
@@ -203,7 +208,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
                     className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-6 text-sm font-medium transition-all cursor-pointer active:scale-[0.96]"
                     style={{
                         background: C.accent,
-                        color: "#000",
+                        color: "hsl(var(--primary-foreground))",
                     }}
                 >
                     Start for free

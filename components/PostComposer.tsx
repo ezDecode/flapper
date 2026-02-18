@@ -32,8 +32,8 @@ const platformMeta: Record<
   TWITTER: {
     icon: <Twitter size={16} />,
     label: "Twitter / X",
-    color: "#FFFFFF",
-    bgClass: "bg-white/10",
+    color: "hsl(var(--foreground))",
+    bgClass: "bg-primary/10",
   },
 };
 
@@ -162,16 +162,16 @@ export function PostComposer() {
   return (
     <div className="flex flex-col gap-5">
       {/* Editor */}
-      <div className="rounded-xl border border-[#27272B] bg-[#131316]">
-        <div className="border-b border-[#27272B] px-6 py-4">
+      <div className="rounded-xl border border-border bg-card">
+        <div className="border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-[#EDEDEF]">
+            <p className="text-sm font-medium text-foreground">
               New Post
             </p>
             <span
               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${minRemaining < 0
-                  ? "bg-white/10 text-white border border-white/50"
-                  : "bg-white/5 text-[#A1A1AA]"
+                  ? "bg-destructive/10 text-destructive border border-destructive/50"
+                  : "bg-muted text-muted-foreground"
                 }`}
             >
               {minRemaining} chars remaining
@@ -179,26 +179,26 @@ export function PostComposer() {
           </div>
         </div>
         <div className="p-6">
-          <div className="min-h-[160px] rounded-lg border border-[#27272B] bg-[#1A1A1E] p-4 transition-colors focus-within:border-[#7C3AED] focus-within:ring-1 focus-within:ring-[#7C3AED]">
+          <div className="min-h-[160px] rounded-lg border border-border bg-surface-hover p-4 transition-colors focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
             <EditorContent
               editor={editor}
-              className="prose prose-sm prose-invert max-w-none focus:outline-none [&_.ProseMirror]:min-h-[120px] [&_.ProseMirror]:outline-none text-[#EDEDEF]"
+              className="prose prose-sm prose-invert max-w-none focus:outline-none [&_.ProseMirror]:min-h-[120px] [&_.ProseMirror]:outline-none text-foreground"
             />
           </div>
         </div>
       </div>
 
       {/* Platform selector + Schedule */}
-      <div className="rounded-xl border border-[#27272B] bg-[#131316]">
-        <div className="border-b border-[#27272B] px-6 py-4">
-          <p className="text-sm font-medium text-[#EDEDEF]">
+      <div className="rounded-xl border border-border bg-card">
+        <div className="border-b border-border px-6 py-4">
+          <p className="text-sm font-medium text-foreground">
             Destinations &amp; Schedule
           </p>
         </div>
         <div className="p-6">
           <div className="flex flex-col gap-4">
             <div>
-              <span className="mb-2 block text-xs text-[#A1A1AA]">
+              <span className="mb-2 block text-xs text-muted-foreground">
                 Select platforms
               </span>
               <div className="flex flex-wrap gap-2">
@@ -212,8 +212,8 @@ export function PostComposer() {
                       type="button"
                       onClick={() => togglePlatform(platform)}
                       className={`inline-flex items-center gap-2 rounded-full border-2 px-4 py-2.5 text-sm font-medium transition-all ${isSelected
-                        ? "border-white bg-white text-black"
-                        : "border-[#27272B] bg-[#1A1A1E] text-[#A1A1AA] hover:border-white/40"
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border bg-surface-hover text-muted-foreground hover:border-primary/40"
                         }`}
                     >
                       <span style={{ color: isSelected ? meta.color : undefined }}>
@@ -221,7 +221,7 @@ export function PostComposer() {
                       </span>
                       {meta.label}
                       {isSelected && (
-                        <Check size={14} className="text-[#2B8A3E]" />
+                        <Check size={14} className="text-success" />
                       )}
                     </button>
                   );
@@ -230,16 +230,16 @@ export function PostComposer() {
             </div>
 
             <div>
-              <span className="mb-2 block text-xs text-[#A1A1AA]">
+              <span className="mb-2 block text-xs text-muted-foreground">
                 Schedule at
               </span>
               <div className="flex items-center gap-2">
-                <Clock size={16} className="text-[#A1A1AA]" />
+                <Clock size={16} className="text-muted-foreground" />
                 <input
                   type="datetime-local"
                   value={scheduledAt}
                   onChange={(e) => setScheduledAt(e.target.value)}
-                  className="h-9 rounded-lg border border-[#27272B] bg-[#1A1A1E] px-3 text-sm text-[#EDEDEF] focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                  className="h-9 rounded-lg border border-border bg-surface-hover px-3 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
             </div>
@@ -263,7 +263,7 @@ export function PostComposer() {
           onClick={submit}
           disabled={saving}
           className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
-          style={{ backgroundColor: "#FFFFFF", color: "#000000" }}
+          style={{ backgroundColor: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}
         >
           <Send size={16} />
           {saving ? "Scheduling…" : "Schedule Post"}
@@ -271,14 +271,14 @@ export function PostComposer() {
         {status ? (
           <div className="flex items-center gap-1">
             {status.includes("successfully") ? (
-              <Check size={14} className="text-white" />
+              <Check size={14} className="text-foreground" />
             ) : (
-              <AlertCircle size={14} className="text-white" />
+              <AlertCircle size={14} className="text-foreground" />
             )}
             <p
               className={`text-sm ${status.includes("successfully")
-                  ? "text-white"
-                  : "text-white"
+                  ? "text-foreground"
+                  : "text-foreground"
                 }`}
             >
               {status}

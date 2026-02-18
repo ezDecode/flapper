@@ -47,27 +47,27 @@ export default async function SettingsPage() {
     plugLimit === Infinity ? 0 : Math.min((plugCount / plugLimit) * 100, 100);
 
   const planBadge: Record<string, string> = {
-    FREE: "bg-zinc-100 text-zinc-700 border border-zinc-200",
-    PRO: "bg-[#00AA45]/8 text-[#00AA45] border border-[#00AA45]/20",
+    FREE: "bg-muted text-muted-foreground border border-border",
+    PRO: "bg-primary/10 text-primary border border-primary/20",
   };
 
   return (
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-medium tracking-tight text-zinc-900">
+        <h1 className="text-2xl font-medium tracking-tight text-foreground">
           Settings
         </h1>
-        <p className="mt-1 text-sm text-[#6B6B6B]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Manage platforms, plan, and billing
         </p>
       </div>
 
       {/* Connected Platforms */}
-      <section className="rounded-xl border border-[#E8E8E4] bg-white shadow-sm">
-        <div className="flex items-center gap-2 border-b border-[#E8E8E4] px-6 py-4">
-          <Link2 size={16} className="text-[#6B6B6B]" />
-          <h2 className="text-sm font-medium text-zinc-900">
+      <section className="rounded-xl border border-border bg-card shadow-sm">
+        <div className="flex items-center gap-2 border-b border-border px-6 py-4">
+          <Link2 size={16} className="text-muted-foreground" />
+          <h2 className="text-sm font-medium text-foreground">
             Connected Platforms
           </h2>
         </div>
@@ -77,10 +77,10 @@ export default async function SettingsPage() {
       </section>
 
       {/* Plan & Billing */}
-      <section className="rounded-xl border border-[#E8E8E4] bg-white shadow-sm">
-        <div className="flex items-center gap-2 border-b border-[#E8E8E4] px-6 py-4">
-          <CreditCard size={16} className="text-[#6B6B6B]" />
-          <h2 className="text-sm font-medium text-zinc-900">
+      <section className="rounded-xl border border-border bg-card shadow-sm">
+        <div className="flex items-center gap-2 border-b border-border px-6 py-4">
+          <CreditCard size={16} className="text-muted-foreground" />
+          <h2 className="text-sm font-medium text-foreground">
             Subscription &amp; Billing
           </h2>
         </div>
@@ -89,7 +89,7 @@ export default async function SettingsPage() {
           {/* Current plan */}
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-[#6B6B6B]">Current plan</p>
+              <p className="text-sm text-muted-foreground">Current plan</p>
               <div className="mt-1 flex items-center gap-2">
                 <span
                   className={cn(
@@ -100,7 +100,7 @@ export default async function SettingsPage() {
                   {plan}
                 </span>
                 {plan === "FREE" && (
-                  <span className="text-xs text-[#6B6B6B]">
+                  <span className="text-xs text-muted-foreground">
                     Limited features
                   </span>
                 )}
@@ -113,16 +113,16 @@ export default async function SettingsPage() {
             {/* Posts */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-[#6B6B6B]">Monthly Posts</span>
-                <span className="font-medium text-zinc-900">
+                <span className="text-muted-foreground">Monthly Posts</span>
+                <span className="font-medium text-foreground">
                   {posts}/{postLimitLabel}
                 </span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
                 <div
                   className={cn(
                     "h-full rounded-full transition-all",
-                    postPct >= 90 ? "bg-[#E03131]" : "bg-[#00AA45]"
+                    postPct >= 90 ? "bg-destructive" : "bg-primary"
                   )}
                   style={{ width: `${postPct}%` }}
                 />
@@ -132,16 +132,16 @@ export default async function SettingsPage() {
             {/* Plugs */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-[#6B6B6B]">Monthly Auto-Plugs</span>
-                <span className="font-medium text-zinc-900">
+                <span className="text-muted-foreground">Monthly Auto-Plugs</span>
+                <span className="font-medium text-foreground">
                   {plugCount}/{plugLimitLabel}
                 </span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
                 <div
                   className={cn(
                     "h-full rounded-full transition-all",
-                    plugPct >= 90 ? "bg-[#E03131]" : "bg-[#2B8A3E]"
+                    plugPct >= 90 ? "bg-destructive" : "bg-success"
                   )}
                   style={{ width: `${plugPct}%` }}
                 />
@@ -154,7 +154,7 @@ export default async function SettingsPage() {
             {plan === "FREE" ? (
               <button
                 type="button"
-                className="inline-flex items-center gap-2 rounded-full bg-[#00AA45] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#009940]"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary/90"
               >
                 <Zap size={15} />
                 Upgrade to Pro — $19/mo
@@ -163,7 +163,7 @@ export default async function SettingsPage() {
             ) : (
               <button
                 type="button"
-                className="inline-flex items-center gap-2 rounded-full border border-[#E8E8E4] bg-white px-5 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-colors hover:bg-[#FAFAF8]"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium text-muted-foreground shadow-sm transition-colors hover:bg-surface-hover"
               >
                 <CreditCard size={15} />
                 Manage billing

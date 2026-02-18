@@ -92,43 +92,43 @@ export function AnalyticsDashboard() {
     <div className="flex flex-col gap-5">
       {/* Stat cards */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-[#27272B] bg-[#131316] p-5">
+        <div className="rounded-xl border border-border bg-card p-5">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <Heart size={16} className="text-[#7C3AED]" />
-              <p className="text-sm text-[#A1A1AA]">
+              <Heart size={16} className="text-primary" />
+              <p className="text-sm text-muted-foreground">
                 Total engagement (7d)
               </p>
             </div>
-            <p className="text-2xl font-semibold text-[#EDEDEF]">
+            <p className="text-2xl font-semibold text-foreground">
               {plugsFired}
             </p>
           </div>
         </div>
 
-        <div className="rounded-xl border border-[#27272B] bg-[#131316] p-5">
+        <div className="rounded-xl border border-border bg-card p-5">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
-                <Zap size={16} className="text-white" />
-                <p className="text-sm text-[#A1A1AA]">
+                <Zap size={16} className="text-primary" />
+                <p className="text-sm text-muted-foreground">
                   Top posts tracked
                 </p>
               </div>
-              <p className="text-2xl font-semibold text-[#EDEDEF]">
+              <p className="text-2xl font-semibold text-foreground">
                 {topPosts.length}
               </p>
             </div>
         </div>
 
-        <div className="rounded-xl border border-[#27272B] bg-[#131316] p-5">
+        <div className="rounded-xl border border-border bg-card p-5">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
-                <Twitter size={16} className="text-white" />
-                <p className="text-sm text-[#A1A1AA]">
+                <Twitter size={16} className="text-primary" />
+                <p className="text-sm text-muted-foreground">
                   Platforms active
                 </p>
               </div>
-              <p className="text-2xl font-semibold text-[#EDEDEF]">
+              <p className="text-2xl font-semibold text-foreground">
                 1
               </p>
             </div>
@@ -137,16 +137,16 @@ export function AnalyticsDashboard() {
 
       {/* Engagement over time */}
       {/* Engagement over time */}
-      <div className="rounded-xl border border-[#27272B] bg-[#131316]">
-        <div className="border-b border-[#27272B] px-6 py-4">
+      <div className="rounded-xl border border-border bg-card">
+        <div className="border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-medium text-[#EDEDEF]">
+            <h3 className="text-lg font-medium text-foreground">
               Engagement over time
             </h3>
             <div className="flex gap-3 items-center">
               <div className="flex items-center gap-1">
-                <div className="h-2 w-2 rounded-full bg-white" />
-                <p className="text-xs text-[#A1A1AA]">
+                <div className="h-2 w-2 rounded-full bg-primary" />
+                <p className="text-xs text-muted-foreground">
                   Twitter
                 </p>
               </div>
@@ -159,21 +159,21 @@ export function AnalyticsDashboard() {
               <LineChart data={series}>
                 <CartesianGrid
                   strokeDasharray="3 3"
-                  stroke="#27272B"
+                  stroke="hsl(var(--border))"
                 />
                 <XAxis
                   dataKey="day"
-                  tick={{ fontSize: 12, fill: "#A1A1AA" }}
-                  stroke="#27272B"
+                  tick={{ fontSize: 12, fill: "hsl(var(--text-soft))" }}
+                  stroke="hsl(var(--border))"
                 />
-                <YAxis tick={{ fontSize: 12, fill: "#A1A1AA" }} stroke="#27272B" />
+                <YAxis tick={{ fontSize: 12, fill: "hsl(var(--text-soft))" }} stroke="hsl(var(--border))" />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: "#18181B", borderColor: "#27272B", color: "#EDEDEF" }}
+                  contentStyle={{ backgroundColor: "hsl(var(--card))", borderColor: "hsl(var(--border))", color: "hsl(var(--text))" }}
                 />
                 <Line
                   type="monotone"
                   dataKey="twitter"
-                  stroke="#FFFFFF"
+                  stroke="hsl(var(--primary))"
                   strokeWidth={2}
                   dot={false}
                 />
@@ -185,9 +185,9 @@ export function AnalyticsDashboard() {
 
       {/* Top posts by likes */}
       {/* Top posts by likes */}
-      <div className="rounded-xl border border-[#27272B] bg-[#131316]">
-        <div className="border-b border-[#27272B] px-6 py-4">
-          <h3 className="text-lg font-medium text-[#EDEDEF]">
+      <div className="rounded-xl border border-border bg-card">
+        <div className="border-b border-border px-6 py-4">
+          <h3 className="text-lg font-medium text-foreground">
             Top posts by likes
           </h3>
         </div>
@@ -197,20 +197,20 @@ export function AnalyticsDashboard() {
               <BarChart data={topPosts}>
                 <CartesianGrid
                   strokeDasharray="3 3"
-                  stroke="#27272B"
+                  stroke="hsl(var(--border))"
                 />
                 <XAxis
                   dataKey="label"
-                  tick={{ fontSize: 12, fill: "#A1A1AA" }}
-                  stroke="#27272B"
+                  tick={{ fontSize: 12, fill: "hsl(var(--text-soft))" }}
+                  stroke="hsl(var(--border))"
                 />
-                <YAxis tick={{ fontSize: 12, fill: "#A1A1AA" }} stroke="#27272B" />
+                <YAxis tick={{ fontSize: 12, fill: "hsl(var(--text-soft))" }} stroke="hsl(var(--border))" />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: "#18181B", borderColor: "#27272B", color: "#EDEDEF" }}
+                  contentStyle={{ backgroundColor: "hsl(var(--card))", borderColor: "hsl(var(--border))", color: "hsl(var(--text))" }}
                 />
                 <Bar
                   dataKey="likes"
-                  fill="#FFFFFF"
+                  fill="hsl(var(--primary))"
                   radius={[6, 6, 0, 0]}
                 />
               </BarChart>

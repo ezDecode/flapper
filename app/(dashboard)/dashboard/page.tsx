@@ -10,13 +10,13 @@ import { cn } from "@/lib/utils";
 
 const statusStyles: Record<string, string> = {
   SCHEDULED:
-    "bg-blue-50 text-blue-700 border border-blue-200",
+    "bg-primary/10 text-primary border border-primary/20",
   PUBLISHED:
-    "bg-emerald-50 text-[#2B8A3E] border border-emerald-200",
+    "bg-success/10 text-success border border-success/20",
   FAILED:
-    "bg-red-50 text-[#E03131] border border-red-200",
+    "bg-destructive/10 text-destructive border border-destructive/20",
   DRAFT:
-    "bg-zinc-100 text-zinc-600 border border-zinc-200",
+    "bg-muted text-muted-foreground border border-border",
 };
 
 export default async function DashboardPage() {
@@ -77,29 +77,29 @@ export default async function DashboardPage() {
       label: "Scheduled",
       value: scheduled ?? 0,
       icon: Calendar,
-      color: "text-blue-600",
-      bg: "bg-blue-50",
+      color: "text-primary",
+      bg: "bg-primary/10",
     },
     {
       label: "Auto-Plugs Active",
       value: plugsFired,
       icon: Zap,
-      color: "text-[#00AA45]",
-      bg: "bg-emerald-50",
+      color: "text-primary",
+      bg: "bg-success/10",
     },
     {
       label: "Published",
       value: published ?? 0,
       icon: CheckCircle2,
-      color: "text-[#2B8A3E]",
-      bg: "bg-emerald-50",
+      color: "text-success",
+      bg: "bg-success/10",
     },
     {
       label: "Failed",
       value: failed ?? 0,
       icon: AlertCircle,
-      color: "text-[#E03131]",
-      bg: "bg-red-50",
+      color: "text-destructive",
+      bg: "bg-destructive/10",
     },
   ];
 
@@ -107,10 +107,10 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-medium tracking-tight text-zinc-900">
+        <h1 className="text-2xl font-medium tracking-tight text-foreground">
           Dashboard
         </h1>
-        <p className="mt-1 text-sm text-[#6B6B6B]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Overview of your posting activity
         </p>
       </div>
@@ -122,10 +122,10 @@ export default async function DashboardPage() {
           return (
             <article
               key={stat.label}
-              className="rounded-xl border border-[#E8E8E4] bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+              className="rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
             >
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-[#6B6B6B]">
+                <span className="text-sm font-medium text-muted-foreground">
                   {stat.label}
                 </span>
                 <div
@@ -137,7 +137,7 @@ export default async function DashboardPage() {
                   <Icon size={18} className={stat.color} strokeWidth={2} />
                 </div>
               </div>
-              <p className="mt-3 text-3xl font-medium tracking-tight text-zinc-900">
+              <p className="mt-3 text-3xl font-medium tracking-tight text-foreground">
                 {stat.value}
               </p>
             </article>
@@ -146,32 +146,32 @@ export default async function DashboardPage() {
       </div>
 
       {/* Recent posts */}
-      <section className="rounded-xl border border-[#E8E8E4] bg-white shadow-sm">
-        <div className="flex items-center justify-between border-b border-[#E8E8E4] px-6 py-4">
+      <section className="rounded-xl border border-border bg-card shadow-sm">
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
           <div className="flex items-center gap-2">
-            <TrendingUp size={16} className="text-[#6B6B6B]" />
-            <h2 className="text-sm font-medium text-zinc-900">
+            <TrendingUp size={16} className="text-muted-foreground" />
+            <h2 className="text-sm font-medium text-foreground">
               Recent Activity
             </h2>
           </div>
-          <span className="text-xs text-[#6B6B6B]">Last 10</span>
+          <span className="text-xs text-muted-foreground">Last 10</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full min-w-[560px] text-left text-sm">
             <thead>
-              <tr className="border-b border-[#E8E8E4] text-xs font-medium uppercase tracking-wider text-[#6B6B6B]">
+              <tr className="border-b border-border text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 <th className="px-6 py-3">Content</th>
                 <th className="px-6 py-3">Status</th>
                 <th className="px-6 py-3">Created</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E8E8E4]">
+            <tbody className="divide-y divide-border">
               {recentPosts.length === 0 && (
                 <tr>
                   <td
                     colSpan={3}
-                    className="px-6 py-8 text-center text-sm text-[#6B6B6B]"
+                    className="px-6 py-8 text-center text-sm text-muted-foreground"
                   >
                     No posts yet. Start composing!
                   </td>
@@ -180,9 +180,9 @@ export default async function DashboardPage() {
               {recentPosts.map((post) => (
                 <tr
                   key={post.id}
-                  className="transition-colors hover:bg-[#FAFAF8]"
+                  className="transition-colors hover:bg-surface-hover"
                 >
-                  <td className="px-6 py-3.5 pr-4 text-zinc-800">
+                  <td className="px-6 py-3.5 pr-4 text-foreground">
                     {post.content.slice(0, 80)}
                     {post.content.length > 80 && "…"}
                   </td>
@@ -191,13 +191,13 @@ export default async function DashboardPage() {
                       className={cn(
                         "inline-block rounded-full px-2.5 py-0.5 text-xs font-medium",
                         statusStyles[post.status] ??
-                        "bg-zinc-100 text-zinc-600 border border-zinc-200"
+                        "bg-muted text-muted-foreground border border-border"
                       )}
                     >
                       {post.status}
                     </span>
                   </td>
-                  <td className="px-6 py-3.5 text-[#6B6B6B]">
+                  <td className="px-6 py-3.5 text-muted-foreground">
                     {new Date(post.created_at).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",

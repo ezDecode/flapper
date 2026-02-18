@@ -80,7 +80,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                 >
                     <motion.div
                         className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full"
-                        style={{ background: "#fff" }}
+                        style={{ background: "hsl(var(--text))" }}
                         animate={{
                             left: isAnnual
                                 ? "calc(100% - 1.25rem - 2px)"
@@ -127,7 +127,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                     className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-medium tracking-wide uppercase shadow-lg"
                                     style={{
                                         background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
-                                        color: "#fff",
+                                        color: "hsl(var(--primary-foreground))",
                                         boxShadow: `0 4px 14px ${C.accentSoft}`,
                                     }}
                                 >
@@ -237,8 +237,8 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                     isPro
                                         ? {
                                               background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
-                                              color: "#000",
-                                              boxShadow: "0 4px 12px rgba(255,255,255,0.15)",
+                                              color: "hsl(var(--primary-foreground))",
+                                              boxShadow: "0 4px 12px hsl(var(--accent-soft))",
                                           }
                                         : {
                                               background: "transparent",

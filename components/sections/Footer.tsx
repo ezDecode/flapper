@@ -65,7 +65,7 @@ export function Footer({ onOpenAuth }: FooterProps) {
                         className="group mt-8 inline-flex h-12 cursor-pointer items-center gap-2 rounded-full px-8 text-sm font-medium transition-opacity hover:opacity-90 active:scale-[0.96] sm:text-base"
                         style={{
                             background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
-                            color: "#000",
+                            color: "hsl(var(--primary-foreground))",
                         }}
                     >
                         Start for free

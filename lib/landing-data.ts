@@ -9,20 +9,20 @@ import {
 /* ── Palette ──────────────────────────────────────────── */
 
 export const C = {
-    bg: "#000000",
-    bgAlt: "#050505",
-    surface: "#080808",
-    surfaceHover: "#111111",
-    border: "#1F1F1F",
-    borderSubtle: "#141414",
-    text: "#FFFFFF",
-    textSoft: "#999999",
-    textMuted: "#555555",
-    accent: "#FFFFFF",
-    accentSoft: "rgba(255, 255, 255, 0.08)",
-    accentHover: "#E0E0E0",
-    warm: "#FFFFFF", // Monochrome override
-    warmSoft: "rgba(255, 255, 255, 0.08)", // Monochrome override
+    bg: "hsl(var(--background))",
+    bgAlt: "hsl(var(--surface-alt))",
+    surface: "hsl(var(--surface))",
+    surfaceHover: "hsl(var(--surface-hover))",
+    border: "hsl(var(--border))",
+    borderSubtle: "hsl(var(--border))",
+    text: "hsl(var(--text))",
+    textSoft: "hsl(var(--text-soft))",
+    textMuted: "hsl(var(--text-muted))",
+    accent: "hsl(var(--primary))",
+    accentSoft: "hsl(var(--accent-soft))",
+    accentHover: "hsl(var(--accent-hover))",
+    warm: "hsl(var(--warm))",
+    warmSoft: "hsl(var(--warm-soft))",
 };
 
 /* ── Data ─────────────────────────────────────────────── */

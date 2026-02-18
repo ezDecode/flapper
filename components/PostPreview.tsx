@@ -15,8 +15,8 @@ const platformMeta: Record<
   TWITTER: {
     icon: <Twitter size={16} />,
     label: "Twitter / X",
-    color: "#FFFFFF",
-    bgClass: "bg-white/10",
+    color: "hsl(var(--foreground))",
+    bgClass: "bg-primary/10",
   },
 };
 

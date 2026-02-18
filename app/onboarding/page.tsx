@@ -25,8 +25,8 @@ const platformMeta: Record<
   TWITTER: {
     icon: <Twitter size={18} />,
     label: "Twitter / X",
-    color: "#1DA1F2",
-    bgClass: "bg-[#E8F5FD]",
+    color: "hsl(var(--primary))",
+    bgClass: "bg-primary/10",
   },
 };
 
@@ -182,15 +182,15 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="mx-auto min-h-screen bg-[#FAFAF8] px-4 py-12">
+    <div className="mx-auto min-h-screen bg-background px-4 py-12">
       <div className="mx-auto max-w-2xl">
         {/* Header */}
         <div className="mb-8 flex flex-col items-center gap-2">
           <div className="flex items-center gap-2">
-            <Sparkles size={20} className="text-[#7C3AED]" />
-            <h1 className="text-3xl font-bold tracking-tight text-[#1A1A2E]">Welcome to Flapr</h1>
+            <Sparkles size={20} className="text-primary" />
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">Welcome to Flapr</h1>
           </div>
-          <p className="text-sm text-[#6B6B7B]">
+          <p className="text-sm text-muted-foreground">
             Let's get you set up in 3 quick steps.
           </p>
         </div>
@@ -202,10 +202,10 @@ export default function OnboardingPage() {
               <div className="flex flex-col items-center gap-1">
                 <div
                   className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-medium transition-all ${currentStep > step.number
-                    ? "border-[#2B8A3E] bg-[#2B8A3E] text-white"
+                    ? "border-success bg-success text-white"
                     : currentStep === step.number
-                      ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
-                      : "border-[#E8E8E4] bg-white text-[#6B6B6B]"
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border bg-card text-muted-foreground"
                     }`}
                 >
                   {currentStep > step.number ? (
@@ -215,7 +215,7 @@ export default function OnboardingPage() {
                   )}
                 </div>
                 <p
-                  className={`text-xs ${currentStep === step.number ? "font-semibold text-[#1A1A2E]" : "font-normal text-[#6B6B7B]"}`}
+                  className={`text-xs ${currentStep === step.number ? "font-semibold text-foreground" : "font-normal text-muted-foreground"}`}
                 >
                   {step.label}
                 </p>
@@ -223,8 +223,8 @@ export default function OnboardingPage() {
               {idx < steps.length - 1 && (
                 <div
                   className={`mx-3 mb-5 h-0.5 w-16 rounded-full ${currentStep > step.number
-                    ? "bg-[#2B8A3E]"
-                    : "bg-[#E8E8E4]"
+                    ? "bg-success"
+                    : "bg-border"
                     }`}
                 />
               )}
@@ -234,16 +234,16 @@ export default function OnboardingPage() {
 
         {/* Step 1: Connect Platform */}
         {currentStep <= 1 && (
-          <div className="rounded-2xl border border-[#E5E0D8] bg-white shadow-sm">
-            <div className="border-b border-[#E5E0D8] px-6 py-4">
+          <div className="rounded-2xl border border-border bg-card shadow-sm">
+            <div className="border-b border-border px-6 py-4">
               <div className="flex items-center gap-2">
-                <Globe size={18} className="text-[#7C3AED]" />
-                <h2 className="text-xl font-semibold text-[#1A1A2E]">Connect Your Accounts</h2>
+                <Globe size={18} className="text-primary" />
+                <h2 className="text-xl font-semibold text-foreground">Connect Your Accounts</h2>
               </div>
             </div>
             <div className="p-6">
               <div className="flex flex-col gap-4">
-                <p className="text-sm text-[#6B6B7B]">
+                <p className="text-sm text-muted-foreground">
                   Connect your social accounts so Flapr can publish posts and
                   fire auto-plugs on your behalf.
                 </p>
@@ -259,8 +259,8 @@ export default function OnboardingPage() {
                       <div
                         key={platform}
                         className={`flex items-center justify-between rounded-xl border p-4 transition-colors ${isConnected
-                          ? "border-[#2B8A3E]/30 bg-[#EBFBEE]"
-                          : "border-[#E8E8E4] bg-white"
+                          ? "border-success/30 bg-success/10"
+                          : "border-border bg-card"
                           }`}
                       >
                         <div className="flex items-center gap-3">
@@ -271,16 +271,16 @@ export default function OnboardingPage() {
                             {meta.icon}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-[#1A1A2E]">
+                            <p className="text-sm font-semibold text-foreground">
                               {meta.label}
                             </p>
                             {isConnected && (
                               <div className="flex items-center gap-1">
                                 <Check
                                   size={12}
-                                  className="text-[#2B8A3E]"
+                                  className="text-success"
                                 />
-                                <p className="text-xs text-[#2B8A3E]">
+                                <p className="text-xs text-success">
                                   Connected
                                 </p>
                               </div>
@@ -292,7 +292,7 @@ export default function OnboardingPage() {
                           <button
                             type="button"
                             onClick={() => connectOAuth("twitter")}
-                            className="inline-flex items-center justify-center rounded-full border border-[#E8E8E4] bg-white px-3 py-1.5 text-xs font-medium text-[#1A1A2E] hover:bg-[#FAFAF8]"
+                            className="inline-flex items-center justify-center rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-background"
                           >
                             Connect
                           </button>
@@ -305,8 +305,7 @@ export default function OnboardingPage() {
                 <button
                   disabled={connections.length < 1}
                   onClick={() => updateStep(1)}
-                  className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
-                  style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
+                  className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground"
                 >
                   Continue
                   <ChevronDown size={16} className="rotate-[-90deg]" />
@@ -318,17 +317,17 @@ export default function OnboardingPage() {
 
         {/* Step 2: Write First Post */}
         {currentStep === 2 && (
-          <div className="rounded-2xl border border-[#E5E0D8] bg-white shadow-sm">
-            <div className="border-b border-[#E5E0D8] px-6 py-4">
+          <div className="rounded-2xl border border-border bg-card shadow-sm">
+            <div className="border-b border-border px-6 py-4">
               <div className="flex items-center gap-2">
-                <Send size={18} className="text-[#7C3AED]" />
-                <h2 className="text-xl font-semibold text-[#1A1A2E]">Draft Your First Post</h2>
+                <Send size={18} className="text-primary" />
+                <h2 className="text-xl font-semibold text-foreground">Draft Your First Post</h2>
               </div>
             </div>
             <div className="p-6">
               <form onSubmit={submitStep2}>
                 <div className="flex flex-col gap-4">
-                  <p className="text-sm text-[#6B6B7B]">
+                  <p className="text-sm text-muted-foreground">
                     Draft a quick post — you can always edit it later in the
                     composer.
                   </p>
@@ -339,12 +338,12 @@ export default function OnboardingPage() {
                     rows={5}
                     required
                     placeholder="What's on your mind?"
-                    className="w-full rounded-xl border border-[#E8E8E4] bg-[#FAFAF8] px-4 py-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                    className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                   />
 
                   <div className="flex gap-3 flex-wrap items-end">
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-medium text-[#6B6B6B]">
+                      <label className="text-xs font-medium text-muted-foreground">
                         Platform
                       </label>
                       <div className="flex gap-2">
@@ -356,8 +355,8 @@ export default function OnboardingPage() {
                               type="button"
                               onClick={() => setPostPlatform(platform)}
                               className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${postPlatform === platform
-                                ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
-                                : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
+                                ? "border-primary bg-primary/10 text-primary"
+                                : "border-border bg-card text-muted-foreground hover:border-primary/40"
                                 }`}
                             >
                               <span
@@ -378,22 +377,21 @@ export default function OnboardingPage() {
                     </div>
 
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-medium text-[#6B6B6B]">
+                      <label className="text-xs font-medium text-muted-foreground">
                         Schedule (optional)
                       </label>
                       <input
                         type="datetime-local"
                         value={postSchedule}
                         onChange={(e) => setPostSchedule(e.target.value)}
-                        className="h-8 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                        className="h-8 rounded-lg border border-border bg-card px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       />
                     </div>
                   </div>
 
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
-                    style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
+                    className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 bg-primary text-primary-foreground"
                   >
                     Save and continue
                     <ChevronDown size={16} className="rotate-[-90deg]" />
@@ -406,25 +404,25 @@ export default function OnboardingPage() {
 
         {/* Step 3: Auto-Plug */}
         {currentStep >= 3 && (
-          <div className="rounded-2xl border border-[#E5E0D8] bg-white shadow-sm">
-            <div className="border-b border-[#E5E0D8] px-6 py-4">
+          <div className="rounded-2xl border border-border bg-card shadow-sm">
+            <div className="border-b border-border px-6 py-4">
               <div className="flex items-center gap-2">
-                <Zap size={18} className="text-[#7C3AED]" />
-                <h2 className="text-xl font-semibold text-[#1A1A2E]">Set Up Auto-Plug</h2>
+                <Zap size={18} className="text-primary" />
+                <h2 className="text-xl font-semibold text-foreground">Set Up Auto-Plug</h2>
               </div>
             </div>
             <div className="p-6">
               <form onSubmit={submitStep3}>
                 <div className="flex flex-col gap-4">
-                  <p className="text-sm text-[#6B6B7B]">
+                  <p className="text-sm text-muted-foreground">
                     Set a threshold — when your post hits that many likes, Flapr
                     automatically replies with your plug content.
                   </p>
 
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center gap-2">
-                      <Heart size={14} className="text-[#7C3AED]" />
-                      <label className="text-xs font-medium text-[#6B6B6B]">
+                      <Heart size={14} className="text-primary" />
+                      <label className="text-xs font-medium text-muted-foreground">
                         Fire when likes reach
                       </label>
                     </div>
@@ -433,12 +431,12 @@ export default function OnboardingPage() {
                       min={1}
                       value={plugValue}
                       onChange={(e) => setPlugValue(Number(e.target.value))}
-                      className="h-9 w-32 rounded-lg border border-[#E8E8E4] bg-white px-3 text-sm focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                      className="h-9 w-32 rounded-lg border border-border bg-card px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                     />
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-[#6B6B6B]">
+                    <label className="text-xs font-medium text-muted-foreground">
                       Auto-reply content
                     </label>
                     <textarea
@@ -447,14 +445,13 @@ export default function OnboardingPage() {
                       rows={4}
                       required
                       placeholder="When this post hits the threshold, reply with…"
-                      className="w-full rounded-xl border border-[#E8E8E4] bg-[#FAFAF8] px-4 py-3 text-sm placeholder:text-[#6B6B6B]/60 focus:border-[#7C3AED] focus:outline-none focus:ring-1 focus:ring-[#7C3AED]"
+                      className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
-                    style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
+                    className="inline-flex items-center justify-center gap-2 rounded-full w-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 bg-primary text-primary-foreground"
                   >
                     <Sparkles size={16} />
                     Finish onboarding
@@ -468,7 +465,7 @@ export default function OnboardingPage() {
         {/* Message */}
         {message ? (
           <div className="mt-4">
-            <p className="text-sm text-[#6B6B7B]">
+            <p className="text-sm text-muted-foreground">
               {message}
             </p>
           </div>
