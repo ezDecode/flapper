@@ -35,14 +35,14 @@ export function Footer({ onOpenAuth }: FooterProps) {
                     className="pointer-events-none absolute inset-0"
                     style={{
                         background:
-                            "radial-gradient(circle at 50% 60%, rgba(0,204,85,0.06) 0%, transparent 70%)",
+                            "radial-gradient(circle at 50% 60%, rgba(255,255,255,0.06) 0%, transparent 70%)",
                     }}
                 />
 
                 <div className="relative mx-auto flex max-w-2xl flex-col items-center text-center">
                     <motion.h2
                         {...fadeUp()}
-                        className="font-medium tracking-[-0.02em]"
+                        className="font-serif font-medium tracking-[-0.02em]"
                         style={{ 
                             color: C.text,
                             fontSize: "clamp(24px, 4vw, 36px)",

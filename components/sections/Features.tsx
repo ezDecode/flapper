@@ -42,27 +42,17 @@ export function Features() {
         <section id="features" className="py-12 md:py-20">
             {/* Header */}
             <div className="mb-12 text-center">
-                <div
-                    className="mx-auto mb-4 inline-flex items-center rounded-full border px-4 py-1.5 text-xs font-medium tracking-wide uppercase"
-                    style={{
-                        borderColor: `rgba(0, 204, 85, 0.2)`,
-                        color: C.accent,
-                        background: C.accentSoft,
-                    }}
-                >
-                    Features
-                </div>
                 <h2
-                    className="font-medium tracking-[-0.02em] leading-[1.1]"
+                    className="font-serif font-medium tracking-[-0.02em] leading-[1.1]"
                     style={{ 
                         color: C.text,
-                        fontSize: "clamp(24px, 4vw, 36px)",
+                        fontSize: "clamp(32px, 5vw, 48px)", // Larger, more prominent
                     }}
                 >
                     Everything you need to grow.
                 </h2>
                 <p
-                    className="mx-auto mt-4 max-w-md text-base font-normal leading-relaxed"
+                    className="mx-auto mt-6 max-w-lg text-lg font-normal leading-relaxed"
                     style={{ color: C.textSoft }}
                 >
                     Powerful tools designed to help you schedule, engage, and

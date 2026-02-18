@@ -32,8 +32,8 @@ const platformMeta: Record<
   TWITTER: {
     icon: <Twitter size={16} />,
     label: "Twitter / X",
-    color: "#1DA1F2",
-    bgClass: "bg-[#E8F5FD]",
+    color: "#FFFFFF",
+    bgClass: "bg-white/10",
   },
 };
 
@@ -170,8 +170,8 @@ export function PostComposer() {
             </p>
             <span
               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${minRemaining < 0
-                  ? "bg-red-500/10 text-red-500"
-                  : "bg-blue-500/10 text-blue-500"
+                  ? "bg-white/10 text-white border border-white/50"
+                  : "bg-white/5 text-[#A1A1AA]"
                 }`}
             >
               {minRemaining} chars remaining
@@ -212,8 +212,8 @@ export function PostComposer() {
                       type="button"
                       onClick={() => togglePlatform(platform)}
                       className={`inline-flex items-center gap-2 rounded-full border-2 px-4 py-2.5 text-sm font-medium transition-all ${isSelected
-                        ? "border-[#7C3AED] bg-[#2E1065] text-[#A78BFA]"
-                        : "border-[#27272B] bg-[#1A1A1E] text-[#A1A1AA] hover:border-[#7C3AED]/40"
+                        ? "border-white bg-white text-black"
+                        : "border-[#27272B] bg-[#1A1A1E] text-[#A1A1AA] hover:border-white/40"
                         }`}
                     >
                       <span style={{ color: isSelected ? meta.color : undefined }}>
@@ -263,7 +263,7 @@ export function PostComposer() {
           onClick={submit}
           disabled={saving}
           className="inline-flex items-center justify-center gap-2 rounded-full h-10 px-4 py-2 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90 disabled:pointer-events-none disabled:opacity-50"
-          style={{ backgroundColor: "#8B5CF6", color: "#fff" }}
+          style={{ backgroundColor: "#FFFFFF", color: "#000000" }}
         >
           <Send size={16} />
           {saving ? "Scheduling…" : "Schedule Post"}
@@ -271,14 +271,14 @@ export function PostComposer() {
         {status ? (
           <div className="flex items-center gap-1">
             {status.includes("successfully") ? (
-              <Check size={14} className="text-[#2B8A3E]" />
+              <Check size={14} className="text-white" />
             ) : (
-              <AlertCircle size={14} className="text-[#E03131]" />
+              <AlertCircle size={14} className="text-white" />
             )}
             <p
               className={`text-sm ${status.includes("successfully")
-                  ? "text-[#2B8A3E]"
-                  : "text-[#E03131]"
+                  ? "text-white"
+                  : "text-white"
                 }`}
             >
               {status}

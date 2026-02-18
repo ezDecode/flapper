@@ -99,7 +99,7 @@ const ListItem = React.forwardRef<
                         {icon && (
                             <span
                                 className={cn(
-                                    "relative flex min-h-10 min-w-10 items-center justify-center rounded-xl p-2 text-[#00CC55] transition group-hover:text-[#00CC55]",
+                                    "relative flex min-h-10 min-w-10 items-center justify-center rounded-xl p-2 text-[#F5F5F5] transition group-hover:text-[#FFFFFF]",
                                     backgroundImage
                                         ? "bg-white/5 backdrop-blur group-hover:bg-white/10"
                                         : "bg-white/5 group-hover:bg-white/10",

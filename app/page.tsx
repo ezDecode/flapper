@@ -83,7 +83,7 @@ function LandingPageInner() {
                 <button
                   onClick={() => openAuth("register")}
                   className="inline-flex items-center justify-center gap-2 rounded-full h-9 px-5 text-sm font-medium transition-colors cursor-pointer active:scale-[0.96] hover:opacity-90"
-                  style={{ backgroundColor: "#00CC55", color: "#000" }}
+                  style={{ backgroundColor: "#FFFFFF", color: "#000000" }}
                 >
                   Start free
                 </button>

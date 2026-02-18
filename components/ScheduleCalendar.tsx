@@ -34,19 +34,19 @@ const localizer = dateFnsLocalizer({
 });
 
 const statusColor: Record<string, string> = {
-  DRAFT: "#8f9ba8",
-  SCHEDULED: "#0284c7",
-  PUBLISHING: "#b45309",
-  PUBLISHED: "#16a34a",
-  FAILED: "#dc2626",
+  DRAFT: "#333333",
+  SCHEDULED: "#666666",
+  PUBLISHING: "#888888",
+  PUBLISHED: "#FFFFFF",
+  FAILED: "#333333",
 };
 
 const statusPillClasses: Record<string, string> = {
-  DRAFT: "bg-blue-500/10 text-blue-500",
-  SCHEDULED: "bg-blue-500/10 text-blue-500",
-  PUBLISHING: "bg-amber-500/10 text-amber-500",
-  PUBLISHED: "bg-green-500/10 text-green-500",
-  FAILED: "bg-red-500/10 text-red-500",
+  DRAFT: "bg-white/10 text-white border border-white/20",
+  SCHEDULED: "bg-white/10 text-white border border-white/20",
+  PUBLISHING: "bg-white/10 text-white border border-white/20",
+  PUBLISHED: "bg-white/10 text-white border border-white/20",
+  FAILED: "bg-white/10 text-white border border-white/20",
 };
 
 export function ScheduleCalendar() {
@@ -106,9 +106,9 @@ export function ScheduleCalendar() {
             </p>
           </div>
           <div className="flex gap-2">
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-500/10 text-blue-500">Scheduled</span>
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-500/10 text-green-500">Published</span>
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-red-500/10 text-red-500">Failed</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-white/10 text-white border border-white/20">Scheduled</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-white/10 text-white border border-white/20">Published</span>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-white/10 text-white border border-white/20">Failed</span>
           </div>
         </div>
       </div>

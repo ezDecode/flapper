@@ -109,7 +109,7 @@ export function AnalyticsDashboard() {
         <div className="rounded-xl border border-[#27272B] bg-[#131316] p-5">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
-                <Zap size={16} className="text-[#7C3AED]" />
+                <Zap size={16} className="text-white" />
                 <p className="text-sm text-[#A1A1AA]">
                   Top posts tracked
                 </p>
@@ -123,7 +123,7 @@ export function AnalyticsDashboard() {
         <div className="rounded-xl border border-[#27272B] bg-[#131316] p-5">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
-                <Twitter size={16} className="text-[#7C3AED]" />
+                <Twitter size={16} className="text-white" />
                 <p className="text-sm text-[#A1A1AA]">
                   Platforms active
                 </p>
@@ -145,7 +145,7 @@ export function AnalyticsDashboard() {
             </h3>
             <div className="flex gap-3 items-center">
               <div className="flex items-center gap-1">
-                <div className="h-2 w-2 rounded-full bg-[#0ea5e9]" />
+                <div className="h-2 w-2 rounded-full bg-white" />
                 <p className="text-xs text-[#A1A1AA]">
                   Twitter
                 </p>
@@ -173,7 +173,7 @@ export function AnalyticsDashboard() {
                 <Line
                   type="monotone"
                   dataKey="twitter"
-                  stroke="#0ea5e9"
+                  stroke="#FFFFFF"
                   strokeWidth={2}
                   dot={false}
                 />
@@ -210,7 +210,7 @@ export function AnalyticsDashboard() {
                 />
                 <Bar
                   dataKey="likes"
-                  fill="#7C3AED"
+                  fill="#FFFFFF"
                   radius={[6, 6, 0, 0]}
                 />
               </BarChart>

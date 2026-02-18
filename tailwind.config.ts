@@ -6,22 +6,12 @@ const config: Config = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['var(--font-instrument)', 'system-ui', 'sans-serif'],
+				sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+				serif: ['var(--font-nineties)', 'serif'],
 				mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
 			},
 			colors: {
-				brand: {
-					'50': '#EDFFF4',
-					'100': '#D6FFE8',
-					'200': '#AFFFD3',
-					'300': '#71FFAF',
-					'400': '#2BF884',
-					'500': '#00AA45',
-					'600': '#009940',
-					'700': '#007A33',
-					'800': '#065F2B',
-					'900': '#064E24',
-				},
+				
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				card: {

@@ -48,7 +48,7 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
-        <Zap size={16} className="text-[#7C3AED]" />
+        <Zap size={16} className="text-white" />
         <p className="text-sm font-medium text-[#1A1A2E]">
           Auto-Plug Configuration
         </p>
@@ -62,7 +62,7 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
             <div className="p-4">
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-[#2B8A3E]" />
+                  <div className="h-2 w-2 rounded-full bg-white" />
                   <p className="text-sm font-medium text-[#1A1A2E]">
                     {platformLabels[platform]}
                   </p>
@@ -86,8 +86,8 @@ export function AutoPlugConfig({ selectedPlatforms, value, onChange }: Props) {
                           }
                           className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                             config.triggerType === opt.value
-                              ? "border-[#7C3AED] bg-[#F0ECFE] text-[#8B5CF6]"
-                              : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-[#7C3AED]/40"
+                              ? "border-white bg-white text-black"
+                              : "border-[#E8E8E4] bg-white text-[#6B6B6B] hover:border-white/40"
                           }`}
                         >
                           {opt.icon}

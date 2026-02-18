@@ -43,7 +43,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                     Pricing
                 </div>
                 <h2
-                    className="font-medium tracking-[-0.02em] leading-[1.1]"
+                    className="font-serif font-medium tracking-[-0.02em] leading-[1.1]"
                     style={{ 
                         color: C.text,
                         fontSize: "clamp(24px, 4vw, 36px)",
@@ -238,7 +238,7 @@ export function Pricing({ onOpenAuth }: PricingProps) {
                                         ? {
                                               background: `linear-gradient(135deg, ${C.accent}, ${C.accentHover})`,
                                               color: "#000",
-                                              boxShadow: "0 4px 12px rgba(0,170,69,0.15)",
+                                              boxShadow: "0 4px 12px rgba(255,255,255,0.15)",
                                           }
                                         : {
                                               background: "transparent",

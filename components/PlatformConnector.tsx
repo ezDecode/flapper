@@ -22,8 +22,8 @@ const platformRows: Array<{
       key: "TWITTER",
       label: "Twitter / X",
       icon: <Twitter size={18} />,
-      color: "#1DA1F2",
-      bgClass: "bg-[#E8F5FD]",
+      color: "#FFFFFF",
+      bgClass: "bg-white/10",
     }
   ];
 
@@ -65,7 +65,7 @@ export function PlatformConnector() {
         const connected = connections.find((item) => item.platform === row.key);
 
         return (
-          <div key={row.key} className="rounded-xl border border-[#27272B] bg-[#131316] p-4">
+          <div key={row.key} className="rounded-xl border border-border bg-card p-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
                 <div
@@ -75,15 +75,15 @@ export function PlatformConnector() {
                   {row.icon}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-[#EDEDEF]">
+                  <p className="text-sm font-medium text-foreground">
                     {row.label}
                   </p>
                   <div className="flex items-center gap-1">
                     <div
-                      className={`h-2 w-2 rounded-full ${connected ? "bg-[#2B8A3E]" : "bg-[#ADB5BD]"
+                      className={`h-2 w-2 rounded-full ${connected ? "bg-primary" : "bg-muted-foreground/30"
                         }`}
                     />
-                    <p className="text-xs text-[#A1A1AA]">
+                    <p className="text-xs text-muted-foreground">
                       {connected
                         ? `Connected as @${connected.platform_handle}`
                         : "Not connected"}
@@ -95,7 +95,7 @@ export function PlatformConnector() {
               {connected ? (
                 <button
                   onClick={() => disconnect(connected.id)}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#3F3F46] bg-[#27272B] px-3 py-1.5 text-xs font-medium text-[#EDEDEF] hover:bg-[#3F3F46] transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1.5 text-xs font-medium text-secondary-foreground hover:bg-secondary/80 transition-colors"
                 >
                   <X size={14} />
                   Disconnect
@@ -103,7 +103,7 @@ export function PlatformConnector() {
               ) : (
                 <button
                   onClick={() => connectOAuth("twitter")}
-                  className="inline-flex items-center gap-2 rounded-full bg-[#EDEDEF] px-3 py-1.5 text-xs font-medium text-[#131316] hover:bg-[#D4D4D8] transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
                 >
                   <Check size={14} />
                   Connect

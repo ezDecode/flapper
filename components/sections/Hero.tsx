@@ -100,7 +100,7 @@ function SimpleWorkflow() {
                                 initial={{ strokeDashoffset: 144.5 }}
                                 animate={{ strokeDashoffset: 0 }}
                                 transition={{ duration: 3.5, ease: "linear" }}
-                                className="opacity-80 drop-shadow-[0_0_2px_rgba(0,204,85,0.5)]"
+                                className="opacity-80 drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]"
                                 strokeLinecap="round"
                             />
                         </svg>
@@ -158,9 +158,9 @@ export function Hero({ onOpenAuth }: HeroProps) {
                 {...fadeUp(0)}
                 className="mb-8 inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-xs font-medium tracking-wider uppercase"
                 style={{
-                    borderColor: "rgba(0, 204, 85, 0.2)",
+                    borderColor: "rgba(255, 255, 255, 0.2)",
                     color: C.accent,
-                    background: "rgba(0, 204, 85, 0.06)",
+                    background: "rgba(255, 255, 255, 0.06)",
                 }}
             >
                 <span className="relative flex h-2 w-2" aria-hidden>
@@ -174,7 +174,7 @@ export function Hero({ onOpenAuth }: HeroProps) {
             {/* Headline */}
             <motion.h1
                 {...fadeUp(0.08)}
-                className="max-w-4xl font-medium tracking-[-0.03em] leading-[1.05]"
+                className="max-w-4xl font-serif font-medium tracking-[-0.03em] leading-[1.05]"
                 style={{
                     fontSize: "clamp(32px, 6vw, 56px)", // Compact scaling
                 }}

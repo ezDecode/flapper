@@ -18,8 +18,8 @@ export function UpgradeModal({ open, onClose }: Props) {
         <div className="p-6">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F0ECFE]">
-                <AlertCircle size={20} className="text-[#7C3AED]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+                <AlertCircle size={20} className="text-white" />
               </div>
               <h2 className="text-xl font-semibold text-[#1A1A2E]">Usage limit reached</h2>
             </div>
@@ -43,7 +43,7 @@ export function UpgradeModal({ open, onClose }: Props) {
                   window.location.href = "/settings";
                 }}
                 className="inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white hover:opacity-90"
-                style={{ backgroundColor: "#8B5CF6" }}
+                style={{ backgroundColor: "#FFFFFF", color: "#000000" }}
               >
                 <Sparkles size={16} />
                 View plans

@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { Instrument_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const instrumentSans = Instrument_Sans({
-  subsets: ["latin"],
-  variable: "--font-instrument",
+const inter = localFont({
+  src: "../public/fonts/InterVariable.ttf",
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const nineties = localFont({
+  src: "../public/fonts/PerfectlyNineties-Light.woff",
+  variable: "--font-nineties",
   display: "swap",
 });
 
@@ -19,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
       </head>
-      <body className={`${instrumentSans.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${nineties.variable} font-sans tracking-tight antialiased`}>
         {children}
         <Analytics />
       </body>
